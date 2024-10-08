@@ -186,20 +186,57 @@
   }
   /* Estilos para la sección de contacto */
   
-  #contact {
+  .contact-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  #contact ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .social-media {
+    display: flex;
+    align-items: center;
   }
   
-  #contact li {
+  .social-media a {
+    margin-right: 20px;
+  }
+  
+  .social-media img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .social-media img:hover {
+    transform: scale(1.1);
+  }
+  
+  .contact-info {
+    text-align: right;
+  }
+  
+  .contact-info h2 {
+    margin-top: 0;
+  }
+  
+  .contact-info p {
     margin-bottom: 10px;
   }
   
+  .contact-info a {
+    text-decoration: none;
+    color: #337ab7;
+  }
+  
+  .contact-info a:hover {
+    color: #23527c;
+  }
   /* Estilos para el pie de página */
   
   footer {
