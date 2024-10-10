@@ -94,7 +94,11 @@
     justify-content: center;
     align-items: center;
   }
-  
+  .carousel-inner img {
+    width: 100%; /* ajusta el ancho de las imágenes */
+    height: 600px; /* ajusta la altura de las imágenes */
+    object-fit: cover; /* ajusta la forma en que se muestran las imágenes */
+  }
   #hero h1 {
     font-size: 48px;
     margin-bottom: 20px;
