@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef Interfaz</title>
+    <link rel="stylesheet" href="styles/chef.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>Peru En El Plato</h1> <!-- Restaurant name -->
+            <button class="cerrar-sesion" onclick="location.href='index.html'">Cerrar Sesión</button> <!-- Close session button -->
+        </div>
+    </header>
+    <main>
+        <section class="platos-pendientes">
+            <button class="actualizar" onclick="location.reload()">Actualizar</button>
+            <h2>Platos Pendientes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del Plato</th>
+                        <th>Precio</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los datos iran aqui -->
+                </tbody>
+            </table>
+            <br>
+            <button>Terminado</button>
+            <br>
+            <h2>Platos Terminados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del Plato</th>
+                        <th>Precio</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los datos iran aqui -->
+                </tbody>
+            </table>
+            <br>
+            <button>Llamar mesero</button>
+            <br>    
+        </section>
+    </main>
+</body>
+</html>
