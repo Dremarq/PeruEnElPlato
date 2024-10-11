@@ -151,6 +151,9 @@
 .menu-column {
   flex-basis: 30%; /* Ancho de cada columna */
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .menu-item {
@@ -178,6 +181,10 @@
 .menu-item p {
   font-size: 16px;
   color: #666;
+}
+
+.card { 
+  margin: 0 auto;
 }
 
 /* Estilos para los títulos de sección */
