@@ -6,11 +6,12 @@
   }
   
   body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
     line-height: 1.5;
     color: #333;
     background-color: #f9f9f9;
+    margin-top: 100px; /* ajusta el valor según la altura del header */
   }
   
   h1, h2, h3 {
@@ -63,6 +64,12 @@
     text-align: center;
     border-bottom: 1px solid #ddd;
     padding: 10px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999; /* aumenta el valor de z-index */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* adds a slight shadow to help it stand out */
   }
   
   header nav ul {
@@ -187,6 +194,61 @@
   margin: 0 auto;
 }
 
+/* Estilo para el formulario de reserva */
+.reserva-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.reserva-description {
+  width: 40%;
+  padding: 20px;
+}
+
+.reserva-form {
+  width: 50%;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #444;
+}
+
+textarea{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  resize: none; /* Evita que el textarea se pueda redimensionar */
+  height: 150px; /* Establece una altura fija para el textarea */
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
 /* Estilos para los títulos de sección */
 .menu-column h3 {
   font-weight: bold;
@@ -259,3 +321,7 @@
   footer p {
     margin-bottom: 10px;
   }
+ img{
+  position: relative;
+  z-index: 1;
+ }

@@ -14,9 +14,9 @@
     <header>
         <nav>
             <ul>
-                <li><a href="#####">Reserva</a></li>
+                <li><a href="#reserva-anchor">Reserva</a></li>
                 <li><a href="#menu-anchor">Menu</a></li>
-                <li><a href="######">Contáctanos</a></li>
+                <li><a href="#contact-anchor">Contáctanos</a></li>
                 <li><a href="login.html">Iniciar Sesion</a></li>
             </ul>
             
@@ -151,9 +151,49 @@
     </div>
   </div>
 </section>
+<!-- Reserva Section -->
+<section id="reserva-anchor">
+  <div class="reserva-container">
+    <div class="reserva-description">
+      <h2 style="text-align: center;">Reserva tu mesa</h2>
+      <p style="text-align: center;">Reserva tu mesa en nuestro restaurante y disfruta de una experiencia gastronómica única. Por favor, completa el formulario a continuación y nos pondremos en contacto contigo para confirmar tu reserva.</p>
+      <img style="display: block; margin: 20px auto;" alt="Imagen del restaurante" src="img/reserva.jpg" >
+    </div>
+    <div class="reserva-form">
+      <form>
+        <div class="form-group">
+          <label for="nombre">Nombre completo:</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+        <div class="form-group">
+          <label for="dni">DNI:</label>
+          <input type="dni" id="dni" name="dni" required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono celular:</label>
+          <input type="tel" id="telefono" name="telefono" required>
+        </div>
+        <div class="form-group">
+          <label for="correo">Correo electrónico:</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="form-group">
+          <label for="fecha">Fecha de reserva:</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+        <div class="form-group">
+          <label for="mensaje">Mensaje:</label>
+          <textarea id="mensaje" name="mensaje" maxlength="500"></textarea>
+          <span id="caracteres">0/500</span>
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+</section>
 
  <!-- Contact Section -->
-<section id="contact">
+<section id="contact-anchor">
   <div class="contact-container">
     <div class="social-media">
       <a href="#####" target="_blank">
@@ -170,7 +210,7 @@
       </a>
     </div>
     <div class="contact-info">
-      <h2>Información adicional</h2>
+      <h2>Contáctanos</h2>
       <p>Teléfono: 987654321</p>
       <p>Email: <a href="####">peruenelplato@gmail.com</a></p>
       <p>Dirección: Panamericana Norte, Av. Alfredo Mendiola 6377, Los Olivos</p>
