@@ -75,6 +75,22 @@
                         <!-- Agrega más empleados según sea necesario -->
                     </tbody>
                 </table>
+                <h3>Agregar Nuevo Empleado</h3>
+                <form id="form-agregar-empleado" onsubmit="agregarEmpleado(event)">
+                <label for="nombre-empleado">Nombre del Empleado Nuevo:</label>
+                <input type="text" id="nombre-empleado" required>
+        
+                <label for="dni-empleado">DNI:</label>
+                <input type="text" id="dni-empleado" required>
+        
+                <label for="telefono-empleado">Teléfono:</label>
+                <input type="text" id="telefono-empleado" required>
+        
+                <label for="codigo-empleado">Código de Empleado:</label>
+                <input type="text" id="codigo-empleado" required>
+        
+                <button type="submit">Agregar Empleado</button>
+                </form>
             </div>
 
         </main>

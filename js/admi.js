@@ -94,3 +94,32 @@ function borrarEmpleado(empleado) {
         }
     });
 }
+// Función para agregar un nuevo empleado
+function agregarEmpleado(event) {
+    event.preventDefault(); // Evita que el formulario se envíe de la forma tradicional
+
+    // Obtiene los valores del formulario
+    const nombre = document.getElementById('nombre-empleado').value;
+    const dni = document.getElementById('dni-empleado').value;
+    const telefono = document.getElementById('telefono-empleado').value;
+    const codigo = document.getElementById('codigo-empleado').value;
+
+    // Crea una nueva fila en la tabla de empleados
+    const nuevaFila = document.createElement('tr');
+    nuevaFila.innerHTML = `
+        <td>${nombre}</td>
+        <td>${dni}</td>
+        <td>${telefono}</td>
+        <td>${codigo}</td>
+        <td>
+            <button onclick="editarEmpleado('${nombre}')">Editar</button>
+            <button onclick="borrarEmpleado('${nombre}')">Borrar</button>
+        </td>
+    `;
+
+    // Agrega la nueva fila al cuerpo de la tabla
+    document.getElementById('lista-empleados').appendChild(nuevaFila);
+
+    // Limpia el formulario
+    document.getElementById('form-agregar-empleado').reset();
+}
