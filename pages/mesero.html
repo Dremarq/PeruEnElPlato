@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/admi.css">
+    <title>Interfaz del Mesero</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>Pantalla de Mesero</h2>
+        </nav>
+        <main class="content">
+            <h1 style="text-align: center;">Mantenimiento de Platos</h1>
+
+            <table id="tabla-platos" border="1">
+                <thead>
+                    <tr>
+                        <th>Nombre del Plato</th>
+                        <th>Precio (S/.)</th>
+                        <th>Mesa</th>
+                        <th>Cliente</th>
+                        <th>Nota</th>
+                        <th>Acciones</th> <!-- Nueva columna para acciones -->
+                    </tr>
+                </thead>
+                <tbody id="lista-empleados">
+                    <tr>
+                        <td>Arroz con Pollo</td>
+                        <td>35</td>
+                        <td>1</td>
+                        <td>marco@gmail.com</td>                        
+                        <td>Pollo cocido</td>
+                        <td>
+                            <button onclick="editarPlato('Plato 1')">Editar</button>
+                            <button onclick="borrarPlato('Plato 1')">Borrar</button>
+                        </td>
+                    </tr>
+                    <!-- Agrega más empleados según sea necesario -->
+                </tbody>
+            </table>
+
+            <!-- formulario -->
+            <h3>Registros de platos</h3>
+                <form id="form-agregar-plato" onsubmit="agregarPlato(event)">
+                <label for="nombre-plato">Nombre del Plato:</label>
+                <input type="text" id="nombre-plato" required>
+        
+                <label for="precio-plato">Precio (S/.):</label>
+                <input type="text" id="precio-plato" required>
+        
+                <label for="mesa-plato">Mesa:</label>
+                <input type="text" id="mesa-plato" required>
+        
+                <label for="cliente-plato">Cliente:</label>
+                <input type="text" id="cliente-plato" required>
+        
+                <label for="nota-plato">Nota:</label>
+                <input type="text" id="nota-plato" required>
+
+                <button type="submit">Agregar Plato</button>
+                </form>
+        </main>
+    </div>
+    <script src="../js/admi.js"></script>
+</body>
+</html>
