@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/admi.css">
+    <title>Interfaz del Chef</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>Pantalla del Chef</h2>
+                        
+            <!-- Navegacion -->
+            <ul>
+            <li><a href="../index.html">Cerrar Sesion</a></li>
+            </ul>
+        </nav>
+        <main class="content">
+            <h1 style="text-align: center;">Platos pendientes</h1>
+                                
+            <!-- Tabla 1 platos pendientes -->
+            <table id="tabla-platos-pendientes" border="1">
+                <thead>
+                    <tr>
+                        <th>Fecha - Hora</th>
+                        <th>Nombre del Plato</th>
+                        <th>Nota</th>
+                        <th>Acciones</th> <!-- Nueva columna para acciones -->
+                    </tr>
+                </thead>
+                <tbody id="lista-platos-pendientes">
+                    <tr>
+                        <th>24/10/2024 - 10:40</th>
+                        <td>Arroz con Pollo</td>
+                        <td>Pollo cocido</td>
+                        <td>
+                            <button onclick="Plato_terminado('Plato 1')">Terminado</button>
+                        </td>
+                    </tr>
+                    <!-- Agrega más empleados según sea necesario -->
+                </tbody>
+            </table>
+
+            <h1 style="text-align: center;">Platos terminados</h1>
+            
+            <!-- Tabla 2 platos terminados -->
+            <table id="tabla-platos-termidados" border="1">
+                <thead>
+                    <tr>
+                        <th>Fecha - Hora</th>
+                        <th>Nombre del Plato</th>
+                        <th>Nota</th>
+                        <th>Acciones</th> <!-- Nueva columna para acciones -->
+                    </tr>
+                </thead>
+                <tbody id="lista-platos-pendientes">
+                    <tr>
+                        <th>24/10/2024 - 10:40</th>
+                        <td>Arroz con Pollo</td>
+                        <td>Pollo cocido</td>
+                        <td>
+                            <button onclick="Plato_llamar_mesero('Plato 1')">Llamar mesero</button>
+                        </td>
+                    </tr>
+                    <!-- Agrega más empleados según sea necesario -->
+                </tbody>
+            </table>
+
+            <button style="display: block; margin: 0 auto;" onclick="location.reload();">Actualizar</button>
+        
+        </main>
+    </div>
+    <script src="../js/admi.js"></script>
+</body>
+</html>
