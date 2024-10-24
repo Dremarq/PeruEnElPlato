@@ -1,23 +1,23 @@
 <?php
 
-$usuario = $_POST['usuario'];
-$contraseña = $_POST['contraseña'];
+$username = $_POST['usuario'];
+$password = $_POST['contraseña'];
 session_start();
-$_SESSION['usuario'] = $usuario;
+$_SESSION['usuario'] = $username;
 
 $conexion = mysqli_connect('localhost', 'root', '', 'restaurante');
 
-$consulta = "SELECT * FROM usuario where usuario='$usuario' and contraseña='$contraseña' ";
+$consulta = "SELECT * FROM admin where username='$username' and password='$password' ";
 $resultado = mysqli_query($conexion, $consulta);
 
 $filas = mysqli_num_rows($resultado);
 
 if ($filas) {
-    header("location:admi.php");
+    header("location:../VISTA/admi.html");
 } else {
 ?>
     <?php
-    include("login.php");
+    include("../VISTA/login.html");
     ?>
     <h1 class="bad">ERROR EN LA AUTENTICACION</h1>
 <?php
