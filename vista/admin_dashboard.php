@@ -41,7 +41,7 @@
                             <th>Fecha de Registro</th>
                         </tr>
                     </thead>
-                 
+                
                 </table>
             </div>
 
