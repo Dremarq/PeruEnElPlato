@@ -117,3 +117,16 @@ form button {
 form button:hover {
     background-color: #45a049;
 }
+.btn-danger {
+    background-color: #dc3545; /* Color rojo */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none; /* Quitar subrayado de enlace */
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Color rojo más oscuro al pasar el mouse */
+}

@@ -1,20 +1,21 @@
 <?php
-class ClientesModel {
-    private $conn;
+class Usuario {
+    private $conexion;
 
     public function __construct($conexion) {
-        $this->conn = $conexion;
+        $this->conexion = $conexion; // Conexión a la base de datos
     }
 
-    public function getAllClientes() {
-        $query = "SELECT `id_usuario`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `fecha_registro` FROM `usuarios`";
-        $result = mysqli_query($this->conn, $query);
-
-        if (!$result) {
-            die("Error en la consulta: " . mysqli_error($this->conn));
+    // Método para obtener todos los usuarios
+    public function obtenerUsuarios() {
+        $sql = "SELECT `id_usuario`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `fecha_registro` FROM `usuarios`";
+        $result = mysqli_query($this->conexion, $sql);
+        
+        $usuarios = [];
+        while($row = mysqli_fetch_assoc($result)) {
+            $usuarios[] = $row; // Almacenar cada fila en un array
         }
-
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+        return $usuarios; // Retornar el array de usuarios
     }
 }
 ?>
