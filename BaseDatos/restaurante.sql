@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-10-2024 a las 03:20:04
+-- Tiempo de generación: 23-10-2024 a las 19:54:34
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,135 +24,253 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `admin`
+--
+
+CREATE TABLE `admin` (
+  `id_admin` int(11) NOT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `ultimo_acceso` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `almacen`
+--
+
+CREATE TABLE `almacen` (
+  `id_almacen` int(11) NOT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  `stock_actual` int(11) DEFAULT NULL,
+  `stock_minimo` int(11) DEFAULT NULL,
+  `fecha_actualizacion` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `caja`
+--
+
+CREATE TABLE `caja` (
+  `id_caja` int(11) NOT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
+  `fecha_apertura` datetime DEFAULT NULL,
+  `fecha_cierre` datetime DEFAULT NULL,
+  `monto_inicial` decimal(10,2) DEFAULT NULL,
+  `monto_final` decimal(10,2) DEFAULT NULL,
+  `total_ingresos` decimal(10,2) DEFAULT NULL,
+  `total_egresos` decimal(10,2) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `detalle_pedido`
 --
 
 CREATE TABLE `detalle_pedido` (
-  `id_detalle_pedido` int(11) NOT NULL,
+  `id_detalle` int(11) NOT NULL,
+  `id_pedido` int(11) DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `precio_unitario` decimal(10,2) DEFAULT NULL,
+  `subtotal` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empleados`
+--
+
+CREATE TABLE `empleados` (
+  `id_empleado` int(11) NOT NULL,
+  `id_rol` int(11) DEFAULT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `dni` varchar(8) DEFAULT NULL,
+  `telefono` varchar(9) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `fecha_contratacion` date DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pedidos`
+--
+
+CREATE TABLE `pedidos` (
   `id_pedido` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `id_empleado` int(11) DEFAULT NULL,
+  `fecha_pedido` datetime DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL,
+  `tipo_pedido` varchar(20) DEFAULT NULL,
+  `total` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos`
+--
+
+CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `nombre` varchar(100) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `precio` decimal(10,2) DEFAULT NULL,
+  `categoria` varchar(50) DEFAULT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `inventario`
+-- Estructura de tabla para la tabla `proveedores`
 --
 
-CREATE TABLE `inventario` (
-  `id_inventario` int(11) NOT NULL,
-  `id_producto` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL
+CREATE TABLE `proveedores` (
+  `id_proveedor` int(11) NOT NULL,
+  `nombre_empresa` varchar(100) DEFAULT NULL,
+  `ruc` varchar(11) DEFAULT NULL,
+  `telefono` varchar(9) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `pedido`
+-- Estructura de tabla para la tabla `reservas`
 --
 
-CREATE TABLE `pedido` (
-  `id_pedido` int(11) NOT NULL,
-  `fecha_pedido` date NOT NULL,
-  `hora_pedido` time NOT NULL,
-  `estado_pedido` varchar(20) NOT NULL CHECK (`estado_pedido` in ('pendiente','en_preparacion','listo','entregado')),
-  `id_usuario` int(11) NOT NULL
+CREATE TABLE `reservas` (
+  `id_reserva` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `numero_mesa` int(11) DEFAULT NULL,
+  `fecha_reserva` date DEFAULT NULL,
+  `hora_reserva` time DEFAULT NULL,
+  `cantidad_personas` int(11) DEFAULT NULL,
+  `estado` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `producto`
+-- Estructura de tabla para la tabla `roles`
 --
 
-CREATE TABLE `producto` (
-  `id_producto` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `descripcion` varchar(255) NOT NULL,
-  `precio` decimal(10,2) NOT NULL
+CREATE TABLE `roles` (
+  `id_rol` int(11) NOT NULL,
+  `nombre_rol` varchar(50) DEFAULT NULL,
+  `descripcion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reporte`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
-CREATE TABLE `reporte` (
-  `id_reporte` int(11) NOT NULL,
-  `fecha_reporte` date NOT NULL,
-  `hora_reporte` time NOT NULL,
-  `tipo_reporte` varchar(20) NOT NULL CHECK (`tipo_reporte` in ('ventas','inventario')),
-  `id_usuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
---
-
-CREATE TABLE `usuario` (
+CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `apellido` varchar(50) NOT NULL,
-  `correo_electronico` varchar(100) NOT NULL,
-  `usuario` varchar(10) NOT NULL,
-  `contraseña` varchar(255) NOT NULL,
-  `tipo_usuario` varchar(20) NOT NULL CHECK (`tipo_usuario` in ('administrador','encargado','mesero','cajero','chef'))
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `dni` varchar(8) DEFAULT NULL,
+  `telefono` varchar(9) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `direccion` varchar(255) DEFAULT NULL,
+  `fecha_registro` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`id_usuario`, `nombre`, `apellido`, `correo_electronico`, `usuario`, `contraseña`, `tipo_usuario`) VALUES
-(1, 'Diego', 'Chavarry', 'dimar1597534@gmail.com', 'dimar123', 'dimar159', 'administrador');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
+-- Indices de la tabla `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id_admin`),
+  ADD KEY `id_empleado` (`id_empleado`);
+
+--
+-- Indices de la tabla `almacen`
+--
+ALTER TABLE `almacen`
+  ADD PRIMARY KEY (`id_almacen`),
+  ADD KEY `id_producto` (`id_producto`);
+
+--
+-- Indices de la tabla `caja`
+--
+ALTER TABLE `caja`
+  ADD PRIMARY KEY (`id_caja`),
+  ADD KEY `id_empleado` (`id_empleado`);
+
+--
 -- Indices de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  ADD PRIMARY KEY (`id_detalle_pedido`),
+  ADD PRIMARY KEY (`id_detalle`),
   ADD KEY `id_pedido` (`id_pedido`),
   ADD KEY `id_producto` (`id_producto`);
 
 --
--- Indices de la tabla `inventario`
+-- Indices de la tabla `empleados`
 --
-ALTER TABLE `inventario`
-  ADD PRIMARY KEY (`id_inventario`),
-  ADD KEY `id_producto` (`id_producto`);
+ALTER TABLE `empleados`
+  ADD PRIMARY KEY (`id_empleado`),
+  ADD KEY `id_rol` (`id_rol`);
 
 --
--- Indices de la tabla `pedido`
+-- Indices de la tabla `pedidos`
 --
-ALTER TABLE `pedido`
+ALTER TABLE `pedidos`
   ADD PRIMARY KEY (`id_pedido`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_empleado` (`id_empleado`);
 
 --
--- Indices de la tabla `producto`
+-- Indices de la tabla `productos`
 --
-ALTER TABLE `producto`
+ALTER TABLE `productos`
   ADD PRIMARY KEY (`id_producto`);
 
 --
--- Indices de la tabla `reporte`
+-- Indices de la tabla `proveedores`
 --
-ALTER TABLE `reporte`
-  ADD PRIMARY KEY (`id_reporte`),
+ALTER TABLE `proveedores`
+  ADD PRIMARY KEY (`id_proveedor`);
+
+--
+-- Indices de la tabla `reservas`
+--
+ALTER TABLE `reservas`
+  ADD PRIMARY KEY (`id_reserva`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
--- Indices de la tabla `usuario`
+-- Indices de la tabla `roles`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id_rol`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`);
 
 --
@@ -160,29 +278,48 @@ ALTER TABLE `usuario`
 --
 
 --
+-- Filtros para la tabla `admin`
+--
+ALTER TABLE `admin`
+  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleados` (`id_empleado`);
+
+--
+-- Filtros para la tabla `almacen`
+--
+ALTER TABLE `almacen`
+  ADD CONSTRAINT `almacen_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
+
+--
+-- Filtros para la tabla `caja`
+--
+ALTER TABLE `caja`
+  ADD CONSTRAINT `caja_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleados` (`id_empleado`);
+
+--
 -- Filtros para la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  ADD CONSTRAINT `detalle_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
-  ADD CONSTRAINT `detalle_pedido_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
+  ADD CONSTRAINT `detalle_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`),
+  ADD CONSTRAINT `detalle_pedido_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
 
 --
--- Filtros para la tabla `inventario`
+-- Filtros para la tabla `empleados`
 --
-ALTER TABLE `inventario`
-  ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
+ALTER TABLE `empleados`
+  ADD CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
 
 --
--- Filtros para la tabla `pedido`
+-- Filtros para la tabla `pedidos`
 --
-ALTER TABLE `pedido`
-  ADD CONSTRAINT `pedido_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+ALTER TABLE `pedidos`
+  ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  ADD CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`id_empleado`) REFERENCES `empleados` (`id_empleado`);
 
 --
--- Filtros para la tabla `reporte`
+-- Filtros para la tabla `reservas`
 --
-ALTER TABLE `reporte`
-  ADD CONSTRAINT `reporte_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+ALTER TABLE `reservas`
+  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

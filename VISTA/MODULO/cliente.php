@@ -62,8 +62,8 @@
                         <?php } ?>
                     <?php } else { ?>
                         <tr>
-                            <td colspan="9" class="text-center">No hay usuarios disponibles.</td>
-                        </tr>
+                                <td colspan="9" class="text-center">No hay usuarios disponibles.</td>
+                            </tr>
                     <?php } ?>
                 </tbody>
             </table>
