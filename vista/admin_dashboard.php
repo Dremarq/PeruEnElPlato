@@ -18,12 +18,13 @@
                 <li><a href="#" onclick="showSection('almacen')">Almacén</a></li>
                 <li><a href="#" onclick="showSection('empleados')">Empleados</a></li>
                 <li><a href="#" onclick="showSection('mesas')">Mesas</a></li>
-                <li><a href="#" onclick="showSection('proveedores')">Proveedores</a></li>
+                
             </ul>
         </nav>
         <main class="content">
             <h1>Bienvenido al Panel de Administración</h1>
             <p>Selecciona una opción del menú para comenzar.</p>
+            <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
 
             <!-- Sección de Clientes -->
             <div id="clientes" class="section" style="display:none;">
@@ -58,10 +59,51 @@
             </div>
 
             <!-- Sección de Empleados -->
-            <div id="empleados" class="section" style="display:none;">
-                <h3>Empleados</h3>
-                <p>Lista de empleados y sus detalles.</p>
+            <?php 
+            include "../config/conexion.php"; // Conexión a la bd
+            include "../controlador/registro_empleado.php"; // Controlador para registrar empleados
+            ?>
+            <div id="empleados" class="section">
+                <a href="../vista/registro_empleado.php"><button type="submit" class="btn btn-primary" name="btnregistrar" value="ok">Registrar</button></a>
+                <h3>Lista de Empleados</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>DNI</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        // Mostrar todos los empleados
+                        $sql = $conexion->query("SELECT e.*, r.nombre_rol FROM empleados e LEFT JOIN roles r ON e.id_rol = r.id_rol");
+                        while($empleado = $sql->fetch_object()){ ?>
+                            <tr>
+                                <td><?= $empleado->id_empleado ?></td>
+                                <td><?= $empleado->nombre ?></td>
+                                <td><?= $empleado->apellido ?></td>
+                                <td><?= $empleado->dni ?></td>
+                                <td><?= $empleado->telefono ?></td>
+                                <td><?= $empleado->email ?></td>
+                                <td><?= $empleado->nombre_rol ?></td>
+                                <td>
+                                    <a href="modificar_empleado.php?id=<?= $empleado->id_empleado ?>" class="btn btn-small btn-warning">Modificar</a>
+                                    <a onclick="return eliminarempleado()" href="registro_empleado.php?id=<?= $empleado->id_empleado ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash">Eliminar</a>
+                                    
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
             </div>
+        </main>
+    </div>
 
             <!-- Sección de Mesas -->
             <div id="mesas" class="section" style="display:none;">
@@ -69,12 +111,8 @@
                 <p>Información sobre las mesas disponibles.</p>
             </div>
 
-            <!-- Sección de Proveedores -->
-            <div id="proveedores" class="section" style="display:none;">
-                <h3>Proveedores</h3>
-                <p>Detalles sobre los proveedores.</p>
-            </div>
-            <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
+           
+           
         </main>
     </div>
 
