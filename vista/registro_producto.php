@@ -10,8 +10,9 @@
 
 <body>
     <script>
-        function eliminarproducto() {
-            return confirm("¿Estás seguro que deseas eliminar?");
+        function eliminarproducto(){
+            var respuesta = confirm("¿Estás seguro que deseas eliminar?");
+            return respuesta;
         }
     </script>
     <div class="container">
@@ -23,26 +24,29 @@
                 <li><a href="#" onclick="showSection('almacen')">Almacén</a></li>
                 <li><a href="#" onclick="showSection('empleados')">Empleados</a></li>
                 <li><a href="#" onclick="showSection('mesas')">Mesas</a></li>
+                
             </ul>
         </nav>
         <main class="content">
             <h1>Bienvenido al Panel de Administración</h1>
             <p>Selecciona una opción del menú para comenzar.</p>
-            <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-
-            <div id="productos" class="section" style="display: block;">
-                <a href="../vista/registro_producto.php">
-                    <button type="button" class="btn btn-primary">Registrar</button>
-                </a>
+            <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
+            <!-- Sección de Productos -->
+            <?php 
+            include "../config/conexion.php"; // Conexión a la bd
+            include "../controlador/producto/registrar_producto.php"; // Controlador para registrar productos
+            ?>
+            <div id="productos" class="section">
+                <a href="../vista/registro_producto.php"><button type="submit" class="btn btn-primary" name="btnregistrar" value="ok">Registrar</button></a>
                 <h3>Lista de Productos</h3>
                 <table class="table">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
-                            <th>Descripción</th>
+                            <th>Descripcion</th>
                             <th>Precio</th>
-                            <th>Categoría</th>
+                            <th>Categoria</th>
                             <th>Img</th>
                             <th>Estado</th>
                             <th>Acciones</th>
@@ -50,22 +54,21 @@
                     </thead>
                     <tbody>
                         <?php 
-                        include "../config/conexion.php"; // Conexión a la bd
-
                         // Mostrar todos los productos
                         $sql = $conexion->query("SELECT * FROM productos");
                         while($producto = $sql->fetch_object()){ ?>
                             <tr>
-                                <td><?= htmlspecialchars($producto->id_producto) ?></td>
-                                <td><?= htmlspecialchars($producto->nombre) ?></td>
-                                <td><?= htmlspecialchars($producto->descripcion) ?></td>
-                                <td><?= htmlspecialchars($producto->precio) ?></td>
-                                <td><?= htmlspecialchars($producto->categoria) ?></td>
-                                <td><img src="<?= htmlspecialchars($producto->imagen) ?>" alt="<?= htmlspecialchars($producto->nombre) ?>" width="50"></td>
-                                <td><?= $producto->estado ? 'Activo' : 'Inactivo' ?></td>
+                                <td><?= $producto->id_producto ?></td>
+                                <td><?= $producto->nombre ?></td>
+                                <td><?= $producto->descripcion ?></td>
+                                <td><?= $producto->precio ?></td>
+                                <td><?= $producto->categoria ?></td>
+                                <td><?= $producto->imagen ?></td>
+                                <td><?= $producto->estado ?></td>
                                 <td>
                                     <a href="modificar_producto.php?id=<?= $producto->id_producto ?>" class="btn btn-small btn-warning">Modificar</a>
-                                    <a onclick="return eliminarproducto()" href="registro_producto.php?id=<?= $producto->id_producto ?>" class="btn btn-small btn-danger">Eliminar</a>
+                                    <a onclick="return eliminarproducto()" href="registro_producto.php?id=<?= $producto->id_producto ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash">Eliminar</a>
+                                    
                                 </td>
                             </tr>
                         <?php } ?>
@@ -76,13 +79,17 @@
     </div>
     <script>
         function showSection(sectionId) {
+            // Ocultar todas las secciones
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
                 section.style.display = 'none';
             });
+
+            // Mostrar la sección seleccionada
             document.getElementById(sectionId).style.display = 'block';
         }
 
+        // Mostrar la sección de Clientes automáticamente al cargar la página
         window.onload = function() {
             showSection('clientes');
         };
@@ -90,5 +97,3 @@
 </body>
 
 </html>
-
-

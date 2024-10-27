@@ -1,0 +1,13 @@
+body {
+    display: flex;
+}
+.sidebar {
+    width: 250px; /* Ajusta el ancho del menú lateral */
+}
+.main-content {
+    flex: 1; /* Permite que el contenido principal ocupe el resto del espacio */
+    padding: 20px; /* Añade un poco de espacio */
+}
+.table {
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
+}

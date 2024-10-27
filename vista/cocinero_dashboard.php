@@ -13,7 +13,7 @@
         <nav class="sidebar">
             <h2>Pantalla de Administrador</h2>
             <ul>
-                <li><a href="#">Dashboard - Administrador</a></li>
+                <li><a href="#">Dashboard - Cocinero</a></li>
                 <li><a href="../vista/almacen.php">Almacen</a></li>
                 <li><a href="../vista/detalle_pedido.php">Detalle Pedido</a></li>
                 <li><a href="../vista/empleados.php">Empleados</a></li>
