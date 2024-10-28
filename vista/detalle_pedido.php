@@ -54,7 +54,40 @@
 
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/detalle_pedido/registrar_detalle_pedido.php" class="btn btn-success">Registrar Detalle Pedido</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Detalle de Pedido</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroModalLabel">Registrar Pedido</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroPedido" action="#####" method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Producto</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">Cantidad</label>
+                        <input type="text" class="form-control" id="cantidad" name="cantidad" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Precio</label>
+                        <input type="text" class="form-control" id="precio" name="precio" required>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+   <!-- Modal -->                                   
 
         <!-- tabla detalle pedido-->
         <div class="container-fluid">

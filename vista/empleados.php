@@ -51,9 +51,57 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/empleados/registrar_empleado.php" class="btn btn-success">Registrar Empleado</a> <!-- Botón de registro -->
-
-        <div class="container-fluid">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Empleado</button>
+        <!-- <a href="../controlador/empleados/registrar_empleado.php" class="btn btn-success">Registrar Empleado</a> Botón de registro -->
+       
+        <!-- Modal -->
+<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroModalLabel">Registrar Empleado</h5>
+                
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroEmpleado" action="../controlador/empleados/registrar_empleado.php" method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">DNI</label>
+                        <input type="text" class="form-control" id="dni" name="dni" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rol" class="form-label">Rol</label>
+                        <select class="form-select" id="rol" name="rol" required>
+                            <option value="" disabled selected>Seleccione un rol</option>
+                            <option value="1">Administrador</option>
+                            <option value="2">Chef</option>
+                            <option value="3">Mesero</option>
+                            <option value="4">Encargo de inventario</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+   <!-- Modal -->                             
+       
+   <div class="container-fluid">
             <!-- Tabla de empleados -->
             <table class="table">
                 <thead class="bg-info">
@@ -89,7 +137,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>

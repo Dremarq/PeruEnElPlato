@@ -51,7 +51,45 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/pedidos/registrar_pedido.php" class="btn btn-success">Registrar Pedido</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Pedido</button>
+
+<!-- Modal -->
+<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroModalLabel">Registrar Pedido</h5>
+                
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroPedido" action="#######" method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Cliente</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                    <label for="fechaHora" class="form-label">Seleccionar Fecha y Hora</label>
+                    <input type="datetime-local" class="form-control" id="fechaHora" name="fechaHora" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Total</label>
+                        <input type="text" class="form-control" id="total" name="total" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="estado" name="estados" required>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+   <!-- Modal -->                             
 
         <div class="container-fluid">
             <!-- Tabla de pedidos -->

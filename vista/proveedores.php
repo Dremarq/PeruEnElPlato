@@ -51,7 +51,51 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/proveedores/registrar_proveedor.php" class="btn btn-success">Registrar Proveedor</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroProveedorModal">Registrar Proveedor</button>
+
+<!-- Modal -->
+<div class="modal fade" id="registroProveedorModal" tabindex="-1" aria-labelledby="registroProveedorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroProveedorModalLabel">Registrar Proveedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroProveedor">
+                    <div class="mb-3">
+                        <label for="nombreEmpresa" class="form-label">Nombre de Empresa</label>
+                        <input type="text" class="form-control" id="nombreEmpresa" name="nombreEmpresa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ruc" class="form-label">RUC</label>
+                        <input type="text" class="form-control" id="ruc" name="ruc" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Proveedor</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="container-fluid">
             <!-- Tabla de proveedores -->

@@ -50,7 +50,51 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/usuarios/registrar_usuario.php" class="btn btn-success">Registrar Usuario</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroUsuarioModal">Registrar Usuario</button>
+<!-- Modal -->
+<div class="modal fade" id="registroUsuarioModal" tabindex="-1" aria-labelledby="registroUsuarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroUsuarioModalLabel">Registrar Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroUsuario">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">DNI</label>
+                        <input type="text" class="form-control" id="dni" name="dni" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" name="direccion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaRegistro" class="form-label">Fecha de Registro</label>
+                        <input type="date" class="form-control" id="fechaRegistro" name="fechaRegistro" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Usuario</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="container-fluid">
             <!-- Tabla de usuarios -->

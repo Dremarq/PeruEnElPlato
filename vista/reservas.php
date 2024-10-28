@@ -53,7 +53,48 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/reservas/registrar_reserva.php" class="btn btn-success">Registrar Reserva</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroReservaModal">Registrar Reserva</button>
+
+<!-- Modal -->
+<div class="modal fade" id="registroReservaModal" tabindex="-1" aria-labelledby="registroReservaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroReservaModalLabel">Registrar Reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroReserva">
+                    <div class="mb-3">
+                        <label for="cliente" class="form-label">Cliente</label>
+                        <input type="text" class="form-control" id="cliente" name="cliente" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="numeroMesa" class="form-label">Número de Mesa</label>
+                        <input type="number" class="form-control" id="numeroMesa" name="numeroMesa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaHora" class="form-label">Fecha y Hora</label>
+                        <input type="datetime-local" class="form-control" id="fechaHora" name="fechaHora" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cantidadPersonas" class="form-label">Cantidad de Personas</label>
+                        <input type="number" class="form-control" id="cantidadPersonas" name="cantidadPersonas" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Reserva</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="container-fluid">
             <!-- Tabla de reservas -->

@@ -52,8 +52,45 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/almacen/registrar_producto.php" class="btn btn-success">Registrar Nuevos Ingresos</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Nuevos Ingresos</button>
         
+  <!-- Modal -->
+  <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroModalLabel">Registrar Nuevo Ingreso</h5>
+                
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroAlmacen" action="#######" method="POST">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre del Producto</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">Stock Actual</label>
+                        <input type="text" class="form-control" id="stocka" name="stocka" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Stock Mínimo</label>
+                        <input type="text" class="form-control" id="stockm" name="stockm" required>
+                    </div>
+                    <div class="mb-3">
+                    <label for="fechaHora" class="form-label">Seleccionar Fecha y Hora</label>
+                    <input type="datetime-local" class="form-control" id="fechaHora" name="fechaHora" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+   <!-- Modal -->                             
+
         <div class="container-fluid">
             <!-- Tabla de almacen -->
             <table class="table">

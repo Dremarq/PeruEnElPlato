@@ -51,7 +51,57 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/productos/registrar_producto.php" class="btn btn-success">Registrar Producto</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Producto</button>
+
+<!-- Modal -->
+<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroModalLabel">Registrar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroProducto" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoría</label>
+                        <select class="form-select" id="categoria" name="categoria" required>
+                            <option value="" disabled selected>Selecciona una categoría</option>
+                            <option value="categoria1">Entrada</option>
+                            <option value="categoria2">Plato Principal</option>
+                            <option value="categoria3">Bebida</option>
+                            <option value="categoria4">Postre</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagen" class="form-label">Subir Imagen</label>
+                        <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Producto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="container-fluid">
             <!-- Tabla de productos -->

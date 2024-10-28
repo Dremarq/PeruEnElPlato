@@ -51,7 +51,38 @@
         ?>
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
-        <a href="../controlador/roles/registrar_rol.php" class="btn btn-success">Registrar Rol</a> <!-- Botón de registro -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroRolModal">Registrar Rol</button>
+
+<!-- Modal -->
+<div class="modal fade" id="registroRolModal" tabindex="-1" aria-labelledby="registroRolModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroRolModalLabel">Registrar Rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroRol">
+                    <div class="mb-3">
+                        <label for="nombreRol" class="form-label">Nombre Rol</label>
+                        <select class="form-select" id="nombreRol" name="nombreRol" required>
+                            <option value="" disabled selected>Selecciona un rol</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="mesero">Mesero</option>
+                            <option value="chef">Chef</option>
+                            <option value="jefe_inventario">Jefe de Inventario</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Rol</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="container-fluid">
             <!-- Tabla de roles -->
