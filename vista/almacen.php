@@ -116,7 +116,45 @@
                             <td><?= $datos->stock_minimo ?></td>
                             <td><?= $datos->fecha_actualizacion ?></td>
                             <td>
-                                <a href="modificar_almacen.php?id=<?= $datos->id_producto ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="#" onclick="abrirModalModificar('<?= $datos->id_producto ?>', '<?= $datos->nombre ?>', '<?= $datos->stock_actual ?>', '<?= $datos->stock_minimo ?>', '<?= $datos->fecha_actualizacion ?>')" class="btn btn-small btn-warning">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <!-- Modal para Modificar Almacén -->
+<div class="modal fade" id="modificarModal" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modificarModalLabel">Modificar Producto en Almacén</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarAlmacen" action="#######" method="POST">
+                    <input type="hidden" id="id_producto" name="id_producto"> <!-- Campo oculto para el ID del producto -->
+                    <div class="mb-3">
+                        <label for="nombreModificar" class="form-label">Nombre del Producto</label>
+                        <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stockActualModificar" class="form-label">Stock Actual</label>
+                        <input type="text" class="form-control" id="stockActualModificar" name="stockActualModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="stockMinimoModificar" class="form-label">Stock Mínimo</label>
+                        <input type="text" class="form-control" id="stockMinimoModificar" name="stockMinimoModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaHoraModificar" class="form-label">Seleccionar Fecha y Hora</label>
+                        <input type="datetime-local" class="form-control" id="fechaHoraModificar" name="fechaHoraModificar" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Modificar Almacén -->
                                 <a onclick="return eliminarProducto()" href="almacen.php?id=<?= $datos->id_producto ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
@@ -127,7 +165,20 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    function abrirModalModificar(id, nombre, stockActual, stockMinimo, fechaActualizacion) {
+        // Asignar los valores a los campos del modal
+        document.getElementById('id_producto').value = id;
+        document.getElementById('nombreModificar').value = nombre;
+        document.getElementById('stockActualModificar').value = stockActual;
+        document.getElementById('stockMinimoModificar').value = stockMinimo;
+        document.getElementById('fechaHoraModificar').value = fechaActualizacion;
 
+        // Mostrar el modal
+        var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
+        modificarModal.show();
+    }
+</script>                    
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>

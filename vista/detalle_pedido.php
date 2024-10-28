@@ -112,7 +112,41 @@
                             <td><?= $datos->cantidad ?></td>
                             <td><?= $datos->precio ?></td>
                             <td>
-                                <a href="modificar_detalle_pedido.php?id=<?= $datos->id_detalle ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+    <a href="#" onclick="abrirModalModificarDetalle('<?= $datos->id_detalle ?>', '<?= $datos->producto ?>', '<?= $datos->cantidad ?>', '<?= $datos->precio ?>')" class="btn btn-small btn-warning">
+    <i class="fa-solid fa-pen-to-square"></i>
+</a>
+<!-- Modal para Modificar Detalle de Pedido -->
+<div class="modal fade" id="modificarDetalleModal" tabindex="-1" aria-labelledby="modificarDetalleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modificarDetalleModalLabel">Modificar Detalle de Pedido</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarDetalle" action="#######" method="POST">
+                    <input type="hidden" id="id_detalle" name="id_detalle"> <!-- Campo oculto para el ID del detalle -->
+                    <div class="mb-3">
+                        <label for="productoModificar" class="form-label">Producto</label>
+                        <input type="text" class="form-control" id="productoModificar" name="productoModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cantidadModificar" class="form-label">Cantidad</label>
+                        <input type="text" class="form-control" id="cantidadModificar" name="cantidadModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precioModificar" class="form-label">Precio</label>
+                        <input type="text" class="form-control" id="precioModificar" name="precioModificar" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Modificar Detalle de Pedido -->
                                 <a onclick="return eliminarDetalle()" href="detalle_pedido.php?id=<?= $datos->id_detalle ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
@@ -123,7 +157,19 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+    function abrirModalModificarDetalle(id, producto, cantidad, precio) {
+        // Asignar los valores a los campos del modal
+        document.getElementById('id_detalle').value = id;
+        document.getElementById('productoModificar').value = producto;
+        document.getElementById('cantidadModificar').value = cantidad;
+        document.getElementById('precioModificar').value = precio;
 
+        // Mostrar el modal
+        var modificarDetalleModal = new bootstrap.Modal(document.getElementById('modificarDetalleModal'));
+        modificarDetalleModal.show();
+    }
+    </script>
     <footer>
         <p>&copy; Peru al plato</p>
     </footer>

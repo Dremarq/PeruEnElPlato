@@ -125,7 +125,57 @@
                             <td><?= $datos->direccion ?></td>
                             <td><?= $datos->fecha_registro ?></td>
                             <td>
-                                <a href="modificar_usuario.php?id=<?= $datos->id_usuario ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+    <a href="#" onclick="abrirModalModificarUsuario('<?= $datos->id_usuario ?>', '<?= $datos->nombre ?>', '<?= $datos->apellido ?>', '<?= $datos->dni ?>', '<?= $datos->telefono ?>', '<?= $datos->email ?>', '<?= $datos->direccion ?>', '<?= $datos->fecha_registro ?>')" class="btn btn-small btn-warning">
+    <i class="fa-solid fa-pen-to-square"></i>
+</a>
+<!-- Modal para Modificar Usuario -->
+<div class="modal fade" id="modificarUsuarioModal" tabindex="-1" aria-labelledby="modificarUsuarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modificarUsuarioModalLabel">Modificar Usuario</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarUsuario" action="#######" method="POST">
+                    <input type="hidden" id="id_usuario" name="id_usuario"> <!-- Campo oculto para el ID del usuario -->
+                    <div class="mb-3">
+                        <label for="nombreModificar" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidoModificar" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellidoModificar" name="apellidoModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dniModificar" class="form-label">DNI</label>
+                        <input type="text" class="form-control" id="dniModificar" name="dniModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefonoModificar" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="telefonoModificar" name="telefonoModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailModificar" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="emailModificar" name="emailModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccionModificar" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="direccionModificar" name="direccionModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaRegistroModificar" class="form-label">Fecha de Registro</label>
+                        <input type="date" class="form-control" id="fechaRegistroModificar" name="fechaRegistroModificar" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Modificar Usuario -->                              
                                 <a onclick="return eliminarUsuario()" href="usuarios.php?id=<?= $datos->id_usuario ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
@@ -136,7 +186,23 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+    function abrirModalModificarUsuario(id, nombre, apellido, dni, telefono, email, direccion, fechaRegistro) {
+        // Asignar los valores a los campos del modal
+        document.getElementById('id_usuario').value = id;
+        document.getElementById('nombreModificar').value = nombre;
+        document.getElementById('apellidoModificar').value = apellido;
+        document.getElementById('dniModificar').value = dni;
+        document.getElementById('telefonoModificar').value = telefono;
+        document.getElementById('emailModificar').value = email;
+        document.getElementById('direccionModificar').value = direccion;
+        document.getElementById('fechaRegistroModificar').value = fechaRegistro;
 
+        // Mostrar el modal
+        var modificarUsuarioModal = new bootstrap.Modal(document.getElementById('modificarUsuarioModal'));
+        modificarUsuarioModal.show();
+    }
+</script>
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>

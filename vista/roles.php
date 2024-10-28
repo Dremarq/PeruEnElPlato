@@ -103,7 +103,43 @@
                             <td><?= $datos->nombre_rol ?></td>
                             <td><?= $datos->descripcion ?></td>
                             <td>
-                                <a href="modificar_roles.php?id=<?= $datos->id_rol ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+    <a href="#" onclick="abrirModalModificarRol('<?= $datos->id_rol ?>', '<?= $datos->nombre_rol ?>', '<?= $datos->descripcion ?>')" class="btn btn-small btn-warning">
+    <i class="fa-solid fa-pen-to-square"></i>
+</a>
+<!-- Modal para Modificar Rol -->
+<div class="modal fade" id="modificarRolModal" tabindex="-1" aria-labelledby="modificarRolModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modificarRolModalLabel">Modificar Rol</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarRol" action="#######" method="POST">
+                    <input type="hidden" id="id_rol" name="id_rol"> <!-- Campo oculto para el ID del rol -->
+                    <div class="mb-3">
+                        <label for="nombreRolModificar" class="form-label">Nombre Rol</label>
+                        <select class="form-select" id="nombreRolModificar" name="nombreRolModificar" required>
+                            <option value="" disabled selected>Selecciona un rol</option>
+                            <option value="administrador">Administrador</option>
+                            <option value="mesero">Mesero</option>
+                            <option value="chef">Chef</option>
+                            <option value="jefe_inventario">Jefe de Inventario</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcionModificar" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionModificar" name="descripcionModificar" rows="3" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Modificar Rol -->                               
                                 <a onclick="return eliminarRol()" href="roles.php?id=<?= $datos->id_rol ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
@@ -114,7 +150,18 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+    function abrirModalModificarRol(id, nombreRol, descripcion) {
+        // Asignar los valores a los campos del modal
+        document.getElementById('id_rol').value = id;
+        document.getElementById('nombreRolModificar').value = nombreRol;
+        document.getElementById('descripcionModificar').value = descripcion;
 
+        // Mostrar el modal
+        var modificarRolModal = new bootstrap.Modal(document.getElementById('modificarRolModal'));
+        modificarRolModal.show();
+    }
+</script>
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>

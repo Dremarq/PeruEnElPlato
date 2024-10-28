@@ -131,7 +131,59 @@
                             <td><img src="<?= $datos->imagen ?>" alt="<?= $datos->nombre ?>" style="width: 50px; height: auto;"></td>
                             <td><?= $datos->estado ?></td>
                             <td>
-                                <a href="modificar_productos.php?id=<?= $datos->id_producto ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+    <a href="#" onclick="abrirModalModificarProducto('<?= $datos->id_producto ?>', '<?= $datos->nombre ?>', '<?= $datos->descripcion ?>', '<?= $datos->precio ?>', '<?= $datos->categoria ?>', '<?= $datos->estado ?>')" class="btn btn-small btn-warning">
+    <i class="fa-solid fa-pen-to-square"></i>
+</a>
+<!-- Modal para Modificar Producto -->
+<div class="modal fade" id="modificarProductoModal" tabindex="-1" aria-labelledby="modificarProductoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modificarProductoModalLabel">Modificar Producto</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarProducto" action="#######" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" id="id_producto" name="id_producto"> <!-- Campo oculto para el ID del producto -->
+                    <div class="mb-3">
+                        <label for="nombreModificar" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcionModificar" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcionModificar" name="descripcionModificar" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precioModificar" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="precioModificar" name="precioModificar" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoriaModificar" class="form-label">Categoría</label>
+                        <select class="form-select" id="categoriaModificar" name="categoriaModificar" required>
+                            <option value="" disabled selected>Selecciona una categoría</option>
+                            <option value="categoria1">Entrada</option>
+                            <option value="categoria2">Plato Principal</option>
+                            <option value="categoria3">Bebida</option>
+                            <option value="categoria4">Postre</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estadoModificar" class="form-label">Estado</label>
+                        <select class="form-select" id="estadoModificar" name="estadoModificar" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Modificar Producto -->                                
+
                                 <a onclick="return eliminarProducto()" href="productos.php?id=<?= $datos->id_producto ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
@@ -142,7 +194,21 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+    function abrirModalModificarProducto(id, nombre, descripcion, precio, categoria, estado) {
+        // Asignar los valores a los campos del modal
+        document.getElementById('id_producto').value = id;
+        document.getElementById('nombreModificar').value = nombre;
+        document.getElementById('descripcionModificar').value = descripcion;
+        document.getElementById('precioModificar').value = precio;
+        document.getElementById('categoriaModificar').value = categoria;
+        document.getElementById('estadoModificar').value = estado;
 
+        // Mostrar el modal
+        var modificarProductoModal = new bootstrap.Modal(document.getElementById('modificarProductoModal'));
+        modificarProductoModal.show();
+    }
+</script>
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>

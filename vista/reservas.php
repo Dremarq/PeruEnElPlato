@@ -123,7 +123,54 @@
                             <td><?= $datos->cantidad_personas ?></td>
                             <td><?= $datos->estado ?></td>
                             <td>
-                                <a href="modificar_reserva.php?id=<?= $datos->id_reserva ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+    <a href="#" onclick="abrirModalModificarReserva('<?= $datos->id_reserva ?>', '<?= $datos->cliente ?>', '<?= $datos->numero_mesa ?>', '<?= $datos->fecha_reserva ?>T<?= $datos->hora_reserva ?>', '<?= $datos->cantidad_personas ?>', '<?= $datos->estado ?>')" class="btn btn-small btn-warning">
+    <i class="fa-solid fa-pen-to-square"></i>
+</a>
+<!-- Modal para Modificar Reserva -->
+<div class="modal fade" id="modificarReservaModal" tabindex="-1" aria-labelledby="modificarReservaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modificarReservaModalLabel">Modificar Reserva</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarReserva" action="#######" method="POST">
+                    <input type="hidden" id="id_reserva" name="id_reserva"> <!-- Campo oculto para el ID de la reserva -->
+                    <div class="mb-3">
+                        <label for="clienteModificar" class="form-label">Cliente</label>
+                        <input type="text" class="form-control" id="clienteModificar" name="clienteModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="numeroMesaModificar" class="form-label">Número de Mesa</label>
+                        <input type="number" class="form-control" id="numeroMesaModificar" name="numeroMesaModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaHoraModificar" class="form-label">Fecha y Hora</label>
+                        <input type="datetime-local" class="form-control" id="fechaHoraModificar" name="fechaHoraModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cantidadPersonasModificar" class="form-label">Cantidad de Personas</label>
+                        <input type="number" class="form-control" id="cantidadPersonasModificar" name="cantidadPersonasModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estadoModificar" class="form-label">Estado</label>
+                        <select class="form-select" id="estadoModificar" name="estadoModificar" required>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Modificar Reserva -->                               
+
                                 <a onclick="return eliminarReserva()" href="reservas.php?id=<?= $datos->id_reserva ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
@@ -134,7 +181,21 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+    function abrirModalModificarReserva(id, cliente, numeroMesa, fechaHora, cantidadPersonas, estado) {
+        // Asignar los valores a los campos del modal
+        document.getElementById('id_reserva').value = id;
+        document.getElementById('clienteModificar').value = cliente;
+        document.getElementById('numeroMesaModificar').value = numeroMesa;
+        document.getElementById('fechaHoraModificar').value = fechaHora;
+        document.getElementById('cantidadPersonasModificar').value = cantidadPersonas;
+        document.getElementById('estadoModificar').value = estado;
 
+        // Mostrar el modal
+        var modificarReservaModal = new bootstrap.Modal(document.getElementById('modificarReservaModal'));
+        modificarReservaModal.show();
+    }
+</script>
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>

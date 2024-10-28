@@ -114,7 +114,46 @@
                             <td><?= $datos->total ?></td>
                             <td><?= $datos->estado ?></td>
                             <td>
-                                <a href="modificar_pedido.php?id=<?= $datos->id_pedido ?>" class="btn btn-small btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+    <a href="#" onclick="abrirModalModificarPedido('<?= $datos->id_pedido ?>', '<?= $datos->cliente ?>', '<?= $datos->fecha ?>', '<?= $datos->total ?>', '<?= $datos->estado ?>')" class="btn btn-small btn-warning">
+    <i class="fa-solid fa-pen-to-square"></i>
+</a>
+<!-- Modal para Modificar Pedido -->
+<div class="modal fade" id="modificarPedidoModal" tabindex="-1" aria-labelledby="modificarPedidoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modificarPedidoModalLabel">Modificar Pedido</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formModificarPedido" action="#######" method="POST">
+                    <input type="hidden" id="id_pedido" name="id_pedido"> <!-- Campo oculto para el ID del pedido -->
+                    <div class="mb-3">
+                        <label for="nombreClienteModificar" class="form-label">Nombre del Cliente</label>
+                        <input type="text" class="form-control" id="nombreClienteModificar" name="nombreClienteModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaHoraModificar" class="form-label">Seleccionar Fecha y Hora</label>
+                        <input type="datetime-local" class="form-control" id="fechaHoraModificar" name="fechaHoraModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="totalModificar" class="form-label">Total</label>
+                        <input type="text" class="form-control" id="totalModificar" name="totalModificar" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="estadoModificar" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="estadoModificar" name="estadoModificar" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para Modificar Pedido -->                              
+                                  
                                 <a onclick="return eliminarPedido()" href="pedidos.php?id=<?= $datos->id_pedido ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
@@ -125,7 +164,20 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+    function abrirModalModificarPedido(id, nombreCliente, fecha, total, estado) {
+        // Asignar los valores a los campos del modal
+        document.getElementById('id_pedido').value = id;
+        document.getElementById('nombreClienteModificar').value = nombreCliente;
+        document.getElementById('fechaHoraModificar').value = fecha;
+        document.getElementById('totalModificar').value = total;
+        document.getElementById('estadoModificar').value = estado;
 
+        // Mostrar el modal
+        var modificarPedidoModal = new bootstrap.Modal(document.getElementById('modificarPedidoModal'));
+        modificarPedidoModal.show();
+    }
+</script>
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>
