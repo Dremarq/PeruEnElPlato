@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #3d3c3c; /* Fondo plomo elegante */
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #595959; /* Color de la cabecera */
+    padding: 10px 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+h1, h2 {
+    margin: 20px 0;
+    text-align: center;
+    color: white; /* Títulos en blanco */
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+th, td {
+    border: 1px solid #ccc; /* Borde de las celdas */
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #A9A9A9; /* Color plomo oscuro para encabezados de tabla */
+    color: white; /* Color del texto en el encabezado de la tabla */
+}
+td {
+    background-color: #fff; /* Color de fondo de las celdas */
+}
+.btn-cerrar {
+    background-color: #ff0000; /* Color rojo */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-actualizar {
+    background-color: #4CAF50; /* Color verde */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-cerrar:hover {
+    background-color: #d32f2f; /* Rojo oscuro al pasar el cursor */
+}
+.btn-actualizar:hover {
+    background-color: #388E3C; /* Verde oscuro al pasar el cursor */
+}
+.btn-container {
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    margin-top: 20px; /* Espacio superior */
+}

@@ -1,0 +1,65 @@
+/* Estilos específicos para la página de calificación */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #3d3c3c; /* Fondo plomo elegante */
+    height: 100vh; /* Altura completa de la ventana */
+    margin: 0; /* Elimina el margen predeterminado */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #595959; /* Color de la cabecera */
+    padding: 10px 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: white; /* Color del texto del título */
+    margin-bottom: 20px; /* Espacio inferior */
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column; /* Coloca los botones en columna */
+    gap: 10px; /* Espacio entre los botones */
+}
+
+button {
+    background-color: #4CAF50; /* Color verde */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 150px; /* Ancho fijo para los botones */
+}
+
+button:hover {
+    background-color: #388E3C; /* Verde oscuro al pasar el cursor */
+}
+
+.btn-mala {
+    background-color: #FF9800; /* Color naranja para "Mala" */
+}
+
+.btn-horrible {
+    background-color: #f44336; /* Color rojo para "Horrible" */
+}
+
+.btn-mala:hover {
+    background-color: #F57C00; /* Color naranja oscuro al pasar el cursor */
+}
+
+.btn-horrible:hover {
+    background-color: #D32F2F; /* Color rojo oscuro al pasar el cursor */
+}

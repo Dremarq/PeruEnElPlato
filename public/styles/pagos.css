@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #3d3c3c; /* Fondo gris oscuro */
+}
+
+.header1 {
+    display: flex; /* Usa flexbox para alinear los elementos */
+    justify-content: space-between; /* Espacia el contenido entre el título y el botón */
+    align-items: center; /* Centra verticalmente el contenido */
+    background-color: #595959; /* Color de la cabecera */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    width: 100%; /* Ancho completo */
+    max-width: 800px; /* Ancho máximo */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+.payment-container {
+    background-color: #d3d3d3; /* Fondo gris claro */
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    text-align: left;
+    font-size: 14px;
+}
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+.input-group {
+    display: flex;
+    justify-content: space-between;
+}
+.input-group input {
+    width: 48%;
+}
+.pay-button {
+    background-color: #ff0000; /* Color rojo */
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+.pay-button:hover {
+    background-color: #d32f2f; /* Rojo oscuro al pasar el cursor */
+}
+
+.btn-cerrar {
+    background-color: #ff0000; /* Color rojo */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

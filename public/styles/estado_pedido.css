@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #3d3c3c;
+}
+.header1 {
+    display: flex; /* Usa flexbox para alinear los elementos */
+    justify-content: space-between; /* Espacia el contenido entre el título y el botón */
+    align-items: center; /* Centra verticalmente el contenido */
+    background-color: #595959; /* Color de la cabecera */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    width: 100%; /* Ancho completo */
+    max-width: 800px; /* Ancho máximo */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #595959;
+    padding: 10px 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    margin: 0;
+    color: white;
+}
+.order-status {
+    background-color: #595959;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+.item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 8px;
+}
+.item img {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+.item-details {
+    flex: 1;
+}
+.item-details h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #f9f9f9;
+}
+.item-details p {
+    margin: 5px 0;
+    color: #d1d1d1;
+}
+.item-quantity {
+    font-size: 14px;
+    color: #f1f1f1;
+}
+.order-progress {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    color: white;
+    font-size: 14px;
+}
+.order-progress div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.order-progress img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+.btn-cerrar {
+    background-color: #ff0000; /* Color rojo */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
