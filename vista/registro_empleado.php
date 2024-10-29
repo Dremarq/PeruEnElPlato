@@ -50,7 +50,7 @@
                     </thead>
                     <tbody>
                         <?php 
-                        include "../config/conexion.php"; // Conexión a la bd
+                        include "../../config/conexion.php"; // Conexión a la bd
 
                         // Mostrar todos los productos
                         $sql = $conexion->query("SELECT * FROM productos");

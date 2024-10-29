@@ -1,7 +1,28 @@
+<?php
+// Al inicio del archivo
+if (isset($_GET['mensaje'])) {
+    switch ($_GET['mensaje']) {
+        case 'registrado':
+            echo '<div class="alert alert-success">Empleado registrado correctamente</div>';
+            break;
+        case 'error':
+            $error = isset($_GET['error']) ? $_GET['error'] : 'Error desconocido';
+            echo '<div class="alert alert-danger">Error al registrar empleado: ' . htmlspecialchars($error) . '</div>';
+            break;
+        case 'vacio':
+            echo '<div class="alert alert-warning">Todos los campos son obligatorios</div>';
+            break;
+        case 'acceso_invalido':
+            echo '<div class="alert alert-warning">Acceso inválido al controlador</div>';
+            break;
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/admi.css">
     <link rel="stylesheet" href="../public/styles/tablas.css">
@@ -9,6 +30,7 @@
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
     <title>Interfaz de Administrador</title>
 </head>
+
 <body>
     <script>
         function eliminarempleados() {
@@ -37,7 +59,8 @@
     <!-- Contenido principal -->
     <div class="main-content">
         <h2>Registro de empleado</h2>
-        <?php 
+
+        <?php
         include "../config/conexion.php";
         include "../controlador/empleados/eliminar_empleado.php";
 
@@ -53,160 +76,180 @@
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Empleado</button>
         <!-- <a href="../controlador/empleados/registrar_empleado.php" class="btn btn-success">Registrar Empleado</a> Botón de registro -->
-       
+
         <!-- Modal -->
-<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registroModalLabel">Registrar Empleado</h5>
-                
-            </div>
-            <div class="modal-body">
-                <form id="formRegistroEmpleado" action="../controlador/empleados/registrar_empleado.php" method="POST">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+        <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-headb er">
+                        <h5 class="modal-title" id="registroModalLabel">Registrar Empleado</h5>
+
                     </div>
-                    <div class="mb-3">
-                        <label for="dni" class="form-label">DNI</label>
-                        <input type="text" class="form-control" id="dni" name="dni" required>
+                    <div class="modal-body">
+                       
+                        <form action="../controlador/empleados/registrar_empleado.php" method="POST">
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dni" class="form-label">DNI</label>
+                                <input type="text" class="form-control" id="dni" name="dni" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="telefono" name="telefono" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="rol" class="form-label">Rol</label>
+                                <select class="form-select" id="rol" name="rol" required>
+                                    <option value="" disabled selected>Seleccione un rol</option>
+                                    <option value="1">Administrador</option>
+                                    <option value="2">Chef</option>
+                                    <option value="3">Mesero</option>
+                                    <option value="4">Encargo de inventario</option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" name="btnregistrar" value="ok" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" id="telefono" name="telefono" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="rol" class="form-label">Rol</label>
-                        <select class="form-select" id="rol" name="rol" required>
-                            <option value="" disabled selected>Seleccione un rol</option>
-                            <option value="1">Administrador</option>
-                            <option value="2">Chef</option>
-                            <option value="3">Mesero</option>
-                            <option value="4">Encargo de inventario</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-   <!-- Modal -->                             
-       
-   <div class="container-fluid">
-            <!-- Tabla de empleados -->
-            <table class="table">
-                <thead class="bg-info">
+    <script>
+        // Auto cerrar las alertas después de 3 segundos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Buscar todas las alertas
+            var alerts = document.querySelectorAll('.alert');
+
+            // Para cada alerta, configurar un temporizador para cerrarla
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    alert.classList.remove('show');
+                    setTimeout(function() {
+                        alert.remove();
+                    }, 150);
+                }, 3000);
+            });
+        });
+    </script>
+    <!-- Modal -->
+
+    <div class="container-fluid">
+        <!-- Tabla de empleados -->
+        <table class="table">
+            <thead class="bg-info">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Dni</th>
+                    <th scope="col">Telefono</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                while ($datos = $sql->fetch_object()) { ?>
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Dni</th>
-                        <th scope="col">Telefono</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Rol</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php 
-                    while ($datos = $sql->fetch_object()) { ?>
-                        <tr>
-                            <td><?= $datos->id_empleado ?></td>
-                            <td><?= $datos->nombre ?></td>
-                            <td><?= $datos->dni ?></td>
-                            <td><?= $datos->telefono ?></td>
-                            <td><?= $datos->email ?></td>
-                            <td><?= $datos->nombre_rol ?></td> <!-- Muestra el rol -->
-                            <td>
-    
+                        <td><?= $datos->id_empleado ?></td>
+                        <td><?= $datos->nombre ?></td>
+                        <td><?= $datos->dni ?></td>
+                        <td><?= $datos->telefono ?></td>
+                        <td><?= $datos->email ?></td>
+                        <td><?= $datos->nombre_rol ?></td> <!-- Muestra el rol -->
+                        <td>
+
                             <a href="#" onclick="abrirModalModificarEmpleado('<?= $datos->id_empleado ?>', '<?= $datos->nombre ?>', '<?= $datos->dni ?>', '<?= $datos->telefono ?>', '<?= $datos->email ?>', '<?= $datos->id_rol ?>')" class="btn btn-small btn-warning">
-    <i class="fa-solid fa-pen-to-square"></i>
-</a>
-<!-- Modal para Modificar Empleado -->
-<div class="modal fade" id="modificarEmpleadoModal" tabindex="-1" aria-labelledby="modificarEmpleadoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modificarEmpleadoModalLabel">Modificar Empleado</h5>
-            </div>
-            <div class="modal-body">
-                <form id="formModificarEmpleado" action="#######" method="POST">
-                    <input type="hidden" id="id_empleado" name="id_empleado"> <!-- Campo oculto para el ID del empleado -->
-                    <div class="mb-3">
-                        <label for="nombreModificar" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dniModificar" class="form-label">DNI</label>
-                        <input type="text" class="form-control" id="dniModificar" name="dniModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefonoModificar" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" id="telefonoModificar" name="telefonoModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="emailModificar" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="emailModificar" name="emailModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="rolModificar" class="form-label">Rol</label>
-                        <select class="form-select" id="rolModificar" name="rolModificar" required>
-                            <option value="" disabled selected>Seleccione un rol</option>
-                            <option value="1">Administrador</option>
-                            <option value="2">Chef</option>
-                            <option value="3">Mesero</option>
-                            <option value="4">Encargo de inventario</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Modificar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <!-- Modal para Modificar Empleado -->
+                            <div class="modal fade" id="modificarEmpleadoModal" tabindex="-1" aria-labelledby="modificarEmpleadoModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modificarEmpleadoModalLabel">Modificar Empleado</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="formModificarEmpleado" action="#######" method="POST">
+                                                <input type="hidden" id="id_empleado" name="id_empleado"> <!-- Campo oculto para el ID del empleado -->
+                                                <div class="mb-3">
+                                                    <label for="nombreModificar" class="form-label">Nombre</label>
+                                                    <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="dniModificar" class="form-label">DNI</label>
+                                                    <input type="text" class="form-control" id="dniModificar" name="dniModificar" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="telefonoModificar" class="form-label">Teléfono</label>
+                                                    <input type="text" class="form-control" id="telefonoModificar" name="telefonoModificar" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="emailModificar" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="emailModificar" name="emailModificar" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="rolModificar" class="form-label">Rol</label>
+                                                    <select class="form-select" id="rolModificar" name="rolModificar" required>
+                                                        <option value="" disabled selected>Seleccione un rol</option>
+                                                        <option value="1">Administrador</option>
+                                                        <option value="2">Chef</option>
+                                                        <option value="3">Mesero</option>
+                                                        <option value="4">Encargo de inventario</option>
+                                                    </select>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-primary">Modificar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal para Modificar Empleado -->
+
+
+
+                            <a onclick="return eliminarempleados()" href="empleados.php?id=<?= $datos->id_empleado ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
     </div>
-</div>
-<!-- Modal para Modificar Empleado -->
-                                
-                                
-                                
-                                <a onclick="return eliminarempleados()" href="empleados.php?id=<?= $datos->id_empleado ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-    function abrirModalModificarEmpleado(id, nombre, dni, telefono, email, rol) {
-        // Asignar los valores a los campos del modal
-        document.getElementById('id_empleado').value = id;
-        document.getElementById('nombreModificar').value = nombre;
-        document.getElementById('dniModificar').value = dni;
-        document.getElementById('telefonoModificar').value = telefono;
-        document.getElementById('emailModificar').value = email;
-        document.getElementById('rolModificar').value = rol;
+        function abrirModalModificarEmpleado(id, nombre, dni, telefono, email, rol) {
+            // Asignar los valores a los campos del modal
+            document.getElementById('id_empleado').value = id;
+            document.getElementById('nombreModificar').value = nombre;
+            document.getElementById('dniModificar').value = dni;
+            document.getElementById('telefonoModificar').value = telefono;
+            document.getElementById('emailModificar').value = email;
+            document.getElementById('rolModificar').value = rol;
 
-        // Mostrar el modal
-        var modificarEmpleadoModal = new bootstrap.Modal(document.getElementById('modificarEmpleadoModal'));
-        modificarEmpleadoModal.show();
-    }
-</script>
+            // Mostrar el modal
+            var modificarEmpleadoModal = new bootstrap.Modal(document.getElementById('modificarEmpleadoModal'));
+            modificarEmpleadoModal.show();
+        }
+    </script>
     <!-- Pie de página -->
     <footer>
         <p>&copy; Peru al plato</p>
     </footer>
 </body>
+
 </html>

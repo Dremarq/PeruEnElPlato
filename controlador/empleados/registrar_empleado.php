@@ -1,39 +1,44 @@
 <?php
-// archivo de conexión
-include "../config/conexion.php"; // Ajusta la ruta según tu estructura de carpetas
+require_once "../../config/conexion.php";
 
-if (!empty($_POST["btnregistrar"])) {
-    // Verifica que todos los campos requeridos no estén vacíos
-    if (!empty($_POST["nombre"]) && 
-        !empty($_POST["apellido"]) && 
-        !empty($_POST["dni"]) && 
-        !empty($_POST["telefono"]) && 
-        !empty($_POST["direccion"]) && 
-        !empty($_POST["email"]) && 
-        !empty($_POST["id_rol"])) { // Asegúrate que el nombre del input coincide
+// Activar reporte de errores para depuración
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-        // Asignar variables del formulario
+// Verificar si se recibieron datos POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Verificar si los campos requeridos están presentes y no están vacíos
+    if (
+        !empty($_POST["nombre"]) &&
+        !empty($_POST["dni"]) &&
+        !empty($_POST["telefono"]) &&
+        !empty($_POST["email"]) &&
+        !empty($_POST["rol"])
+    ) {
+
         $nombre = $_POST["nombre"];
-        $apellido = $_POST["apellido"];
         $dni = $_POST["dni"];
         $telefono = $_POST["telefono"];
-        $direccion = $_POST["direccion"];
         $email = $_POST["email"];
-        $id_rol = $_POST["id_rol"]; // Asumimos que hay un campo para el rol
+        $id_rol = $_POST["rol"];
 
-        // Ejecutar la consulta de inserción
-        $sql = $conexion->query("INSERT INTO empleados(nombre, apellido, dni, telefono, direccion, email, id_rol) 
-                                VALUES('$nombre', '$apellido', '$dni', '$telefono', '$direccion', '$email', '$id_rol')");
+        // Preparar la consulta SQL
+        $sql = $conexion->query("INSERT INTO empleados(nombre, dni, telefono, email, id_rol) 
+                                VALUES('$nombre', '$dni', '$telefono', '$email', '$id_rol')");
 
-        // Verificar si la inserción fue exitosa
         if ($sql === TRUE) {
-            echo '<div class="alert alert-success">Empleado Registrado Correctamente</div>';
+            header("Location: ../../vista/empleados.php?mensaje=registrado");
+            exit();
         } else {
-            echo '<div class="alert alert-danger">Error en el Registro del Empleado: ' . $conexion->error . '</div>';
+            header("Location: ../../vista/empleados.php?mensaje=error&error=" . urlencode($conexion->error));
+            exit();
         }
     } else {
-        echo '<div class="alert alert-warning">Algunos campos están vacíos</div>';
+        header("Location: ../../vista/empleados.php?mensaje=vacio");
+        exit();
     }
+} else {
+    header("Location: ../../vista/empleados.php?mensaje=acceso_invalido");
+    exit();
 }
-?>
-
