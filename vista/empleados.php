@@ -17,16 +17,12 @@ $empleados = $empleadoModelo->obtenerEmpleados();
     <link rel="stylesheet" href="../public/styles/tablas.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
+    <script src="../public/JavaScript/empleado.js"></script>
     <title>Interfaz de Administrador</title>
 </head>
 
 <body>
-    <script>
-        function eliminarempleados() {
-            var respuesta = confirm("¿Estás seguro que deseas eliminar?");
-            return respuesta;
-        }
-    </script>
+
 
     <!-- Menú lateral -->
     <nav class="sidebar">
@@ -78,23 +74,29 @@ $empleados = $empleadoModelo->obtenerEmpleados();
                             <input type="hidden" name="accion" value="registrar">
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required minlength="3" maxlength="50"
+                                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                    title="Solo se permiten letras y espacios">
                             </div>
                             <div class="mb-3">
                                 <label for="apellido" class="form-label">Apellido:</label>
-                                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                                <input type="text" class="form-control" id="apellido" name="apellido" required minlength="3" maxlength="50"
+                                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                    title="Solo se permiten letras y espacios">
                             </div>
                             <div class="mb-3">
                                 <label for="dni" class="form-label">DNI:</label>
-                                <input type="text" class="form-control" id="dni" name="dni" required>
+                                <input type="text" class="form-control" id="dni" name="dni" required pattern="[0-9]{8}"
+                                    title="El DNI debe tener 8 dígitos numéricos">
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="telefono" name="telefono" required>
+                                <input type="text" class="form-control" id="telefono" name="telefono" required pattern="9[0-9]{8}"
+                                    title="El teléfono debe comenzar con 9 y tener 9 dígitos">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control" id="email" name="email" required maxlength="80">
                             </div>
                             <div class="mb-3">
                                 <label for="rol" class="form-label">Rol:</label>
@@ -167,23 +169,29 @@ $empleados = $empleadoModelo->obtenerEmpleados();
                             <input type="hidden" id="id_empleado" name="id_empleado">
                             <div class="mb-3">
                                 <label for="nombreModificar" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombreModificar" name="nombre" required>
+                                <input type="text" class="form-control" id="nombreModificar" name="nombre" required required minlength="3" maxlength="50"
+                                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                    title="Solo se permiten letras y espacios">
                             </div>
                             <div class="mb-3">
                                 <label for="apellidoModificar" class="form-label">apellido</label>
-                                <input type="text" class="form-control" id="apellidoModificar" name="apellido" required>
+                                <input type="text" class="form-control" id="apellidoModificar" name="apellido" required required minlength="3" maxlength="50"
+                                    pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                    title="Solo se permiten letras y espacios">
                             </div>
                             <div class="mb-3">
                                 <label for="dniModificar" class="form-label">DNI</label>
-                                <input type="text" class="form-control" id="dniModificar" name="dni" required>
+                                <input type="text" class="form-control" id="dniModificar" name="dni" required pattern="[0-9]{8}"
+                                    title="El DNI debe tener 8 dígitos numéricos">
                             </div>
                             <div class="mb-3">
                                 <label for="telefonoModificar" class="form-label">Teléfono</label>
-                                <input type="text" class="form-control" id="telefonoModificar" name="telefono" required>
+                                <input type="text" class="form-control" id="telefonoModificar" name="telefono" required pattern="9[0-9]{8}"
+                                    title="El teléfono debe comenzar con 9 y tener 9 dígitos">
                             </div>
                             <div class="mb-3">
                                 <label for="emailModificar" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="emailModificar" name="email" required>
+                                <input type="email" class="form-control" id="emailModificar" name="email" required required maxlength="70">
                             </div>
                             <div class="mb-3">
                                 <label for="rolModificar" class="form-label">Rol</label>
@@ -204,20 +212,7 @@ $empleados = $empleadoModelo->obtenerEmpleados();
             </div>
         </div>
 
-        <script>
-            function abrirModalModificarEmpleado(id, nombre,apellido, dni, telefono, email, rol) {
-                document.getElementById('id_empleado').value = id;
-                document.getElementById('nombreModificar').value = nombre;
-                document.getElementById('apellidoModificar').value = apellido;
-                document.getElementById('dniModificar').value = dni;
-                document.getElementById('telefonoModificar').value = telefono;
-                document.getElementById('emailModificar').value = email;
-                document.getElementById('rolModificar').value = rol;
 
-                var modificarEmpleadoModal = new bootstrap.Modal(document.getElementById('modificarEmpleadoModal'));
-                modificarEmpleadoModal.show();
-            }
-        </script>
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
