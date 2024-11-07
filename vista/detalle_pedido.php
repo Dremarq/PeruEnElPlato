@@ -1,3 +1,11 @@
+<?php
+session_start();
+require_once "../config/conexion.php";
+require_once "../modelo/detalle_pedido.php";
+
+$detallePedidoModelo = new DetallePedido($conexion);
+$detalles = $detallePedidoModelo->obtenerDetallesPedido();
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -9,16 +17,11 @@
     <link rel="stylesheet" href="../public/styles/tablas.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
-    <title>Detalle de Pedido</title>
+    <title>Detalle de Pedidos - Administrador</title>
 </head>
 
 <body>
-    <script>
-        function eliminarDetalle() {
-            return confirm("¿Estás seguro que deseas eliminar este detalle de pedido?");
-        }
-    </script>
-
+    <!-- Menú lateral -->
     <nav class="sidebar">
         <h2>Pantalla de Administrador</h2>
         <ul>
@@ -31,67 +34,90 @@
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
-            <li><a href="../vista/usuarios.php">Usuarios</a></li>
+            <li><a href="../vista/usuario.php">Usuarios</a></li>
         </ul>
     </nav>
 
-    
-
+    <!-- Contenido principal -->
     <div class="main-content">
         <h2>Detalle de Pedidos</h2>
-        <?php 
-        include "../config/conexion.php";
-
-        // Consulta para obtener los detalles de los pedidos
-        $query = "SELECT d.id_detalle, d.id_pedido, p.nombre AS producto, d.cantidad, d.precio_unitario AS precio 
-                FROM detalle_pedido d
-                JOIN productos p ON d.id_producto = p.id_producto";
-        $sql = $conexion->query($query);
-
-        if (!$sql) {
-            die("Error en la consulta: " . $conexion->error);
-        }
-        ?>
-
+        <?php if (isset($_SESSION['mensaje'])): ?>
+            <div class="alert alert-<?= $_SESSION['tipo_mensaje'] ?> alert-dismissible fade show" role="alert">
+                <?= $_SESSION['mensaje'] ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php
+            unset($_SESSION['mensaje']);
+            unset($_SESSION['tipo_mensaje']);
+            ?>
+        <?php endif; ?>
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
+        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Detalle de Pedido</button>
 
-  <!-- Modal -->
-  <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registroModalLabel">Registrar Pedido</h5>
-            </div>
-            <div class="modal-body">
-                <form id="formRegistroPedido" action="#####" method="POST">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Producto</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+        <!-- Modal de Registro -->
+        <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registroModalLabel">Registrar Nuevo Detalle de Pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                        <label for="dni" class="form-label">Cantidad</label>
-                        <input type="text" class="form-control" id="cantidad" name="cantidad" required>
+                    <div class="modal-body">
+                        <form id="formRegistroDetallePedido" action="../controlador/CRUDdetalle_pedido.php" method="POST">
+                            <input type="hidden" name="accion" value="registrar">
+                            <div class="mb-3">
+                                <label for="id_pedido" class="form-label">Pedido</label>
+                                <select class="form-select" id="id_pedido" name="id_pedido" required>
+                                    <option value="">Seleccione un pedido</option>
+                                    <?php
+                                    $pedidos = $detallePedidoModelo->obtenerPedidos();
+                                    if ($pedidos && $pedidos->num_rows > 0) {
+                                        while ($pedido = $pedidos->fetch_object()) {
+                                            echo "<option value='{$pedido->id_pedido}'>Pedido #{$pedido->id_pedido}</option>";
+                                        }
+                                    } else {
+                                        echo "<option value='' disabled>No hay pedidos disponibles</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_producto" class="form-label">Producto</label>
+                                <select class="form-select" id="id_producto" name="id_producto" required>
+                                    <option value="">Seleccione un producto</option>
+                                    <?php
+                                    $productos = $detallePedidoModelo->obtenerProductos();
+                                    if ($productos && $productos->num_rows > 0) {
+                                        while ($producto = $productos->fetch_object()) {
+                                            echo "<option value='{$producto->id_producto}'>{$producto->nombre}</option>";
+                                        }
+                                    } else {
+                                        echo "<option value='' disabled>No hay productos disponibles</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="precio_unitario" class="form-label">Precio Unitario</label>
+                                <input type="number" step="0.01" class="form-control" id="precio_unitario" name="precio_unitario" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Precio</label>
-                        <input type="text" class="form-control" id="precio" name="precio" required>
-                    </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-   <!-- Modal -->                                   
 
-        <!-- tabla detalle pedido-->
         <div class="container-fluid">
+            <!-- Tabla de detalles de pedido -->
             <table class="table">
                 <thead class="bg-info">
                     <tr>
@@ -99,81 +125,102 @@
                         <th scope="col">ID Pedido</th>
                         <th scope="col">Producto</th>
                         <th scope="col">Cantidad</th>
-                        <th scope="col">Precio</th>
+                        <th scope="col">Precio Unitario</th>
+                        <th scope="col">Subtotal</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
-                    while ($datos = $sql->fetch_object()) { ?>
+                    <?php while ($detalle = $detalles->fetch_object()): ?>
                         <tr>
-                            <td><?= $datos->id_detalle ?></td>
-                            <td><?= $datos->id_pedido ?></td>
-                            <td><?= $datos->producto ?></td>
-                            <td><?= $datos->cantidad ?></td>
-                            <td><?= $datos->precio ?></td>
+                            <td><?= $detalle->id_detalle ?></td>
+                            <td><?= $detalle->id_pedido ?></td>
+                            <td><?= $detalle->producto ?></td>
+                            <td><?= $detalle->cantidad ?></td>
+                            <td><?= number_format($detalle->precio_unitario, 2) ?></td>
+                            <td><?= number_format($detalle->subtotal, 2) ?></td>
                             <td>
-    <a href="#" onclick="abrirModalModificarDetalle('<?= $datos->id_detalle ?>', '<?= $datos->producto ?>', '<?= $datos->cantidad ?>', '<?= $datos->precio ?>')" class="btn btn-small btn-warning">
-    <i class="fa-solid fa-pen-to-square"></i>
-</a>
-<!-- Modal para Modificar Detalle de Pedido -->
-<div class="modal fade" id="modificarDetalleModal" tabindex="-1" aria-labelledby="modificarDetalleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modificarDetalleModalLabel">Modificar Detalle de Pedido</h5>
-            </div>
-            <div class="modal-body">
-                <form id="formModificarDetalle" action="#######" method="POST">
-                    <input type="hidden" id="id_detalle" name="id_detalle"> <!-- Campo oculto para el ID del detalle -->
-                    <div class="mb-3">
-                        <label for="productoModificar" class="form-label">Producto</label>
-                        <input type="text" class="form-control" id="productoModificar" name="productoModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cantidadModificar" class="form-label">Cantidad</label>
-                        <input type="text" class="form-control" id="cantidadModificar" name="cantidadModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="precioModificar" class="form-label">Precio</label>
-                        <input type="text" class="form-control" id="precioModificar" name="precioModificar" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Modificar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal para Modificar Detalle de Pedido -->
-                                <a onclick="return eliminarDetalle()" href="detalle_pedido.php?id=<?= $datos->id_detalle ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modificarModal<?= $detalle->id_detalle ?>"></button>
+                                <a href="../controlador/CRUDdetalle_pedido.php?accion=eliminar&id=<?= $detalle->id_detalle ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este detalle de pedido?');"></a>
                             </td>
                         </tr>
-                    <?php } ?>
+
+                        <!-- Modal de Modificación -->
+                        <div class="modal fade" id="modificarModal<?= $detalle->id_detalle ?>" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modificarModalLabel">Modificar Detalle de Pedido</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="../controlador/CRUDdetalle_pedido.php" method="POST">
+                                            <input type="hidden" name="accion" value="modificar">
+                                            <input type="hidden" name="id_detalle" value="<?= $detalle->id_detalle ?>">
+                                            <div class="mb-3">
+                                                <label for="id_producto" class="form-label">Producto</label>
+                                                <select class="form-select" id="id_producto" name="id_producto" required>
+                                                    <option value="">Seleccione un producto</option>
+                                                    <?php
+                                                    $productos = $detallePedidoModelo->obtenerProductos();
+                                                    if ($productos && $productos->num_rows > 0) {
+                                                        while ($producto = $productos->fetch_object()) {
+                                                            $selected = ($producto->id_producto == $detalle->id_producto) ? 'selected' : '';
+                                                            echo "<option value='{$producto->id_producto}' $selected>{$producto->nombre}</option>";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cantidad" class="form-label">Cantidad</label>
+                                                <input type="number" class="form-control" id="cantidad" name="cantidad" value="<?= $detalle->cantidad ?>" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="precio_unitario" class="form-label">Precio Unitario</label>
+                                                <input type="number" step="0.01" class="form-control" id="precio_unitario" name="precio_unitario" value="<?= $detalle->precio_unitario ?>" required>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="submit" class="btn btn-primary">Modificar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                    
                 </tbody>
             </table>
-        </div>        
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    function abrirModalModificarDetalle(id, producto, cantidad, precio) {
-        // Asignar los valores a los campos del modal
-        document.getElementById('id_detalle').value = id;
-        document.getElementById('productoModificar').value = producto;
-        document.getElementById('cantidadModificar').value = cantidad;
-        document.getElementById('precioModificar').value = precio;
+        // Función para abrir el modal de modificar detalle de pedido
+        function abrirModalModificarDetalle(id_detalle, id_pedido, id_producto, cantidad, precio_unitario) {
+            // Asignar los valores a los campos del modal
+            document.getElementById('id_detalle_modificar').value = id_detalle;
+            document.getElementById('id_pedido_modificar').value = id_pedido;
+            document.getElementById('id_producto_modificar').value = id_producto;
+            document.getElementById('cantidad_modificar').value = cantidad;
+            document.getElementById('precio_unitario_modificar').value = precio_unitario;
 
-        // Mostrar el modal
-        var modificarDetalleModal = new bootstrap.Modal(document.getElementById('modificarDetalleModal'));
-        modificarDetalleModal.show();
-    }
+            // Mostrar el modal
+            var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
+            modificarModal.show();
+        }
+
+        // Función para confirmar eliminación
+        function eliminarDetallePedido() {
+            return confirm("¿Estás seguro que deseas eliminar este detalle de pedido?");
+        }
     </script>
+
     <footer>
         <p>&copy; Peru al plato</p>
     </footer>
 </body>
-</html>
 
+</html>

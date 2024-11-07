@@ -30,7 +30,7 @@
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="">Roles</a></li>
-            <li><a href="../vista/usuarios.php">Usuarios</a></li>
+            <li><a href="../vista/usuario.php">Usuarios</a></li>
         </ul>
     </nav>
 

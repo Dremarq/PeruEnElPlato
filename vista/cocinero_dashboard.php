@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
                 <li><a href="../vista/proveedores.php">Proveedores</a></li>
                 <li><a href="../vista/reservas.php">Reserva</a></li>
                 <li><a href="../vista/roles.php">Roles</a></li>
-                <li><a href="../vista/usuarios.php">Usuarios</a></li>
+                <li><a href="../vista/usuario.php">Usuarios</a></li>
             </ul>
         </nav>
         <main class="content">

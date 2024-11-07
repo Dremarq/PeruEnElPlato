@@ -1,10 +1,10 @@
 <?php
 session_start();
 require_once "../config/conexion.php";
-require_once "../modelo/proveedores.php";
+require_once "../modelo/Cliente.php";
 
-$proveedorModelo = new Proveedor($conexion);
-$proveedores = $proveedorModelo->obtenerProveedores();
+$clienteModelo = new Cliente($conexion);
+$usuarios = $clienteModelo->obtenerUsuarios();
 ?>
 
 <!DOCTYPE html>
@@ -17,8 +17,8 @@ $proveedores = $proveedorModelo->obtenerProveedores();
     <link rel="stylesheet" href="../public/styles/tablas.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
-    <script src="../public/JavaScript/proveedor.js"></script>
-    <title>Interfaz de Administrador - Proveedores</title>
+    <script src="../public/JavaScript/usuario.js"></script>
+    <title>Interfaz de Administrador - Usuarios</title>
 </head>
 
 <body>
@@ -32,16 +32,16 @@ $proveedores = $proveedorModelo->obtenerProveedores();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
-            <li><a href="">Proveedores</a></li>
+            <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
-            <li><a href="../vista/usuario.php">Usuarios</a></li>
+            <li><a href="">Usuarios</a></li>
         </ul>
     </nav>
 
     <!-- Contenido principal -->
     <div class="main-content">
-        <h2>Registro de Proveedores</h2>
+        <h2>Registro de usuarios</h2>
 
         <?php if (isset($_SESSION['mensaje'])): ?>
             <div class="alert alert-<?= $_SESSION['tipo_mensaje'] ?> alert-dismissible fade show" role="alert">
@@ -56,26 +56,30 @@ $proveedores = $proveedorModelo->obtenerProveedores();
 
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Proveedor</button>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Usuario</button>
 
         <!-- Modal de registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="registroModalLabel">Registro de Proveedor</h5>
+                        <h5 class="modal-title" id="registroModalLabel">Registro de Usuario</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="../controlador/CRUDproveedores.php" method="POST">
+                        <form action="../controlador/CRUDcliente.php" method="POST">
                             <input type="hidden" name="accion" value="registrar">
                             <div class="mb-3">
-                                <label for="nombre_empresa" class="form-label">Nombre de la Empresa:</label>
-                                <input type="text" class="form-control" id="nombre_empresa" name="nombre_empresa" required>
+                                <label for="nombre" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
                             </div>
                             <div class="mb-3">
-                                <label for="ruc" class="form-label">RUC:</label>
-                                <input type="text" class="form-control" id="ruc" name="ruc" required>
+                                <label for="apellido" class="form-label">Apellido:</label>
+                                <input type="text" class="form-control" id="apellido" name="apellido" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dni" class="form-label">DNI:</label>
+                                <input type="text" class="form-control" id="dni" name="dni" required>
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Teléfono:</label>
@@ -89,6 +93,10 @@ $proveedores = $proveedorModelo->obtenerProveedores();
                                 <label for="direccion" class="form-label">Dirección:</label>
                                 <input type="text" class="form-control" id="direccion" name="direccion" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="fechaRegistro" class="form-label">Fecha de Registro:</label>
+                                <input type="date" class="form-control" id="fechaRegistro" name="fechaRegistro" required>
+                            </div>
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </form>
                     </div>
@@ -96,39 +104,39 @@ $proveedores = $proveedorModelo->obtenerProveedores();
             </div>
         </div>
 
-        <!-- Tabla de proveedores -->
+        <!-- Tabla de usuarios -->
         <div class="container-fluid">
             <table class="table">
                 <thead class="bg-info">
                     <tr>
                         <th>ID</th>
-                        <th>Nombre Empresa</th>
-                        <th>RUC</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>Dirección</th>
-                        <th>Estado</th>
+                        <th>Fecha de Registro</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($proveedor = $proveedores->fetch_object()): ?>
+                    <?php while ($usuario = $usuarios->fetch_object()): ?>
                         <tr>
-                            <td><?= $proveedor->id_proveedor ?></td>
-                            <td><?= $proveedor->nombre_empresa ?></td>
-                            <td><?= $proveedor->ruc ?></td>
-                            <td><?= $proveedor->telefono ?></td>
-                            <td><?= $proveedor->email ?></td>
-                            <td><?= $proveedor->direccion ?></td>
-                            <td><?= $proveedor->estado ? 'Activo' : 'Inactivo' ?></td>
+                            <td><?= $usuario->id_usuario ?></td>
+                            <td><?= $usuario->nombre ?></td>
+                            <td><?= $usuario->apellido ?></td>
+                            <td><?= $usuario->dni ?></td>
+                            <td><?= $usuario->telefono ?></td>
+                            <td><?= $usuario->email ?></td>
+                            <td><?= $usuario->direccion ?></td>
+                            <td><?= $usuario->fecha_registro ?></td>
                             <td>
-                                <a href="#" onclick="abrirModalModificarProveedor('<?= $proveedor->id_proveedor ?>', '<?= $proveedor->nombre_empresa ?>', '<?= $proveedor->ruc ?>', '<?= $proveedor->telefono ?>', '<?= $proveedor->email ?>', '<?= $proveedor->direccion ?>', '<?= $proveedor->estado ?>')" class="btn btn-small btn-warning">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                <a href="#" onclick="abrirModalModificarUsuario('<?= $usuario->id_usuario ?>', '<?= $usuario->nombre ?>', '<?= $usuario->apellido ?>', '<?= $usuario->dni ?>', '<?= $usuario->telefono ?>', '<?= $usuario->email ?>', '<?= $usuario->direccion ?>', '<?= $usuario->fecha_registro ?>')" class="btn btn-small btn-warning">
+                                    <i class="fa-solid fa-pen-to-square"></i> 
                                 </a>
-                                <a href="../controlador/CRUDproveedores.php?accion=eliminar&id=<?= $proveedor->id_proveedor ?>"
-                                    onclick="return confirmarEliminacion()"
-                                    class="btn btn-small btn-danger">
-                                    <i class="fa-solid fa-trash"></i>
+                                <a onclick="return eliminarUsuario()" href="../controlador/CRUDcliente.php?accion=eliminar&id=<?= $usuario->id_usuario ?>" class="btn btn-small btn-danger">
+                                    <i class="fa-solid fa-trash"></i> 
                                 </a>
                             </td>
                         </tr>
@@ -136,44 +144,46 @@ $proveedores = $proveedorModelo->obtenerProveedores();
                 </tbody>
             </table>
         </div>
+
         <!-- Modal de modificación -->
         <div class="modal fade" id="modificarModal" tabindex="-1" aria-labelledby="modificarModalLabel">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modificarModalLabel">Modificar Proveedor</h5>
+                        <h5 class="modal-title" id="modificarModalLabel">Modificar Usuario</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="../controlador/CRUDproveedores.php" method="POST">
+                        <form action="../controlador/CRUDcliente.php" method="POST">
                             <input type="hidden" name="accion" value="modificar">
-                            <input type="hidden" id="id_proveedor" name="id_proveedor">
+                            <input type="hidden" id="id_usuario" name="id_usuario">
                             <div class="mb-3">
-                                <label for="nombre_empresaModificar" class="form-label">Nombre de la Empresa:</label>
-                                <input type="text" class="form-control" id="nombre_empresaModificar" name="nombre_empresa" required>
+                                <label for="nombreModificar" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
                             </div>
                             <div class="mb-3">
-                                <label for="rucModificar" class="form-label">RUC:</label>
-                                <input type="text" class="form-control" id="rucModificar" name="ruc" required>
+                                <label for="apellidoModificar" class="form-label">Apellido:</label>
+                                <input type="text" class="form-control" id="apellidoModificar" name="apellidoModificar" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dniModificar" class="form-label">DNI:</label>
+                                <input type="text" class="form-control" id="dniModificar" name="dniModificar" required>
                             </div>
                             <div class="mb-3">
                                 <label for="telefonoModificar" class="form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="telefonoModificar" name="telefono" required>
+                                <input type="text" class="form-control" id="telefonoModificar" name="telefonoModificar" required>
                             </div>
                             <div class="mb-3">
                                 <label for="emailModificar" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="emailModificar" name="email" required>
+                                <input type="email" class="form-control" id="emailModificar" name="emailModificar" required>
                             </div>
                             <div class="mb-3">
                                 <label for="direccionModificar" class="form-label">Dirección:</label>
-                                <input type="text" class="form-control" id="direccionModificar" name="direccion" required>
+                                <input type="text" class="form-control" id="direccionModificar" name="direccionModificar" required>
                             </div>
                             <div class="mb-3">
-                                <label for="estadoModificar" class="form-label">Estado:</label>
-                                <select class="form-select" id="estadoModificar" name="estado" required>
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
-                                </select>
+                                <label for="fechaRegistroModificar" class="form-label">Fecha de Registro:</label>
+                                <input type="date" class="form-control" id="fechaRegistroModificar" name="fechaRegistroModificar" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </form>
@@ -181,29 +191,30 @@ $proveedores = $proveedorModelo->obtenerProveedores();
                 </div>
             </div>
         </div>
+
+        <!-- Pie de página -->
+        <footer>
+            <p>&copy; Perú al plato</p>
+        </footer>
+
+        
         <script>
-            function abrirModalModificarProveedor(id, nombreEmpresa, ruc, telefono, email, direccion, estado) {
-                // Asignar los valores a los campos del modal
-                document.getElementById('id_proveedor').value = id;
-                document.getElementById('nombre_empresaModificar').value = nombreEmpresa;
-                document.getElementById('rucModificar').value = ruc;
+            function abrirModalModificarUsuario(id, nombre, apellido, dni, telefono, email, direccion, fechaRegistro) {
+                document.getElementById('id_usuario').value = id;
+                document.getElementById('nombreModificar').value = nombre;
+                document.getElementById('apellidoModificar').value = apellido;
+                document.getElementById('dniModificar').value = dni;
                 document.getElementById('telefonoModificar').value = telefono;
                 document.getElementById('emailModificar').value = email;
                 document.getElementById('direccionModificar').value = direccion;
-                document.getElementById('estadoModificar').value = estado;
+                document.getElementById('fechaRegistroModificar').value = fechaRegistro;
 
-                // Mostrar el modal
                 var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
                 modificarModal.show();
             }
         </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Pie de página -->
-        <footer>
-            <p>&copy; Peru al plato</p>
-        </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </div>
 </body>
 
