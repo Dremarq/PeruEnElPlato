@@ -130,3 +130,182 @@ form button:hover {
 .btn-danger:hover {
     background-color: #c82333; /* Color rojo más oscuro al pasar el mouse */
 }
+/* Estilos generales del dashboard */
+.dashboard-container {
+    background-color: #f4f6f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Tarjetas de resumen */
+.summary-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 22%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.summary-card h5 {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.summary-card .card-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* Colores específicos para cada tarjeta */
+.summary-card.ventas {
+    border-left: 5px solid #28a745;
+}
+
+.summary-card.pedidos {
+    border-left: 5px solid #dc3545;
+}
+
+.summary-card.reservas {
+    border-left: 5px solid #ffc107;
+}
+
+.summary-card.clientes {
+    border-left: 5px solid #17a2b8;
+}
+
+/* Estilos para gráficos */
+.charts-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.chart-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 48%;
+}
+
+.chart-card h5 {
+    color: #343a40;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Tablas de resumen */
+.summary-tables {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.table-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 48%;
+}
+
+.table-card h5 {
+    color: #343a40;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.table-responsive {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 10;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 12px;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.3s ease;
+}
+
+/* Responsividad */
+@media (max-width: 1200px) {
+    .summary-cards,
+    .charts-container,
+    .summary-tables {
+        flex-direction: column;
+    }
+
+    .summary-card,
+    .chart-card,
+    .table-card {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+/* Estilos de estado de pedidos */
+.estado-pedido {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.estado-pedido.pendiente {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.estado-pedido.completado {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.estado-pedido.cancelado {
+    background-color: #dc3545;
+    color: #fff;
+}

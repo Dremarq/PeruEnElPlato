@@ -1,3 +1,12 @@
+<?php
+session_start();
+require_once "../config/conexion.php";
+require_once "../modelo/pedidos.php";
+
+$pedidoModelo = new Pedido($conexion);
+$pedidos = $pedidoModelo->obtenerPedidos();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,18 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/admi.css">
     <link rel="stylesheet" href="../public/styles/tablas.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
-    <title>Interfaz de Administrador</title>
+    <title>Interfaz de Administrador - Pedidos</title>
 </head>
 <body>
-    <script>
-        function eliminarPedido() {
-            var respuesta = confirm("¿Estás seguro que deseas eliminar este pedido?");
-            return respuesta;
-        }
-    </script>
-
     <!-- Menú lateral -->
     <nav class="sidebar">
         <h2>Pantalla de Administrador</h2>
@@ -30,157 +32,255 @@
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
-            <li><a href="../vista/usuarios.php">Usuarios</a></li>
+            <li><a href="../vista/usuario.php">Usuarios</a></li>
         </ul>
     </nav>
 
     <!-- Contenido principal -->
     <div class="main-content">
         <h2>Registro de Pedidos</h2>
-        <?php 
-        include "../config/conexion.php";
-        include "../controlador/pedidos/eliminar_pedido.php";
 
-        // Ejecuta la consulta para obtener pedidos
-        $query = "SELECT p.id_pedido, u.nombre AS cliente, p.fecha_pedido AS fecha, p.total, p.estado FROM pedidos p JOIN usuarios u ON p.id_usuario = u.id_usuario"; 
-        $sql = $conexion->query($query);
+        <?php if (isset($_SESSION['mensaje'])): ?>
+            <div class="alert alert-<?= $_SESSION['tipo_mensaje'] ?> alert-dismissible fade show" role="alert">
+                <?= $_SESSION['mensaje'] ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php
+            unset($_SESSION['mensaje']);
+            unset($_SESSION['tipo_mensaje']);
+            ?>
+        <?php endif; ?>
 
-        if (!$sql) {
-            die("Error en la consulta: " . $conexion->error);
-        }
-        ?>
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
+        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Pedido</button>
 
-<!-- Modal -->
-<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registroModalLabel">Registrar Pedido</h5>
-                
-            </div>
-            <div class="modal-body">
-                <form id="formRegistroPedido" action="#######" method="POST">
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre del Cliente</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+        <!-- Modal de Registro -->
+        <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registroModalLabel">Registrar Nuevo Pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-3">
-                    <label for="fechaHora" class="form-label">Seleccionar Fecha y Hora</label>
-                    <input type="datetime-local" class="form-control" id="fechaHora" name="fechaHora" required>
+                    <div class="modal-body">
+                        <form action="../controlador/CRUDpedidos.php" method="POST">
+                            <input type="hidden" name="accion" value="registrar">
+                            <div class="mb-3">
+                                <label for="id_usuario" class="form-label">Cliente</label>
+                                <select class="form-select" id="id_usuario" name="id_usuario" required>
+                                    <option value="">Seleccione un cliente</option>
+                                    <?php
+                                    $clientes = $pedidoModelo->obtenerClientes();
+                                    while ($cliente = $clientes->fetch_object()) {
+                                        echo "<option value='{$cliente->id_usuario}'>{$cliente->nombre}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_empleado" class="form-label">Empleado</label>
+                                <select class="form-select" id="id_empleado" name="id_empleado" required>
+                                    <option value="">Seleccione un empleado</option>
+                                    <?php
+                                    $empleados = $pedidoModelo->obtenerEmpleados();
+                                    while ($empleado = $empleados->fetch_object()) {
+                                        echo "<option value='{$empleado->id_empleado}'>{$empleado->nombre}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fecha_pedido" class="form-label">Fecha del Pedido</label>
+                                <input type="datetime-local" class="form-control" id="fecha_pedido" name="fecha_pedido" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estado" class="form-label">Estado</label>
+                                <select class="form-select" id="estado" name="estado" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="En Proceso">En Proceso</option>
+                                    <option value="Completado">Completado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tipo_pedido" class="form-label">Tipo de Pedido</label>
+                                <select class="form-select" id="tipo_pedido" name="tipo_pedido" required>
+                                    <option value="Dine-in">Dine-in</option>
+                                    <option value="Delivery">Delivery</option>
+                                    <option value="Para Llevar">Para Llevar</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="total" class="form-label">Total</label>
+                                <input type="number" step="0.01" class="form-control" id="total" name="total" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Total</label>
-                        <input type="text" class="form-control" id="total" name="total" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="telefono" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="estado" name="estados" required>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-   <!-- Modal -->                             
-
         <div class="container-fluid">
             <!-- Tabla de pedidos -->
             <table class="table">
                 <thead class="bg-info">
                     <tr>
-                        <th scope="col">ID Pedido</th>
-                        <th scope="col">Cliente</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Acciones</th>
+                        <th>ID Pedido</th>
+                        <th>Cliente</th>
+                        <th>Empleado</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Tipo Pedido</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php 
-                    while ($datos = $sql->fetch_object()) { ?>
+                    // Verificar si hay pedidos
+                    if ($pedidos && $pedidos->num_rows > 0):
+                        while ($pedido = $pedidos->fetch_object()): 
+                    ?>
                         <tr>
-                            <td><?= $datos->id_pedido ?></td>
-                            <td><?= $datos->cliente ?></td>
-                            <td><?= $datos->fecha ?></td>
-                            <td><?= $datos->total ?></td>
-                            <td><?= $datos->estado ?></td>
+                            <td><?= $pedido->id_pedido ?></td>
+                            <td><?= $pedido->cliente ?></td>
+                            <td><?= $pedido->empleado ?></td>
+                            <td><?= $pedido->fecha_pedido ?></td>
+                            <td><?= $pedido->estado ?></td>
+                            <td><?= $pedido->tipo_pedido ?></td>
+                            <td><?= $pedido->total ?></td>
                             <td>
-    <a href="#" onclick="abrirModalModificarPedido('<?= $datos->id_pedido ?>', '<?= $datos->cliente ?>', '<?= $datos->fecha ?>', '<?= $datos->total ?>', '<?= $datos->estado ?>')" class="btn btn-small btn-warning">
-    <i class="fa-solid fa-pen-to-square"></i>
-</a>
-<!-- Modal para Modificar Pedido -->
-<div class="modal fade" id="modificarPedidoModal" tabindex="-1" aria-labelledby="modificarPedidoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modificarPedidoModalLabel">Modificar Pedido</h5>
-            </div>
-            <div class="modal-body">
-                <form id="formModificarPedido" action="#######" method="POST">
-                    <input type="hidden" id="id_pedido" name="id_pedido"> <!-- Campo oculto para el ID del pedido -->
-                    <div class="mb-3">
-                        <label for="nombreClienteModificar" class="form-label">Nombre del Cliente</label>
-                        <input type="text" class="form-control" id="nombreClienteModificar" name="nombreClienteModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="fechaHoraModificar" class="form-label">Seleccionar Fecha y Hora</label>
-                        <input type="datetime-local" class="form-control" id="fechaHoraModificar" name="fechaHoraModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="totalModificar" class="form-label">Total</label>
-                        <input type="text" class="form-control" id="totalModificar" name="totalModificar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="estadoModificar" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="estadoModificar" name="estadoModificar" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Modificar</button>
-                    </div>
-                </form>
+                                <a href="#" onclick="abrirModalModificar(
+                                    '<?= $pedido->id_pedido ?>',
+                                    '<?= $pedido->id_usuario ?>',
+                                    '<?= $pedido->id_empleado ?>',
+                                    '<?= $pedido->fecha_pedido ?>',
+                                    '<?= $pedido->estado ?>',
+                                    '<?= $pedido->tipo_pedido ?>',
+                                    '<?= $pedido->total ?>'
+                                )" class="btn btn-small btn-warning">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a onclick="return eliminarPedido()" href="../controlador/CRUDpedidos.php?accion=eliminar&id=<?= $pedido->id_pedido ?>" class="btn btn-small btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php 
+                        endwhile; 
+                    else: 
+                    ?>
+                        <tr>
+                            <td colspan="8" class="text-center">
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    No hay pedidos registrados actualmente
+                                </div>
+                            </td>
+                        </tr>
+                    <?php 
+                    endif; 
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal de Modificación -->
+    <div class="modal fade" id="modificarModal" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modificarModalLabel">Modificar Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="../controlador/CRUDpedidos.php" method="POST">
+                        <input type="hidden" name="accion" value="modificar">
+                        <input type="hidden" id="id_pedido" name="id_pedido">
+                        <div class="mb-3">
+                            <label for="id_usuario" class="form-label">Cliente</label>
+                            <select class="form-select" id="id_usuario_modificar" name="id_usuario" required>
+                                <option value="">Seleccione un cliente</option>
+                                <?php
+                                $clientes = $pedidoModelo->obtenerClientes();
+                                while ($cliente = $clientes->fetch_object()) {
+                                    echo "<option value='{$cliente->id_usuario}'>{$cliente->nombre}</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_empleado" class="form-label">Empleado</label>
+                            <select class="form-select" id="id_empleado_modificar" name="id_empleado" required>
+                                <option value="">Seleccione un empleado</option>
+                                <?php
+                                $empleados = $pedidoModelo->obtenerEmpleados();
+                                while ($empleado = $empleados->fetch_object()) {
+                                    echo "<option value='{$empleado->id_empleado}'>{$empleado->nombre}</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_pedido" class="form-label">Fecha del Pedido</label>
+                            <input type="datetime-local" class="form-control" id="fecha_pedido_modificar" name="fecha_pedido" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select class="form-select" id="estado_modificar" name="estado" required>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Completado">Completado</option>
+                                <option value="Cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo_pedido" class="form-label">Tipo de Pedido</label>
+                            <select class="form-select" id="tipo_pedido_modificar" name="tipo_pedido" required>
+                                <option value="Dine-in">Dine-in</option>
+                                <option value="Delivery">Delivery</option>
+                                <option value="Para Llevar">Para Llevar</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="total" class="form-label">Total</label>
+                            <input type="number" step="0.01" class="form-control" id="total_modificar" name="total" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Modificar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Modal para Modificar Pedido -->                              
-                                  
-                                <a onclick="return eliminarPedido()" href="pedidos.php?id=<?= $datos->id_pedido ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>        
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-    function abrirModalModificarPedido(id, nombreCliente, fecha, total, estado) {
-        // Asignar los valores a los campos del modal
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <<script>
+    function abrirModalModificar(id, idUsuario, idEmpleado, fechaPedido, estado, tipoPedido, total) {
+        // Corregir los IDs de los campos
         document.getElementById('id_pedido').value = id;
-        document.getElementById('nombreClienteModificar').value = nombreCliente;
-        document.getElementById('fechaHoraModificar').value = fecha;
-        document.getElementById('totalModificar').value = total;
-        document.getElementById('estadoModificar').value = estado;
+        document.getElementById('id_usuario_modificar').value = idUsuario;
+        document.getElementById('id_empleado_modificar').value = idEmpleado;
+        document.getElementById('fecha_pedido_modificar').value = fechaPedido;
+        document.getElementById('estado_modificar').value = estado;
+        document.getElementById('tipo_pedido_modificar').value = tipoPedido;
+        document.getElementById('total_modificar').value = total;
 
-        // Mostrar el modal
-        var modificarPedidoModal = new bootstrap.Modal(document.getElementById('modificarPedidoModal'));
-        modificarPedidoModal.show();
+        // Crear y mostrar el modal correctamente
+        var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
+        modificarModal.show();
+    }
+
+    function eliminarPedido() {
+        return confirm("¿Estás seguro de que deseas eliminar este pedido?");
     }
 </script>
-    <!-- Pie de página -->
-    <footer>
-        <p>&copy; Peru al plato</p>
-    </footer>
 </body>
 </html>

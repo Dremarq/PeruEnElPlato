@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -189,7 +189,7 @@
         <p style="text-align: center;">Reserva tu mesa en nuestro restaurante y disfruta de una experiencia gastronómica
           única. Por favor, completa el formulario a continuación y nos pondremos en contacto contigo para confirmar tu
           reserva.</p>
-        <img style="display: block; margin: 20px auto;" alt="Imagen del restaurante" src="img/reserva.jpg">
+        <img style="display: block; margin: 20px auto;" alt="Imagen del restaurante" src="public/img/reserva.jpg">
       </div>
       <div class="reserva-form">
         <form>
