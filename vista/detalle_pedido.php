@@ -140,8 +140,8 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                             <td><?= number_format($detalle->precio_unitario, 2) ?></td>
                             <td><?= number_format($detalle->subtotal, 2) ?></td>
                             <td>
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modificarModal<?= $detalle->id_detalle ?>"></button>
-                                <a href="../controlador/CRUDdetalle_pedido.php?accion=eliminar&id=<?= $detalle->id_detalle ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este detalle de pedido?');"></a>
+                                <button type="button" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#modificarModal<?= $detalle->id_detalle ?>"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <a href="../controlador/CRUDdetalle_pedido.php?accion=eliminar&id=<?= $detalle->id_detalle ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este detalle de pedido?');"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         </tr>
 
@@ -190,10 +190,14 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                             </div>
                         </div>
                     <?php endwhile; ?>
-                    
+
                 </tbody>
             </table>
         </div>
+        <!-- Pie de página -->
+        <footer>
+            <p>&copy; Peru al plato</p>
+        </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -218,9 +222,7 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
         }
     </script>
 
-    <footer>
-        <p>&copy; Peru al plato</p>
-    </footer>
+
 </body>
 
 </html>

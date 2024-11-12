@@ -104,47 +104,59 @@ $inventario = $almacenModelo->obtenerInventario();
         </div>
 
         <div class="container-fluid">
-    <!-- Tabla de almacen -->
-    <table class="table">
-        <thead class="bg-info">
-            <tr>
-                <th scope="col">ID Almacén</th>
-                <th scope="col">ID Producto</th>
-                <th scope="col">Nombre Producto</th>
-                <th scope="col">Stock Actual</th>
-                <th scope="col">Stock Mínimo</th>
-                <th scope="col">Fecha de Actualización</th>
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($inventario->num_rows > 0): ?>
-                <?php while ($item = $inventario->fetch_object()): ?>
+            <!-- Tabla de almacen -->
+            <table class="table">
+                <thead class="bg-info">
                     <tr>
-                        <td><?= $item->id_almacen ?></td>
-                        <td><?= $item->id_producto ?></td>
-                        <td><?= $item->nombre_producto ?></td>
-                        <td><?= $item->stock_actual ?></td>
-                        <td><?= $item->stock_minimo ?></td>
-                        <td><?= $item->fecha_actualizacion ?></td>
-                        <td>
-                            <a href="#" onclick="abrirModalModificar('<?= $item->id_almacen ?>', '<?= $item->id_producto ?>', '<?= $item->nombre_producto ?>', '<?= $item->stock_actual ?>', '<?= $item->stock_minimo ?>')" class="btn btn-small btn-warning">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                            <a onclick="return eliminarProductoDeAlmacen()" href="../controlador/CRUDalmacen.php?accion=eliminar&id=<?= $item->id_almacen ?>" class="btn btn-small btn-danger">
-                                <i class="fa-solid fa-trash"></i>
-                            </a>
-                        </td>
+                        <th scope="col">ID Almacén</th>
+                        <th scope="col">ID Producto</th>
+                        <th scope="col">Nombre Producto</th>
+                        <th scope="col">Stock Actual</th>
+                        <th scope="col">Stock Mínimo</th>
+                        <th scope="col">Fecha de Actualización</th>
+                        <th scope="col">Acciones</th>
                     </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="7" class="text-center">No hay datos en el almacén</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-</div>
+                </thead>
+                <tbody>
+                    <?php
+                    // Verificar si hay inventario
+                    if ($inventario && $inventario->num_rows > 0):
+                        while ($item = $inventario->fetch_object()):
+                    ?>
+                            <tr>
+                                <td><?= $item->id_almacen ?></td>
+                                <td><?= $item->id_producto ?></td>
+                                <td><?= $item->nombre_producto ?></td>
+                                <td><?= $item->stock_actual ?></td>
+                                <td><?= $item->stock_minimo ?></td>
+                                <td><?= $item->fecha_actualizacion ?></td>
+                                <td>
+                                    <a href="#" onclick="abrirModalModificar('<?= $item->id_almacen ?>', '<?= $item->id_producto ?>', '<?= $item->nombre_producto ?>', '<?= $item->stock_actual ?>', '<?= $item->stock_minimo ?>')" class="btn btn-small btn-warning">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a onclick="return eliminarProductoDeAlmacen()" href="../controlador/CRUDalmacen.php?accion=eliminar&id=<?= $item->id_almacen ?>" class="btn btn-small btn-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php
+                        endwhile;
+                    else:
+                        ?>
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    No hay productos registrados en el almacén actualmente
+                                </div>
+                            </td>
+                        </tr>
+                    <?php
+                    endif;
+                    ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal para Modificar Almacén -->
@@ -179,7 +191,13 @@ $inventario = $almacenModelo->obtenerInventario();
                 </div>
             </div>
         </div>
+        
+    <!-- Pie de página -->
+    <footer>
+        <p> Peru al plato</p>
+    </footer>
     </div>
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -200,10 +218,6 @@ $inventario = $almacenModelo->obtenerInventario();
         }
     </script>
 
-    <!-- Pie de página -->
-    <footer>
-        <p>&copy; Peru al plato</p>
-    </footer>
 </body>
 
 </html>
