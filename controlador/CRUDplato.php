@@ -1,13 +1,13 @@
 <?php
-require_once '../modelo/producto.php';
+require_once '../modelo/plato.php'; // Asegúrate de que el nombre del archivo sea correcto
 require_once '../config/conexion.php';
 
-class ProductoController {
+class PlatoController {
     private $modelo;
 
     public function __construct() {
         global $conexion;
-        $this->modelo = new Producto($conexion);
+        $this->modelo = new Plato($conexion);
     }
 
     public function procesarAccion() {
@@ -28,20 +28,27 @@ class ProductoController {
     }
 
     private function registrar() {
-        if (!empty($_POST['nombre']) && !empty($_POST['costo']) && !empty($_POST['id_proveedor'])) {
-            $descripcion = !empty($_POST['descripcion']) ? $_POST['descripcion'] : null; // Descripción opcional
-            $resultado = $this->modelo->registrarProducto(
+        if (!empty($_POST['nombre']) && !empty($_POST['descripcion']) && !empty($_POST['precio']) && 
+            !empty($_POST['categoria'])) {
+            
+            // Manejar la subida de la imagen
+            $imagen = $_FILES['imagen']['name'];
+            $ruta = "../imagenes/" . $imagen; // Ajusta la ruta según tu estructura de carpetas
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta);
+
+            $resultado = $this->modelo->registrarPlato(
                 $_POST['nombre'],
-                $descripcion,
-                $_POST['costo'],
-                $_POST['id_proveedor']
+                $_POST['descripcion'],
+                $_POST['precio'],
+                $_POST['categoria'],
+                $imagen
             );
 
             if ($resultado) {
-                $_SESSION['mensaje'] = "Producto registrado exitosamente";
+                $_SESSION['mensaje'] = "Plato registrado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
             } else {
-                $_SESSION['mensaje'] = "Error al registrar producto";
+                $_SESSION['mensaje'] = "Error al registrar plato";
                 $_SESSION['tipo_mensaje'] = "danger";
             }
         } else {
@@ -53,37 +60,38 @@ class ProductoController {
     }
 
     private function modificar() {
-        if (!empty($_POST['id_producto'])) {
-            $resultado = $this->modelo->modificarProducto(
-                $_POST['id_producto'],
+        if (!empty($_POST['id_plato'])) {
+            $resultado = $this->modelo->modificarPlato(
+                $_POST['id_plato'],
                 $_POST['nombre'],
                 $_POST['descripcion'],
-                $_POST['costo'],
-                $_POST['estado'],
-                $_POST['id_proveedor']
+                $_POST['precio'],
+                $_POST['categoria'],
+                $_POST['estado']
             );
 
             if ($resultado) {
-                $_SESSION['mensaje'] = "Producto modificado exitosamente";
+                $_SESSION['mensaje'] = "Plato modificado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
             } else {
-                $_SESSION['mensaje'] = "Error al modificar producto";
+                $_SESSION['mensaje'] = "Error al modificar plato";
                 $_SESSION['tipo_mensaje'] = "danger";
             }
         } else {
-            $_SESSION['mensaje'] = "ID de producto requerido";
+            $_SESSION['mensaje'] = "ID de plato requerido";
             $_SESSION['tipo_mensaje'] = "warning";
         }
         header("Location: ../vista/productos.php");
         exit();
     }
 
-    private function eliminar($id_producto) {
-        if ($this->modelo->eliminarProducto($id_producto)) {
-            $_SESSION['mensaje'] = "Producto eliminado exitosamente";
+    private function eliminar($id_plato) {
+        $resultado = $this->modelo->eliminarPlato($id_plato);
+        if ($resultado) {
+            $_SESSION['mensaje'] = "Plato eliminado exitosamente";
             $_SESSION['tipo_mensaje'] = "success";
         } else {
-            $_SESSION['mensaje'] = "Error al eliminar producto";
+            $_SESSION['mensaje'] = "Error al eliminar plato";
             $_SESSION['tipo_mensaje'] = "danger";
         }
         header("Location: ../vista/productos.php");
@@ -97,6 +105,5 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Crear instancia del controlador y procesar la acción
-$controller = new ProductoController();
+$controller = new PlatoController();
 $controller->procesarAccion();
-?>

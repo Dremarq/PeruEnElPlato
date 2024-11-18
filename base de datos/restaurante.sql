@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-10-2024 a las 21:05:40
+-- Tiempo de generación: 17-11-2024 a las 17:35:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,8 +40,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_admin`, `id_empleado`, `username`, `password`, `ultimo_acceso`) VALUES
-(1, 1, 'admin1', 'password123', '2024-10-25 13:51:24'),
-(2, 2, 'admin2', 'password456', '2024-10-25 13:51:24');
+(1, 1, 'admin', 'admin123', NULL);
 
 -- --------------------------------------------------------
 
@@ -52,19 +51,10 @@ INSERT INTO `admin` (`id_admin`, `id_empleado`, `username`, `password`, `ultimo_
 CREATE TABLE `almacen` (
   `id_almacen` int(11) NOT NULL,
   `id_producto` int(11) DEFAULT NULL,
-  `stock_actual` int(11) DEFAULT NULL,
-  `stock_minimo` int(11) DEFAULT NULL,
-  `fecha_actualizacion` datetime DEFAULT NULL
+  `stock_actual` int(11) NOT NULL,
+  `stock_minimo` int(11) NOT NULL,
+  `fecha_actualizacion` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `almacen`
---
-
-INSERT INTO `almacen` (`id_almacen`, `id_producto`, `stock_actual`, `stock_minimo`, `fecha_actualizacion`) VALUES
-(1, 1, 50, 10, '2024-10-25 13:51:24'),
-(2, 2, 30, 5, '2024-10-25 13:51:24'),
-(3, 3, 100, 20, '2024-10-25 13:51:24');
 
 -- --------------------------------------------------------
 
@@ -84,14 +74,6 @@ CREATE TABLE `caja` (
   `estado` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `caja`
---
-
-INSERT INTO `caja` (`id_caja`, `id_empleado`, `fecha_apertura`, `fecha_cierre`, `monto_inicial`, `monto_final`, `total_ingresos`, `total_egresos`, `estado`) VALUES
-(1, 2, '2024-10-25 13:51:24', NULL, 100.00, NULL, NULL, NULL, NULL),
-(2, 3, '2024-10-25 13:51:24', NULL, 150.00, NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -104,17 +86,9 @@ CREATE TABLE `detalle_pedido` (
   `id_producto` int(11) DEFAULT NULL,
   `cantidad` int(11) DEFAULT NULL,
   `precio_unitario` decimal(10,2) DEFAULT NULL,
-  `subtotal` decimal(10,2) DEFAULT NULL
+  `subtotal` decimal(10,2) DEFAULT NULL,
+  `id_plato` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `detalle_pedido`
---
-
-INSERT INTO `detalle_pedido` (`id_detalle`, `id_pedido`, `id_producto`, `cantidad`, `precio_unitario`, `subtotal`) VALUES
-(1, 1, 1, 1, 15.00, 15.00),
-(2, 1, 3, 6, 2.00, 12.00),
-(3, 2, 2, 1, 10.00, 10.00);
 
 -- --------------------------------------------------------
 
@@ -140,9 +114,7 @@ CREATE TABLE `empleados` (
 --
 
 INSERT INTO `empleados` (`id_empleado`, `id_rol`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `fecha_contratacion`, `estado`) VALUES
-(1, 1, 'Carlos', 'Lopez', '23456789', '987654323', 'carlos@example.com', 'Calle Falsa 789', '2024-10-25', 1),
-(2, 2, 'Ana', 'Martínez', '34567890', '987654324', 'ana@example.com', 'Calle Verdadera 101', '2024-10-25', 1),
-(3, 3, 'Luis', 'Fernández', '45678901', '987654325', 'luis@example.com', 'Calle Equivocada 202', '2024-10-25', 1);
+(1, 1, 'Diego', 'Chavarry', '7545568', '993443125', 'diegoherbay@gmail.com', '15143', '2024-11-17', 1);
 
 -- --------------------------------------------------------
 
@@ -160,13 +132,21 @@ CREATE TABLE `pedidos` (
   `total` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Volcado de datos para la tabla `pedidos`
+-- Estructura de tabla para la tabla `platos`
 --
 
-INSERT INTO `pedidos` (`id_pedido`, `id_usuario`, `id_empleado`, `fecha_pedido`, `estado`, `tipo_pedido`, `total`) VALUES
-(1, 1, 2, '2024-10-25 13:51:24', 'Pendiente', 'Dine-in', 27.00),
-(2, 2, 1, '2024-10-25 13:51:24', 'Completado', 'Delivery', 12.00);
+CREATE TABLE `platos` (
+  `id_plato` int(11) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `precio` decimal(10,2) NOT NULL,
+  `categoria` enum('Plato Principal','Entrada','Postre','Refresco') NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -176,22 +156,12 @@ INSERT INTO `pedidos` (`id_pedido`, `id_usuario`, `id_empleado`, `fecha_pedido`,
 
 CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL,
-  `nombre` varchar(100) DEFAULT NULL,
+  `nombre` varchar(255) NOT NULL,
   `descripcion` text DEFAULT NULL,
-  `precio` decimal(10,2) DEFAULT NULL,
-  `categoria` varchar(50) DEFAULT NULL,
-  `imagen` varchar(255) DEFAULT NULL,
-  `estado` tinyint(1) DEFAULT NULL
+  `costo` decimal(10,2) NOT NULL,
+  `estado` tinyint(1) DEFAULT 1,
+  `id_proveedor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `productos`
---
-
-INSERT INTO `productos` (`id_producto`, `nombre`, `descripcion`, `precio`, `categoria`, `imagen`, `estado`) VALUES
-(1, 'Pizza', 'Pizza de pepperoni', 15.00, 'Comida', NULL, 1),
-(2, 'Hamburguesa', 'Hamburguesa clásica', 10.00, 'Comida', NULL, 1),
-(3, 'Coca-Cola', 'Refresco de cola', 2.00, 'Bebida', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -209,14 +179,6 @@ CREATE TABLE `proveedores` (
   `estado` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `proveedores`
---
-
-INSERT INTO `proveedores` (`id_proveedor`, `nombre_empresa`, `ruc`, `telefono`, `email`, `direccion`, `estado`) VALUES
-(1, 'Proveeduría de Alimentos S.A.', '12345678901', '987654326', 'proveedor1@example.com', 'Calle Comercio 303', 1),
-(2, 'Bebidas y Más S.A.C.', '23456789012', '987654327', 'proveedor2@example.com', 'Calle Bebidas 404', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -232,14 +194,6 @@ CREATE TABLE `reservas` (
   `cantidad_personas` int(11) DEFAULT NULL,
   `estado` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `reservas`
---
-
-INSERT INTO `reservas` (`id_reserva`, `id_usuario`, `numero_mesa`, `fecha_reserva`, `hora_reserva`, `cantidad_personas`, `estado`) VALUES
-(1, 1, 5, '2024-10-25', '18:00:00', 4, 'Confirmada'),
-(2, 2, 3, '2024-10-25', '20:00:00', 2, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -275,17 +229,11 @@ CREATE TABLE `usuarios` (
   `dni` varchar(8) DEFAULT NULL,
   `telefono` varchar(9) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
+  `usuario` varchar(30) NOT NULL,
+  `contraseña` varchar(30) NOT NULL,
   `direccion` varchar(255) DEFAULT NULL,
   `fecha_registro` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuarios`
---
-
-INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `fecha_registro`) VALUES
-(1, 'Juan', 'Pérez', '12345678', '987654321', 'juan@example.com', 'Av. Principal 123', '2024-10-25'),
-(2, 'María', 'Gómez', '87654321', '987654322', 'maria@example.com', 'Av. Secundaria 456', '2024-10-25');
 
 --
 -- Índices para tablas volcadas
@@ -318,7 +266,8 @@ ALTER TABLE `caja`
 ALTER TABLE `detalle_pedido`
   ADD PRIMARY KEY (`id_detalle`),
   ADD KEY `id_pedido` (`id_pedido`),
-  ADD KEY `id_producto` (`id_producto`);
+  ADD KEY `id_producto` (`id_producto`),
+  ADD KEY `fk_detalle_pedido_plato` (`id_plato`);
 
 --
 -- Indices de la tabla `empleados`
@@ -336,10 +285,17 @@ ALTER TABLE `pedidos`
   ADD KEY `id_empleado` (`id_empleado`);
 
 --
+-- Indices de la tabla `platos`
+--
+ALTER TABLE `platos`
+  ADD PRIMARY KEY (`id_plato`);
+
+--
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
-  ADD PRIMARY KEY (`id_producto`);
+  ADD PRIMARY KEY (`id_producto`),
+  ADD KEY `id_proveedor` (`id_proveedor`);
 
 --
 -- Indices de la tabla `proveedores`
@@ -374,55 +330,61 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  MODIFY `id_almacen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_almacen` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `caja`
 --
 ALTER TABLE `caja`
-  MODIFY `id_caja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_caja` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `platos`
+--
+ALTER TABLE `platos`
+  MODIFY `id_plato` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -434,7 +396,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -450,7 +412,7 @@ ALTER TABLE `admin`
 -- Filtros para la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  ADD CONSTRAINT `almacen_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
+  ADD CONSTRAINT `almacen_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `caja`
@@ -463,7 +425,7 @@ ALTER TABLE `caja`
 --
 ALTER TABLE `detalle_pedido`
   ADD CONSTRAINT `detalle_pedido_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`),
-  ADD CONSTRAINT `detalle_pedido_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
+  ADD CONSTRAINT `fk_detalle_pedido_plato` FOREIGN KEY (`id_plato`) REFERENCES `platos` (`id_plato`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `empleados`
@@ -477,6 +439,12 @@ ALTER TABLE `empleados`
 ALTER TABLE `pedidos`
   ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   ADD CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`id_empleado`) REFERENCES `empleados` (`id_empleado`);
+
+--
+-- Filtros para la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedores` (`id_proveedor`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `reservas`

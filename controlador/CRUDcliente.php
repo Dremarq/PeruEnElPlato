@@ -16,8 +16,11 @@ class ClienteController {
                 switch ($_POST['accion']) {
                     case 'registrar':
                         return $this->registrar();
+                        case 'login':
+                            return $this->login();
                     case 'modificar':
                         return $this->modificar();
+                      
                 }
             }
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -29,8 +32,8 @@ class ClienteController {
 
     private function registrar() {
         if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['dni']) && 
-            !empty($_POST['telefono']) && !empty($_POST['email']) && !empty($_POST['direccion']) &&
-            !empty($_POST['fechaRegistro'])) {
+            !empty($_POST['telefono']) && !empty($_POST['email']) && !empty($_POST['direccion']) && 
+            !empty($_POST['usuario']) && !empty($_POST['contrasena'])) { // Cambiado 'password' a 'contrasena'
             
             $resultado = $this->modelo->registrarUsuario(
                 $_POST['nombre'],
@@ -39,7 +42,8 @@ class ClienteController {
                 $_POST['telefono'],
                 $_POST['email'],
                 $_POST['direccion'],
-                $_POST['fechaRegistro']
+                $_POST['usuario'],
+                $_POST['contrasena'] // Cambiado 'password' a 'contrasena'
             );
 
             if ($resultado) {
@@ -50,26 +54,48 @@ class ClienteController {
                 $_SESSION['tipo_mensaje'] = "danger";
             }
         } else {
-            $_SESSION['mensaje'] = "Todos los campos son requeridos";
+            $_SESSION['mensaje'] = "Por favor, complete todos los campos requeridos";
             $_SESSION['tipo_mensaje'] = "warning";
         }
         header("Location: ../vista/usuario.php");
-        exit();
+    }
+
+    private function login() {
+        // Validar que el usuario y la contraseña estén presentes
+        if (!empty($_POST['usuario']) && !empty($_POST['contrasena'])) { // Cambiado 'password' a 'contrasena'
+            $clienteEncontrado = $this->modelo->verificarCredenciales($_POST['usuario'], $_POST['contrasena']); // Cambiado 'password' a 'contrasena'
+
+            if ($clienteEncontrado) {
+                $_SESSION['cliente_id'] = $clienteEncontrado['id_usuario'];
+                header('Location: ../vista/cliente/inicio.php'); // Redirigir a la página del cliente
+                exit();
+            } else {
+                header('Location: ../vista/loginCliente.php?error=Credenciales incorrectas');
+                exit();
+            }
+        } else {
+            header('Location: ../vista/loginCliente.php?error=Por favor, ingresa usuario y contraseña');
+            exit();
+        }
     }
 
     private function modificar() {
-        if (!empty($_POST['id_usuario'])) {
+        if (!empty($_POST['id_usuario']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && 
+            !empty($_POST['dni']) && !empty($_POST['telefono']) && !empty($_POST['email']) && 
+            !empty($_POST['direccion']) && !empty($_POST['usuario']) && !empty($_POST['password'])) {
+            
             $resultado = $this->modelo->modificarUsuario(
-                $_POST['id_usuario'],
-                $_POST['nombreModificar'],
-                $_POST['apellidoModificar'],
-                $_POST['dniModificar'],
-                $_POST['telefonoModificar'],
-                $_POST['emailModificar'],
-                $_POST['direccionModificar'],
-                $_POST['fechaRegistroModificar']
+                $_POST['id_usuario'], // Cambiado aquí
+                $_POST['nombre'],
+                $_POST['apellido'],
+                $_POST['dni'],
+                $_POST['telefono'],
+                $_POST['email'],
+                $_POST['direccion'],
+                $_POST['usuario'],
+                $_POST['password']
             );
-
+    
             if ($resultado) {
                 $_SESSION['mensaje'] = "Usuario modificado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
@@ -77,9 +103,11 @@ class ClienteController {
                 $_SESSION['mensaje'] = "Error al modificar usuario";
                 $_SESSION['tipo_mensaje'] = "danger";
             }
+        } else {
+            $_SESSION['mensaje'] = "Por favor, complete todos los campos requeridos";
+            $_SESSION['tipo_mensaje'] = "warning";
         }
         header("Location: ../vista/usuario.php");
-        exit();
     }
 
     private function eliminar($id) {

@@ -19,10 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['ultimo_acceso'] = $adminEncontrado['ultimo_acceso']; // Puedes actualizar esto si deseas
 
         // Redirigir al panel de administración
-        header('Location: ../vista/admin_dashboard.php');
+        header('Location: ../vista/admin_dashboard.php?alert=success');
         exit();
     } else {
-        $error = "Usuario o contraseña incorrectos.";
+        header('Location: ../vista/login.php?error=Usuario o contraseña incorrectos.');
+        exit();
     }
 }
 

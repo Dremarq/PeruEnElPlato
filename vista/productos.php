@@ -78,8 +78,9 @@ $productos = $productoModelo->obtenerProductos();
                                 <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="precio" class="form-label">Precio:</label>
-                                <input type="number" class="form-control" id="precio" name="precio" step="0.01" required>
+                                <label for="costo" class="form-label">Costo:</label>
+                                <input type="number ```php
+                                " class="form-control" id="costo" name="costo" step="0.01" required>
                             </div>
                             <div class="mb-3">
                                 <label for="categoria" class="form-label">Categoría:</label>
@@ -110,7 +111,7 @@ $productos = $productoModelo->obtenerProductos();
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Precio</th>
+                        <th>Costo</th>
                         <th>Categoría</th>
                         <th>Imagen</th>
                         <th>Estado</th>
@@ -123,16 +124,16 @@ $productos = $productoModelo->obtenerProductos();
                             <td><?= $producto->id_producto ?></td>
                             <td><?= $producto->nombre ?></td>
                             <td><?= $producto->descripcion ?></td>
-                            <td><?= $producto->precio ?></td>
+                            <td><?= $producto->costo ?></td>
                             <td><?= $producto->categoria ?></td>
                             <td><img src="<?= $producto->imagen ?>" alt="<?= $producto->nombre ?>" style="width: 50px; height: auto;"></td>
                             <td><?= $producto->estado ? 'Activo' : 'Inactivo' ?></td>
                             <td>
-                                <a href="#" onclick="abrirModalModificarProducto('<?= $producto->id_producto ?>', '<?= $producto->nombre ?>', '<?= $producto->descripcion ?>', '<?= $producto->precio ?>', '<?= $producto->categoria ?>', '<?= $producto->estado ?>')" class="btn btn-small btn-warning">
+                                <a href="#" onclick="abrirModalModificarProducto('<?= $producto->id_producto ?>', '<?= $producto->nombre ?>', '<?= $producto->descripcion ?>', '<?= $producto->costo ?>', '<?= $producto->categoria ?>', '<?= $producto->estado ?>')" class="btn btn-small btn-warning">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <a href="../controlador/CRUDproductos.php?accion=eliminar&id=<?= $producto->id_producto ?>"
-                                    onclick="return elim inaProducto(<?= $producto->id_producto ?>)" class="btn btn-small btn-danger">
+                                    onclick="return eliminarProducto()" class="btn btn-small btn-danger">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </a>
                             </td>
@@ -163,8 +164,8 @@ $productos = $productoModelo->obtenerProductos();
                                 <textarea class="form-control" id="descripcionModificar" name="descripcion" required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="precioModificar" class="form-label">Precio:</label>
-                                <input type="number" class="form-control" id="precioModificar" name="precio" step="0.01" required>
+                                <label for="costoModificar" class="form-label">Costo:</label>
+                                <input type="number" class="form-control" id="costoModificar" name="costo" step="0.01" required>
                             </div>
                             <div class="mb-3">
                                 <label for="categoriaModificar" class="form-label">Categoría:</label>
@@ -198,12 +199,12 @@ $productos = $productoModelo->obtenerProductos();
         </div>
 
         <script>
-            function abrirModalModificarProducto(id, nombre, descripcion, precio, categoria, estado) {
+            function abrirModalModificarProducto(id, nombre, descripcion, costo, categoria, estado) {
                 // Obtener referencias a los campos del formulario de modificación
                 document.getElementById('id_producto').value = id;
                 document.getElementById('nombreModificar').value = nombre;
                 document.getElementById('descripcionModificar').value = descripcion;
-                document.getElementById('precioModificar').value = precio;
+                document.getElementById('costoModificar').value = costo;
                 document.getElementById('categoriaModificar').value = categoria;
                 document.getElementById('estadoModificar').value = estado;
 

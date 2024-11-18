@@ -191,7 +191,7 @@ $empleados = $empleadoModelo->obtenerEmpleados();
                             </div>
                             <div class="mb-3">
                                 <label for="emailModificar" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="emailModificar" name="email" required required maxlength="70">
+                                <input type="email" class="form-control" id="emailModificar" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="rolModificar" class="form-label">Rol</label>

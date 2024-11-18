@@ -110,7 +110,7 @@ $proveedores = $proveedorModelo->obtenerProveedores();
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
-                </thead>
+                </thead> 
                 <tbody>
                     <?php while ($proveedor = $proveedores->fetch_object()): ?>
                         <tr>

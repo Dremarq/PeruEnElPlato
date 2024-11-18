@@ -33,8 +33,7 @@ $total_clientes = mysqli_fetch_assoc($result)['total'];
     <meta http-equiv="Expires" content="0">
     <link rel="stylesheet" href="../public/styles/admi.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../public/JavaScript/dashboard-charts.js"></script>
-
+    <script src="../public/JavaScript/dashboard-charts.js"></script> 
     <title>Interfaz de Administrador</title>
 
 </head>
@@ -120,6 +119,28 @@ $total_clientes = mysqli_fetch_assoc($result)['total'];
                         </div>
                     </div>
                 </div>
+
+    <style>
+.dashboard-container {
+    display: flex; /* Usar flexbox para alinear elementos en una fila */
+    justify-content: space-between; /* Espacio entre los elementos */
+    align-items: flex-start; /* Alinear los elementos al inicio */
+}
+
+.card {
+    flex: 1; /* Hacer que las tarjetas ocupen un espacio igual */
+    margin-right: 20px; /* Espacio entre las tarjetas */
+}
+
+.card:last-child {
+    margin-right: 0; /* Eliminar el margen derecho en la última tarjeta */
+}
+
+canvas {
+    max-width: 100%; /* Asegúrate de que el canvas no exceda el ancho de su contenedor */
+    height: auto; /* Mantener la altura automática para que se ajuste */
+}
+    </style>
 
                 <!-- Tablas de resumen -->
                 <div class="row mt-4">

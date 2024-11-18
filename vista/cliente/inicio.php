@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Restaurante Perú en el Plato</title>
-  <link rel="stylesheet" href="public/styles/estilo.css">
+  <link rel="stylesheet" href="../../public/styles/estilo.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 </head>
@@ -23,46 +23,21 @@
 </head>
 </head>
 
+
 <body>
-<?php if (isset($_GET['logout']) && $_GET['logout'] == 'success'): ?>
-    <script>
-        swal({
-            title: "¡Sesión Cerrada!",
-            text: "Has cerrado sesión exitosamente.",
-            type: "success",
-            confirmButtonText: "Aceptar"
-        });
-    </script>
-<?php endif; ?>
-
- <!-- Header Section -->
-<header>
+  
+  <!-- Header Section -->
+  <header>
     <nav>
-        <ul>
-            <li><a href="#reserva-anchor">Reserva</a></li>
-            <li><a href="#menu-anchor">Menu</a></li>
-            <li><a href="#contact-anchor">Contáctanos</a></li>
-            <li>
-                <select id="tipoUsuario" onchange="redirigir()">
-                    <option value="" disabled selected>Iniciar Sesión</option>
-                    <option value="empleado">Empleado</option>
-                    <option value="cliente">Cliente</option>
-                </select>
-            </li>
-        </ul>
-    </nav>
-</header>
+      <ul>
+        <li><a href="#reserva-anchor">Reserva</a></li>
+        <li><a href="#menu-anchor">Menu</a></li>
+        <li><a href="#contact-anchor">Contáctanos</a></li>
+        <div><a href="../../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión --></div>
+      </ul>
 
-<script>
-    function redirigir() {
-        const tipoUsuario = document.getElementById('tipoUsuario').value;
-        if (tipoUsuario === 'empleado') {
-            window.location.href = 'vista/login.php'; // Redirige a la página de login para empleados
-        } else if (tipoUsuario === 'cliente') {
-            window.location.href = 'vista/loginCliente.php'; // Redirige a la página de login para clientes
-        }
-    }
-</script>
+    </nav>
+  </header>
 
   <!-- Hero Section -->
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
@@ -76,13 +51,13 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="public/img/fondo.png" class="d-block w-100" alt="...">
+        <img src="../../public/img/fondo.png" class="d-block w-100" alt="...">
       </div>
       <div class="carousel-item">
-        <img src="public/img/fondo2.jpg" class="d-block w-100" alt="...">
+        <img src="../../public/img/fondo2.jpg" class="d-block w-100" alt="...">
       </div>
       <div class="carousel-item">
-        <img src="public/img/fondo3.jpg" class="d-block w-100" alt="...">
+        <img src="../../public/img/fondo3.jpg" class="d-block w-100" alt="...">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -111,7 +86,7 @@
           ¡Ven y descubre por qué en Perú en el Plato la comida criolla tiene otro nivel!</p>
       </div>
       <div class="about-image">
-        <img src="public/img/acerca.jpeg" alt="About Us Image">
+        <img src="../../public/img/acerca.jpeg" alt="About Us Image">
       </div>
     </div>
   </section>
@@ -124,7 +99,7 @@
         <ul>
           <li>
             <div class="card" style="width: 18rem;">
-              <img src="public/img/papa.jpg" class="card-img-top" alt="Papa a la Huancaína">
+              <img src="../../public/img/papa.jpg" class="card-img-top" alt="Papa a la Huancaína">
               <div class="card-body">
                 <p class="card-text">Papas hervidas servidas con una cremosa salsa de queso, ají amarillo y aceitunas,
                   ideales como entrada.</p>
@@ -133,7 +108,7 @@
           </li>
           <li>
             <div class="card" style="width: 18rem;">
-              <img src="public/img/causa.jpg" class="card-img-top" alt="Causa RellenaS">
+              <img src="../../public/img/causa.jpg" class="card-img-top" alt="Causa RellenaS">
               <div class="card-body">
                 <p class="card-text">Puré de papa amarilla sazonado con limón y ají, relleno de pollo, atún o mariscos,
                   y servido frío.</p>
@@ -141,7 +116,7 @@
             </div>
           </li>
           <div class="card" style="width: 18rem;">
-            <img src="public/img/choritos.jpeg" class="card-img-top" alt="Choritos a la Chalaca">
+            <img src="../../public/img/choritos.jpeg" class="card-img-top" alt="Choritos a la Chalaca">
             <div class="card-body">
               <p class="card-text">Mejillones al vapor cubiertos con una mezcla de cebolla, tomate, cilantro y jugo de
                 limón, perfectos como aperitivo.</p>
@@ -154,7 +129,7 @@
         <ul>
           <li>
             <div class="card" style="width: 18rem;">
-              <img src="public/img/lomo.jpg" class="card-img-top" alt="Lomo Saltado">
+              <img src="../../public/img/lomo.jpg" class="card-img-top" alt="Lomo Saltado">
               <div class="card-body">
                 <p class="card-text">Jugoso salteado de carne de res con cebolla, tomate y papas fritas, fusionando
                   sabores peruanos y chinos.</p>
@@ -163,7 +138,7 @@
           </li>
           <li>
             <div class="card" style="width: 18rem;">
-              <img src="public/img/ajidegallina.jpg" class="card-img-top" alt="Aji de Gallina">
+              <img src="../../public/img/ajidegallina.jpg" class="card-img-top" alt="Aji de Gallina">
               <div class="card-body">
                 <p class="card-text">Guiso cremoso de pollo desmenuzado en una salsa de ají amarillo, nueces y queso,
                   servido sobre arroz.</p>
@@ -171,7 +146,7 @@
             </div>
           </li>
           <div class="card" style="width: 18rem;">
-            <img src="public/img/arrozpio.jpg" class="card-img-top" alt="Arroz con Pollo">
+            <img src="../../public/img/arrozpio.jpg" class="card-img-top" alt="Arroz con Pollo">
             <div class="card-body">
               <p class="card-text">Sazón de arroz cocido con pollo, cilantro y especias, acompañado de verduras frescas.
               </p>
@@ -184,7 +159,7 @@
         <ul>
           <li>
             <div class="card" style="width: 18rem;">
-              <img src="public/img/picarones.jpg" class="card-img-top" alt="picarones">
+              <img src="../../public/img/picarones.jpg" class="card-img-top" alt="picarones">
               <div class="card-body">
                 <p class="card-text">Deliciosos buñuelos de masa de zapallo y camote, fritos y bañados en miel de
                   chancaca.</p>
@@ -193,7 +168,7 @@
           </li>
           <li>
             <div class="card" style="width: 18rem;">
-              <img src="public/img/suspiro.jpg" class="card-img-top" alt="...">
+              <img src="../../public/img/suspiro.jpg" class="card-img-top" alt="...">
               <div class="card-body">
                 <p class="card-text">Postre suave y dulce hecho con leche condensada, yemas de huevo y merengue, con un
                   toque de oporto.</p>
@@ -201,7 +176,7 @@
             </div>
           </li>
           <div class="card" style="width: 18rem;">
-            <img src="public/img/turron.jpg" class="card-img-top" alt="...">
+            <img src="../../public/img/turron.jpg" class="card-img-top" alt="...">
             <div class="card-body">
               <p class="card-text">Dulce de origen español, elaborado con almendras, miel y clara de huevo, perfecto
                 para ocasiones especiales.</p>
@@ -219,7 +194,7 @@
         <p style="text-align: center;">Reserva tu mesa en nuestro restaurante y disfruta de una experiencia gastronómica
           única. Por favor, completa el formulario a continuación y nos pondremos en contacto contigo para confirmar tu
           reserva.</p>
-        <img style="display: block; margin: 20px auto;" alt="Imagen del restaurante" src="public/img/reserva.jpg">
+        <img style="display: block; margin: 20px auto;" alt="Imagen del restaurante" src="../../public/img/reserva.jpg">
       </div>
       <div class="reserva-form">
         <form>
@@ -259,16 +234,16 @@
     <div class="contact-container">
       <div class="social-media">
         <a href="#####" target="_blank">
-          <img src="public/img/fb.png" alt="Facebook Logo">
+          <img src="../../public/img/fb.png" alt="Facebook Logo">
         </a>
         <a href="#####" target="_blank">
-          <img src="public/img/yt.png" alt="YouTube Logo">
+          <img src="../../public/img/yt.png" alt="YouTube Logo">
         </a>
         <a href="#####" target="_blank">
-          <img src="public/img/ig.jpeg" alt="Instagram Logo">
+          <img src="../../public/img/ig.jpeg" alt="Instagram Logo">
         </a>
         <a href="#####" target="_blank">
-          <img src="public/img/x.png" alt="X Logo">
+          <img src="../../public/img/x.png" alt="X Logo">
         </a>
       </div>
       <div class="contact-info">

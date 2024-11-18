@@ -71,6 +71,8 @@
     z-index: 9999; /* aumenta el valor de z-index */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* adds a slight shadow to help it stand out */
   }
+
+  
   
   header nav ul {
     display: flex;
