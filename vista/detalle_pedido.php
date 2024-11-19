@@ -31,6 +31,7 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
@@ -74,7 +75,7 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                                     $pedidos = $detallePedidoModelo->obtenerPedidos();
                                     if ($pedidos && $pedidos->num_rows > 0) {
                                         while ($pedido = $pedidos->fetch_object()) {
-                                            echo "<option value='{$pedido->id_pedido}'>Pedido #{$pedido->id_pedido}</option>";
+                                            echo "<option value='{$pedido->id_pedido}'>Pedido #{$pedido ->id_pedido}</option>";
                                         }
                                     } else {
                                         echo "<option value='' disabled>No hay pedidos disponibles</option>";
@@ -83,17 +84,17 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="id_producto" class="form-label">Producto</label>
-                                <select class="form-select" id="id_producto" name="id_producto" required>
-                                    <option value="">Seleccione un producto</option>
+                                <label for="id_plato" class="form-label">Plato</label>
+                                <select class="form-select" id="id_plato" name="id_plato" required>
+                                    <option value="">Seleccione un plato</option>
                                     <?php
-                                    $productos = $detallePedidoModelo->obtenerProductos();
-                                    if ($productos && $productos->num_rows > 0) {
-                                        while ($producto = $productos->fetch_object()) {
-                                            echo "<option value='{$producto->id_producto}'>{$producto->nombre}</option>";
+                                    $platos = $detallePedidoModelo->obtenerPlatos();
+                                    if ($platos && $platos->num_rows > 0) {
+                                        while ($plato = $platos->fetch_object()) {
+                                            echo "<option value='{$plato->id_plato}'>{$plato->nombre}</option>";
                                         }
                                     } else {
-                                        echo "<option value='' disabled>No hay productos disponibles</option>";
+                                        echo "<option value='' disabled>No hay platos disponibles</option>";
                                     }
                                     ?>
                                 </select>
@@ -123,7 +124,7 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                     <tr>
                         <th scope="col">ID Detalle</th>
                         <th scope="col">ID Pedido</th>
-                        <th scope="col">Producto</th>
+                        <th scope="col">Plato</th>
                         <th scope="col">Cantidad</th>
                         <th scope="col">Precio Unitario</th>
                         <th scope="col">Subtotal</th>
@@ -135,7 +136,7 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                         <tr>
                             <td><?= $detalle->id_detalle ?></td>
                             <td><?= $detalle->id_pedido ?></td>
-                            <td><?= $detalle->producto ?></td>
+                            <td><?= $detalle->plato ?></td>
                             <td><?= $detalle->cantidad ?></td>
                             <td><?= number_format($detalle->precio_unitario, 2) ?></td>
                             <td><?= number_format($detalle->subtotal, 2) ?></td>
@@ -158,15 +159,16 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                                             <input type="hidden" name="accion" value="modificar">
                                             <input type="hidden" name="id_detalle" value="<?= $detalle->id_detalle ?>">
                                             <div class="mb-3">
-                                                <label for="id_producto" class="form-label">Producto</label>
-                                                <select class="form-select" id="id_producto" name="id_producto" required>
-                                                    <option value="">Seleccione un producto</option>
+                                                <label for="id_plato" class="form-label">Plato</label>
+                                                <select class="form-select" id="id_plato" name="id_plato" required>
+                                                    <option value="">Seleccione un plato</ ```php
+                                                    <option value="">Seleccione un plato</option>
                                                     <?php
-                                                    $productos = $detallePedidoModelo->obtenerProductos();
-                                                    if ($productos && $productos->num_rows > 0) {
-                                                        while ($producto = $productos->fetch_object()) {
-                                                            $selected = ($producto->id_producto == $detalle->id_producto) ? 'selected' : '';
-                                                            echo "<option value='{$producto->id_producto}' $selected>{$producto->nombre}</option>";
+                                                    $platos = $detallePedidoModelo->obtenerPlatos();
+                                                    if ($platos && $platos->num_rows > 0) {
+                                                        while ($plato = $platos->fetch_object()) {
+                                                            $selected = ($plato->id_plato == $detalle->id_plato) ? 'selected' : '';
+                                                            echo "<option value='{$plato->id_plato}' $selected>{$plato->nombre}</option>";
                                                         }
                                                     }
                                                     ?>
@@ -190,7 +192,6 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                             </div>
                         </div>
                     <?php endwhile; ?>
-
                 </tbody>
             </table>
         </div>
@@ -202,27 +203,31 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Función para abrir el modal de modificar detalle de pedido
-        function abrirModalModificarDetalle(id_detalle, id_pedido, id_producto, cantidad, precio_unitario) {
-            // Asignar los valores a los campos del modal
-            document.getElementById('id_detalle_modificar').value = id_detalle;
-            document.getElementById('id_pedido_modificar').value = id_pedido;
-            document.getElementById('id_producto_modificar').value = id_producto;
-            document.getElementById('cantidad_modificar').value = cantidad;
-            document.getElementById('precio_unitario_modificar').value = precio_unitario;
-
-            // Mostrar el modal
-            var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
-            modificarModal.show();
-        }
-
         // Función para confirmar eliminación
         function eliminarDetallePedido() {
             return confirm("¿Estás seguro que deseas eliminar este detalle de pedido?");
         }
     </script>
-
-
 </body>
 
 </html>
+
+<script>
+    function preventNegativeValue(input) {
+        if (input.value < 0) {
+            input.value = 0; // Si el valor es menor a 0, se establece en 0
+        }
+    }
+
+    // Aplicar la función a los campos de cantidad y precio unitario
+    const cantidad = document.getElementById('cantidad');
+    const precioUnitario = document.getElementById('precio_unitario');
+
+    cantidad.addEventListener('input', function() {
+        preventNegativeValue(this);
+    });
+
+    precioUnitario.addEventListener('input', function() {
+        preventNegativeValue(this);
+    });
+</script>

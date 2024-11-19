@@ -83,11 +83,11 @@ CREATE TABLE `caja` (
 CREATE TABLE `detalle_pedido` (
   `id_detalle` int(11) NOT NULL,
   `id_pedido` int(11) DEFAULT NULL,
-  `id_producto` int(11) DEFAULT NULL,
+  `id_plato` int(11) DEFAULT NULL
   `cantidad` int(11) DEFAULT NULL,
   `precio_unitario` decimal(10,2) DEFAULT NULL,
   `subtotal` decimal(10,2) DEFAULT NULL,
-  `id_plato` int(11) DEFAULT NULL
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -266,7 +266,6 @@ ALTER TABLE `caja`
 ALTER TABLE `detalle_pedido`
   ADD PRIMARY KEY (`id_detalle`),
   ADD KEY `id_pedido` (`id_pedido`),
-  ADD KEY `id_producto` (`id_producto`),
   ADD KEY `fk_detalle_pedido_plato` (`id_plato`);
 
 --

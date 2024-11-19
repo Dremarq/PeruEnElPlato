@@ -1,13 +1,13 @@
 <?php
-require_once '../modelo/detalle_pedido.php';
+require_once '../modelo/rol.php';
 require_once '../config/conexion.php';
 
-class DetallePedidoController {
+class RolController {
     private $modelo;
 
     public function __construct() {
         global $conexion;
-        $this->modelo = new DetallePedido($conexion);
+        $this->modelo = new Rol($conexion);
     }
 
     public function procesarAccion() {
@@ -28,61 +28,49 @@ class DetallePedidoController {
     }
 
     private function registrar() {
-        if (!empty($_POST['id_pedido']) && !empty($_POST['id_plato']) && // Cambiado de id_producto a id_plato
-            !empty($_POST['cantidad']) && !empty($_POST['precio_unitario'])) {
-            
-            $resultado = $this->modelo->registrarDetallePedido(
-                $_POST['id_pedido'],
-                $_POST['id_plato'], // Cambiado de id_producto a id_plato
-                $_POST['cantidad'],
-                $_POST['precio_unitario']
-            );
+        if (!empty($_POST['nombre_rol']) && !empty($_POST['descripcion'])) {
+            $resultado = $this->modelo->registrarRol($_POST['nombre_rol'], $_POST['descripcion']);
 
             if ($resultado) {
-                $_SESSION['mensaje'] = "Detalle de pedido registrado exitosamente";
+                $_SESSION['mensaje'] = "Rol registrado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
             } else {
-                $_SESSION['mensaje'] = "Error al registrar detalle de pedido";
+                $_SESSION['mensaje'] = "Error al registrar rol";
                 $_SESSION['tipo_mensaje'] = "danger";
             }
         } else {
             $_SESSION['mensaje'] = "Todos los campos son requeridos";
             $_SESSION['tipo_mensaje'] = "warning";
         }
-        header("Location: ../vista/detalle_pedido.php");
+        header("Location: ../vista/roles.php");
         exit();
     }
 
     private function modificar() {
-        if (!empty($_POST['id_detalle'])) {
-            $resultado = $this->modelo->modificarDetallePedido(
-                $_POST['id_detalle'],
-                $_POST['id_plato'], // Cambiado de id_producto a id_plato
-                $_POST['cantidad'],
-                $_POST['precio_unitario']
-            );
+        if (!empty($_POST['id_rol'])) {
+            $resultado = $this->modelo->modificarRol($_POST['id_rol'], $_POST['nombre_rol'], $_POST['descripcion']);
 
             if ($resultado) {
-                $_SESSION['mensaje'] = "Detalle de pedido modificado exitosamente";
+                $_SESSION['mensaje'] = "Rol modificado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
             } else {
-                $_SESSION['mensaje'] = "Error al modificar detalle de pedido";
+                $_SESSION['mensaje'] = "Error al modificar rol";
                 $_SESSION['tipo_mensaje'] = "danger";
             }
         }
-        header("Location: ../vista/detalle_pedido.php");
+        header("Location: ../vista/roles.php");
         exit();
     }
 
     private function eliminar($id) {
-        if ($this->modelo->eliminarDetallePedido($id)) {
-            $_SESSION['mensaje'] = "Detalle de pedido eliminado exitosamente";
+        if ($this->modelo->eliminarRol($id)) {
+            $_SESSION['mensaje'] = "Rol eliminado exitosamente";
             $_SESSION['tipo_mensaje'] = "success";
         } else {
-            $_SESSION['mensaje'] = "Error al eliminar detalle de pedido";
+            $_SESSION['mensaje'] = "Error al eliminar rol";
             $_SESSION['tipo_mensaje'] = "danger";
         }
-        header("Location: ../vista/detalle_pedido.php");
+        header("Location: ../vista/roles.php");
         exit();
     }
 }
@@ -93,6 +81,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Crear instancia del controlador y procesar la acción
-$controller = new DetallePedidoController();
+$controller = new RolController();
 $controller->procesarAccion();
 ?>

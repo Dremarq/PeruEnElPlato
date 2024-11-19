@@ -31,6 +31,7 @@ $reservas = $reservaModelo->obtenerReservas();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>

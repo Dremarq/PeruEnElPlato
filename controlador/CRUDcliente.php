@@ -2,25 +2,27 @@
 require_once '../modelo/cliente.php';
 require_once '../config/conexion.php';
 
-class ClienteController {
+class ClienteController
+{
     private $modelo;
 
-    public function __construct() {
+    public function __construct()
+    {
         global $conexion;
         $this->modelo = new Cliente($conexion);
     }
 
-    public function procesarAccion() {
+    public function procesarAccion()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['accion'])) {
                 switch ($_POST['accion']) {
                     case 'registrar':
                         return $this->registrar();
-                        case 'login':
-                            return $this->login();
+                    case 'login':
+                        return $this->login();
                     case 'modificar':
                         return $this->modificar();
-                      
                 }
             }
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -30,11 +32,14 @@ class ClienteController {
         }
     }
 
-    private function registrar() {
-        if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['dni']) && 
-            !empty($_POST['telefono']) && !empty($_POST['email']) && !empty($_POST['direccion']) && 
-            !empty($_POST['usuario']) && !empty($_POST['contrasena'])) { // Cambiado 'password' a 'contrasena'
-            
+    private function registrar()
+    {
+        if (
+            !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['dni']) &&
+            !empty($_POST['telefono']) && !empty($_POST['email']) && !empty($_POST['direccion']) &&
+            !empty($_POST['usuario']) && !empty($_POST['contrasena'])
+        ) { // Cambiado 'password' a 'contrasena'
+
             $resultado = $this->modelo->registrarUsuario(
                 $_POST['nombre'],
                 $_POST['apellido'],
@@ -60,7 +65,8 @@ class ClienteController {
         header("Location: ../vista/usuario.php");
     }
 
-    private function login() {
+    private function login()
+    {
         // Validar que el usuario y la contraseña estén presentes
         if (!empty($_POST['usuario']) && !empty($_POST['contrasena'])) { // Cambiado 'password' a 'contrasena'
             $clienteEncontrado = $this->modelo->verificarCredenciales($_POST['usuario'], $_POST['contrasena']); // Cambiado 'password' a 'contrasena'
@@ -79,11 +85,17 @@ class ClienteController {
         }
     }
 
-    private function modificar() {
-        if (!empty($_POST['id_usuario']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && 
-            !empty($_POST['dni']) && !empty($_POST['telefono']) && !empty($_POST['email']) && 
-            !empty($_POST['direccion']) && !empty($_POST['usuario']) && !empty($_POST['password'])) {
-            
+    private function modificar()
+
+
+    {
+        var_dump($_POST);
+        if (
+            !empty($_POST['id_usuario']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) &&
+            !empty($_POST['dni']) && !empty($_POST['telefono']) && !empty($_POST['email']) &&
+            !empty($_POST['direccion']) && !empty($_POST['usuario'])
+        ) {
+
             $resultado = $this->modelo->modificarUsuario(
                 $_POST['id_usuario'], // Cambiado aquí
                 $_POST['nombre'],
@@ -95,7 +107,7 @@ class ClienteController {
                 $_POST['usuario'],
                 $_POST['password']
             );
-    
+
             if ($resultado) {
                 $_SESSION['mensaje'] = "Usuario modificado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
@@ -108,9 +120,11 @@ class ClienteController {
             $_SESSION['tipo_mensaje'] = "warning";
         }
         header("Location: ../vista/usuario.php");
+        exit();
     }
 
-    private function eliminar($id) {
+    private function eliminar($id)
+    {
         if ($this->modelo->eliminarUsuario($id)) {
             $_SESSION['mensaje'] = "Usuario eliminado exitosamente";
             $_SESSION['tipo_mensaje'] = "success";
@@ -131,4 +145,3 @@ if (session_status() === PHP_SESSION_NONE) {
 // Crear instancia del controlador y procesar la acción
 $controller = new ClienteController();
 $controller->procesarAccion();
-?>

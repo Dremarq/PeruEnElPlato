@@ -33,7 +33,7 @@ class PlatoController {
             
             // Manejar la subida de la imagen
             $imagen = $_FILES['imagen']['name'];
-            $ruta = "../imagenes/" . $imagen; // Ajusta la ruta según tu estructura de carpetas
+            $ruta = "../public/img/". $imagen; // Ajusta la ruta según tu estructura de carpetas
             move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta);
 
             $resultado = $this->modelo->registrarPlato(
@@ -43,7 +43,12 @@ class PlatoController {
                 $_POST['categoria'],
                 $imagen
             );
-
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta)) {
+                // La imagen se ha subido correctamente
+            } else {
+                $_SESSION['mensaje'] = "Error al subir la imagen";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
             if ($resultado) {
                 $_SESSION['mensaje'] = "Plato registrado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
@@ -55,7 +60,7 @@ class PlatoController {
             $_SESSION['mensaje'] = "Todos los campos son requeridos";
             $_SESSION['tipo_mensaje'] = "warning";
         }
-        header("Location: ../vista/productos.php");
+        header("Location: ../vista/platos.php");
         exit();
     }
 
@@ -81,7 +86,7 @@ class PlatoController {
             $_SESSION['mensaje'] = "ID de plato requerido";
             $_SESSION['tipo_mensaje'] = "warning";
         }
-        header("Location: ../vista/productos.php");
+        header("Location: ../vista/platos.php");
         exit();
     }
 
@@ -94,7 +99,7 @@ class PlatoController {
             $_SESSION['mensaje'] = "Error al eliminar plato";
             $_SESSION['tipo_mensaje'] = "danger";
         }
-        header("Location: ../vista/productos.php");
+        header("Location: ../vista/platos.php");
         exit();
     }
 }

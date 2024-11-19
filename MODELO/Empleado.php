@@ -1,4 +1,5 @@
 <?php
+
 class Empleado {
     private $conexion;
 
@@ -9,8 +10,8 @@ class Empleado {
     public function obtenerEmpleados() {
         try {
             $query = "SELECT e.*, r.nombre_rol 
-                     FROM empleados e 
-                     LEFT JOIN roles r ON e.id_rol = r.id_rol";
+                      FROM empleados e 
+                      LEFT JOIN roles r ON e.id_rol = r.id_rol";
             return $this->conexion->query($query);
         } catch (Exception $e) {
             error_log("Error en obtenerEmpleados: " . $e->getMessage());
@@ -18,12 +19,12 @@ class Empleado {
         }
     }
 
-    public function registrarEmpleado($nombre, $apellido, $dni, $telefono, $email, $id_rol) {
+    public function registrarEmpleado($nombre, $apellido, $dni, $telefono, $email, $direccion, $fecha_contratacion, $id_rol) {
         try {
-            $query = "INSERT INTO empleados (nombre, apellido, dni, telefono, email, id_rol) 
-                     VALUES (?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO empleados (nombre, apellido, dni, telefono, email, direccion, fecha_contratacion, id_rol) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conexion->prepare($query);
-            $stmt->bind_param("sssssi", $nombre, $apellido, $dni, $telefono, $email, $id_rol);
+            $stmt->bind_param("sssssssi", $nombre, $apellido, $dni, $telefono, $email, $direccion, $fecha_contratacion, $id_rol);
             return $stmt->execute();
         } catch (Exception $e) {
             error_log("Error en registrarEmpleado: " . $e->getMessage());
@@ -31,13 +32,13 @@ class Empleado {
         }
     }
 
-    public function modificarEmpleado($id, $nombre, $apellido, $dni, $telefono, $email, $id_rol) {
+    public function modificarEmpleado($id, $nombre, $apellido, $dni, $telefono, $email, $direccion, $fecha_contratacion, $id_rol) {
         try {
             $query = "UPDATE empleados 
-                     SET nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ?, id_rol = ? 
-                     WHERE id_empleado = ?";
+                      SET nombre = ?, apellido = ?, dni = ?, telefono = ?, email = ?, direccion = ?, fecha_contratacion = ?, id_rol = ? 
+                      WHERE id_empleado = ?";
             $stmt = $this->conexion->prepare($query);
-            $stmt->bind_param("ssssiii", $nombre, $apellido, $dni, $telefono, $email, $id_rol, $id);
+            $stmt->bind_param("ssssssssi", $nombre, $apellido, $dni, $telefono, $email, $direccion, $fecha_contratacion, $id_rol, $id);
             return $stmt->execute();
         } catch (Exception $e) {
             error_log("Error en modificarEmpleado: " . $e->getMessage());
@@ -55,6 +56,40 @@ class Empleado {
             error_log("Error en eliminarEmpleado: " . $e->getMessage());
             return false;
         }
+    }
+
+    public function verificarDNI($dni, $idEmpleado = null) {
+        $query = "SELECT COUNT(*) as total FROM empleados WHERE dni = ?";
+        if ($idEmpleado) {
+            $query .= " AND id_empleado != ?";
+        }
+        $stmt = $this->conexion->prepare($query);
+        if ($idEmpleado) {
+            $stmt->bind_param("si", $dni, $idEmpleado);
+        } else {
+            $stmt->bind_param("s", $dni);
+        }
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $row = $resultado->fetch_assoc();
+        return $row['total'] > 0; // Retorna true si el DNI ya existe
+    }
+
+    public function verificarTelefono($telefono, $idEmpleado = null) {
+        $query = "SELECT COUNT(*) as total FROM empleados WHERE telefono = ?";
+        if ($idEmpleado) {
+            $query .= " AND id_empleado != ?";
+        }
+        $stmt = $this->conexion->prepare($query);
+        if ($idEmpleado) {
+            $stmt->bind_param("si", $telefono, $idEmpleado);
+        } else {
+            $stmt->bind_param("s", $telefono);
+        }
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $row = $resultado->fetch_assoc();
+        return $row['total'] > 0; // Retorna true si el teléfono ya existe
     }
 }
 ?>

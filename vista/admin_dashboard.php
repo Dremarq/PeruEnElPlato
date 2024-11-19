@@ -49,6 +49,7 @@ $total_clientes = mysqli_fetch_assoc($result)['total'];
                 <li><a href="../vista/empleados.php">Empleados</a></li>
                 <li><a href="../vista/pedidos.php">Pedidos</a></li>
                 <li><a href="../vista/productos.php">Productos</a></li>
+                <li><a href="../vista/platos.php">Platos</a></li>
                 <li><a href="../vista/proveedores.php">Proveedores</a></li>
                 <li><a href="../vista/reservas.php">Reserva</a></li>
                 <li><a href="../vista/roles.php">Roles</a></li>

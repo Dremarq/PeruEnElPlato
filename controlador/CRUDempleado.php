@@ -28,16 +28,37 @@ class EmpleadoController {
     }
 
     private function registrar() {
+        // Verificar que todos los campos requeridos estén llenos
         if (!empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['dni']) && 
             !empty($_POST['telefono']) && !empty($_POST['email']) && 
-            !empty($_POST['rol'])) {
-            
+            !empty($_POST['rol']) && !empty($_POST['direccion']) && 
+            !empty($_POST['fecha_contratacion'])) {
+
+            // Verificar si el DNI ya existe
+            if ($this->modelo->verificarDNI($_POST['dni'])) {
+                $_SESSION['mensaje'] = "El DNI ya está registrado.";
+                $_SESSION['tipo_mensaje'] = "danger";
+                header("Location: ../vista/empleados.php");
+                exit();
+            }
+
+            // Verificar si el teléfono ya existe
+            if ($this->modelo->verificarTelefono($_POST['telefono'])) {
+                $_SESSION['mensaje'] = "El teléfono ya está registrado.";
+                $_SESSION['tipo_mensaje'] = "danger";
+                header("Location: ../vista/empleados.php");
+                exit();
+            }
+
+            // Si no existen, registrar el empleado
             $resultado = $this->modelo->registrarEmpleado(
                 $_POST['nombre'],
                 $_POST['apellido'],
                 $_POST['dni'],
                 $_POST['telefono'],
                 $_POST['email'],
+                $_POST['direccion'],
+                $_POST['fecha_contratacion'],
                 $_POST['rol']
             );
 
@@ -58,6 +79,22 @@ class EmpleadoController {
 
     private function modificar() {
         if (!empty($_POST['id_empleado'])) {
+            // Verificar si el DNI ya existe (excepto para el empleado actual)
+            if ($this->modelo->verificarDNI($_POST['dni'], $_POST['id_empleado'])) {
+                $_SESSION['mensaje'] = "El DNI ya está registrado.";
+                $_SESSION['tipo_mensaje'] = "danger";
+                header("Location: ../vista/empleados.php");
+                exit();
+            }
+
+            // Verificar si el teléfono ya existe (excepto para el empleado actual)
+            if ($this->modelo->verificarTelefono($_POST['telefono'], $_POST['id_empleado'])) {
+                $_SESSION['mensaje'] = "El teléfono ya está registrado.";
+                $_SESSION['tipo_mensaje'] = "danger";
+                header("Location: ../vista/empleados.php");
+                exit();
+            }
+
             $resultado = $this->modelo->modificarEmpleado(
                 $_POST['id_empleado'],
                 $_POST['nombre'],
@@ -65,6 +102,8 @@ class EmpleadoController {
                 $_POST['dni'],
                 $_POST['telefono'],
                 $_POST['email'],
+                $_POST['direccion'],
+                $_POST['fecha_contratacion'],
                 $_POST['rol']
             );
 
@@ -75,7 +114,11 @@ class EmpleadoController {
                 $_SESSION['mensaje'] = "Error al modificar empleado";
                 $_SESSION['tipo_mensaje'] = "danger";
             }
+        } else {
+            $_SESSION['mensaje'] = "ID de empleado requerido";
+            $_SESSION['tipo_mensaje'] = "warning";
         }
+        
         header("Location: ../vista/empleados.php");
         exit();
     }

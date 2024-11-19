@@ -28,15 +28,16 @@ class ProductoController {
     }
 
     private function registrar() {
-        if (!empty($_POST['nombre']) && !empty($_POST['costo']) && !empty($_POST['id_proveedor'])) {
-            $descripcion = !empty($_POST['descripcion']) ? $_POST['descripcion'] : null; // Descripción opcional
+        if (!empty($_POST['nombre']) && !empty($_POST['descripcion']) && !empty($_POST['costo']) && 
+            !empty($_POST['id_proveedor'])) {
+            
             $resultado = $this->modelo->registrarProducto(
                 $_POST['nombre'],
-                $descripcion,
+                $_POST['descripcion'],
                 $_POST['costo'],
-                $_POST['id_proveedor']
+                $_POST['id_proveedor'] // Asegúrate de que esto sea el ID del proveedor
             );
-
+    
             if ($resultado) {
                 $_SESSION['mensaje'] = "Producto registrado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";

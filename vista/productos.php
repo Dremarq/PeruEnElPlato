@@ -2,9 +2,15 @@
 session_start();
 require_once "../config/conexion.php";
 require_once "../modelo/Producto.php";
+require_once "../modelo/proveedores.php"; // Asegúrate de incluir el modelo de proveedores
+$proveedorModelo = new Proveedor($conexion);
+
 
 $productoModelo = new Producto($conexion);
 $productos = $productoModelo->obtenerProductos();
+
+$proveedorModelo = new Proveedor($conexion);
+$proveedores = $proveedorModelo->obtenerProveedores(); // Obtener proveedores
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +23,7 @@ $productos = $productoModelo->obtenerProductos();
     <link rel="stylesheet" href="../public/styles/tablas.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
-    <script src="../public/JavaScript/producto.js"></script>
+
     <title>Interfaz de Administrador - Productos</title>
 </head>
 
@@ -32,6 +38,7 @@ $productos = $productoModelo->obtenerProductos();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
@@ -67,7 +74,7 @@ $productos = $productoModelo->obtenerProductos();
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="../controlador/CRUDproductos.php" method="POST" enctype="multipart/form-data">
+                        <form action="../controlador/CRUDproductos.php" method="POST">
                             <input type="hidden" name="accion" value="registrar">
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre:</label>
@@ -75,28 +82,37 @@ $productos = $productoModelo->obtenerProductos();
                             </div>
                             <div class="mb-3">
                                 <label for="descripcion" class="form-label">Descripción:</label>
-                                <textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
+                                <textarea class="form-control" id="descripcion" name=" descripcion" required></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="costo" class="form-label">Costo:</label>
-                                <input type="number ```php
-                                " class="form-control" id="costo" name="costo" step="0.01" required>
+                                <input type="number" class="form-control" id="costo" name="costo" step="0.01" required>
                             </div>
                             <div class="mb-3">
-                                <label for="categoria" class="form-label">Categoría:</label>
-                                <select class="form-select" id="categoria" name="categoria" required>
-                                    <option value="">Seleccione una categoría</option>
-                                    <option value="Entrada">Entrada</option>
-                                    <option value="Plato Principal">Plato Principal</option>
-                                    <option value="Bebida">Bebida</option>
-                                    <option value="Postre">Postre</option>
+                                <label for="id_proveedor" class="form-label">Proveedor:</label>
+                                <select class="form-select" id="id_proveedor" name="id_proveedor" required>
+                                    <option value="">Seleccione un proveedor</option>
+                                    <?php
+                                    // Obtener proveedores
+                                    if ($proveedores && $proveedores->num_rows > 0) {
+                                        while ($proveedor = $proveedores->fetch_object()) {
+                                            echo "<option value='{$proveedor->id_proveedor}'>{$proveedor->nombre_empresa}</option>";
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="imagen" class="form-label">Imagen:</label>
-                                <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                                <label for="estado" class="form-label">Estado:</label>
+                                <select class="form-select" id="estado" name="estado" required>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
+                                </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -112,8 +128,7 @@ $productos = $productoModelo->obtenerProductos();
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Costo</th>
-                        <th>Categoría</th>
-                        <th>Imagen</th>
+                        <th>Proveedor</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -124,12 +139,11 @@ $productos = $productoModelo->obtenerProductos();
                             <td><?= $producto->id_producto ?></td>
                             <td><?= $producto->nombre ?></td>
                             <td><?= $producto->descripcion ?></td>
-                            <td><?= $producto->costo ?></td>
-                            <td><?= $producto->categoria ?></td>
-                            <td><img src="<?= $producto->imagen ?>" alt="<?= $producto->nombre ?>" style="width: 50px; height: auto;"></td>
+                            <td><?= number_format($producto->costo, 2) ?></td>
+                            <td><?= $producto->id_proveedor ?></td>
                             <td><?= $producto->estado ? 'Activo' : 'Inactivo' ?></td>
                             <td>
-                                <a href="#" onclick="abrirModalModificarProducto('<?= $producto->id_producto ?>', '<?= $producto->nombre ?>', '<?= $producto->descripcion ?>', '<?= $producto->costo ?>', '<?= $producto->categoria ?>', '<?= $producto->estado ?>')" class="btn btn-small btn-warning">
+                                <a href="#" onclick="abrirModalModificarProducto('<?= $producto->id_producto ?>', '<?= $producto->nombre ?>', '<?= $producto->descripcion ?>', '<?= $producto->costo ?>', '<?= $producto->id_proveedor ?>', '<?= $producto->estado ?>')" class="btn btn-small btn-warning">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <a href="../controlador/CRUDproductos.php?accion=eliminar&id=<?= $producto->id_producto ?>"
@@ -152,7 +166,7 @@ $productos = $productoModelo->obtenerProductos();
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="../controlador/CRUDproductos.php" method="POST" enctype="multipart/form-data">
+                        <form action="../controlador/CRUDproductos.php" method="POST">
                             <input type="hidden" name="accion" value="modificar">
                             <input type="hidden" id="id_producto" name="id_producto">
                             <div class="mb-3">
@@ -168,18 +182,17 @@ $productos = $productoModelo->obtenerProductos();
                                 <input type="number" class="form-control" id="costoModificar" name="costo" step="0.01" required>
                             </div>
                             <div class="mb-3">
-                                <label for="categoriaModificar" class="form-label">Categoría:</label>
-                                <select class="form-select" id="categoriaModificar" name="categoria" required>
-                                    <option value="">Seleccione una categoría</option>
-                                    <option value="Entrada">Entrada</option>
-                                    <option value="Plato Principal">Plato Principal</option>
-                                    <option value="Bebida">Bebida</option>
-                                    <option value="Postre">Postre</option>
+                                <label for="id_proveedor" class="form-label">Proveedor:</label>
+                                <select class="form-select" id="id_proveedor" name="id_proveedor" required>
+                                    <option value="">Seleccione un proveedor</option>
+                                    <?php
+                                    // Cargar proveedores desde la base de datos
+                                    $proveedores = $proveedorModelo->obtenerProveedores(); // Asegúrate de que este método esté disponible
+                                    while ($proveedor = $proveedores->fetch_object()) {
+                                        echo "<option value='{$proveedor->id_proveedor}'>{$proveedor->nombre_empresa}</option>";
+                                    }
+                                    ?>
                                 </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="imagenModificar" class="form-label">Imagen:</label>
-                                <input type="file" class="form-control" id="imagenModificar" name="imagen" accept="image/*">
                             </div>
                             <div class="mb-3">
                                 <label for="estadoModificar" class="form-label">Estado:</label>
@@ -199,14 +212,14 @@ $productos = $productoModelo->obtenerProductos();
         </div>
 
         <script>
-            function abrirModalModificarProducto(id, nombre, descripcion, costo, categoria, estado) {
-                // Obtener referencias a los campos del formulario de modificación
+            function abrirModalModificarProducto(id, nombre, descripcion, costo, id_proveedor) {
                 document.getElementById('id_producto').value = id;
                 document.getElementById('nombreModificar').value = nombre;
                 document.getElementById('descripcionModificar').value = descripcion;
                 document.getElementById('costoModificar').value = costo;
-                document.getElementById('categoriaModificar').value = categoria;
-                document.getElementById('estadoModificar').value = estado;
+
+                // Asignar el ID del proveedor al campo de selección
+                document.getElementById('id_proveedor').value = id_proveedor;
 
                 // Mostrar el modal
                 var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
