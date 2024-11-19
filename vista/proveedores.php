@@ -209,3 +209,35 @@ $proveedores = $proveedorModelo->obtenerProveedores();
 </body>
 
 </html>
+<script>
+    document.getElementById('formRegistroProveedor').addEventListener('submit', function(event) {
+        var rucInput = document.getElementById('ruc');
+        var telefonoInput = document.getElementById('telefono');
+        var ruc = rucInput.value;
+        var telefono = telefonoInput.value;
+
+        // Validar RUC
+        if (!validarRUC(ruc)) {
+            alert("El RUC ingresado no es válido. Asegúrate de que tenga 11 dígitos y solo contenga números.");
+            event.preventDefault(); // Evita el envío del formulario
+            return;
+        }
+
+        // Validar Teléfono
+        if (!validarTelefono(telefono)) {
+            alert("El teléfono ingresado no es válido. Debe ser un número de 9 dígitos que comience con 9.");
+            event.preventDefault(); // Evita el envío del formulario
+            return;
+        }
+    });
+
+    function validarRUC(ruc) {
+        // Verifica que el RUC tenga exactamente 11 dígitos y solo contenga números
+        return /^\d{11}$/.test(ruc);
+    }
+
+    function validarTelefono(telefono) {
+        // Verifica que el teléfono tenga exactamente 9 dígitos y comience con 9
+        return /^9\d{8}$/.test(telefono);
+    }
+</script>
