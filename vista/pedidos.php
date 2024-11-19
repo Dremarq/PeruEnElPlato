@@ -9,6 +9,7 @@ $pedidos = $pedidoModelo->obtenerPedidos();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +19,7 @@ $pedidos = $pedidoModelo->obtenerPedidos();
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
     <title>Interfaz de Administrador - Pedidos</title>
 </head>
+
 <body>
     <!-- Menú lateral -->
     <nav class="sidebar">
@@ -29,6 +31,7 @@ $pedidos = $pedidoModelo->obtenerPedidos();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
@@ -140,21 +143,21 @@ $pedidos = $pedidoModelo->obtenerPedidos();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                     // Verificar si hay pedidos
                     if ($pedidos && $pedidos->num_rows > 0):
-                        while ($pedido = $pedidos->fetch_object()): 
+                        while ($pedido = $pedidos->fetch_object()):
                     ?>
-                        <tr>
-                            <td><?= $pedido->id_pedido ?></td>
-                            <td><?= $pedido->cliente ?></td>
-                            <td><?= $pedido->empleado ?></td>
-                            <td><?= $pedido->fecha_pedido ?></td>
-                            <td><?= $pedido->estado ?></td>
-                            <td><?= $pedido->tipo_pedido ?></td>
-                            <td><?= $pedido->total ?></td>
-                            <td>
-                                <a href="#" onclick="abrirModalModificar(
+                            <tr>
+                                <td><?= $pedido->id_pedido ?></td>
+                                <td><?= $pedido->cliente ?></td>
+                                <td><?= $pedido->empleado ?></td>
+                                <td><?= $pedido->fecha_pedido ?></td>
+                                <td><?= $pedido->estado ?></td>
+                                <td><?= $pedido->tipo_pedido ?></td>
+                                <td><?= $pedido->total ?></td>
+                                <td>
+                                    <a href="#" onclick="abrirModalModificar(
                                     '<?= $pedido->id_pedido ?>',
                                     '<?= $pedido->id_usuario ?>',
                                     '<?= $pedido->id_empleado ?>',
@@ -163,17 +166,17 @@ $pedidos = $pedidoModelo->obtenerPedidos();
                                     '<?= $pedido->tipo_pedido ?>',
                                     '<?= $pedido->total ?>'
                                 )" class="btn btn-small btn-warning">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                <a onclick="return eliminarPedido()" href="../controlador/CRUDpedidos.php?accion=eliminar&id=<?= $pedido->id_pedido ?>" class="btn btn-small btn-danger">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php 
-                        endwhile; 
-                    else: 
-                    ?>
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a onclick="return eliminarPedido()" href="../controlador/CRUDpedidos.php?accion=eliminar&id=<?= $pedido->id_pedido ?>" class="btn btn-small btn-danger">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php
+                        endwhile;
+                    else:
+                        ?>
                         <tr>
                             <td colspan="8" class="text-center">
                                 <div class="alert alert-info" role="alert">
@@ -182,8 +185,8 @@ $pedidos = $pedidoModelo->obtenerPedidos();
                                 </div>
                             </td>
                         </tr>
-                    <?php 
-                    endif; 
+                    <?php
+                    endif;
                     ?>
                 </tbody>
             </table>
@@ -248,7 +251,7 @@ $pedidos = $pedidoModelo->obtenerPedidos();
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="total" class="form-label">Total</label>
+                            <label for="total_modificar" class="form-label">Total</label>
                             <input type="number" step="0.01" class="form-control" id="total_modificar" name="total" required>
                         </div>
                         <div class="modal-footer">
@@ -263,7 +266,7 @@ $pedidos = $pedidoModelo->obtenerPedidos();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <<script>
-    function abrirModalModificar(id, idUsuario, idEmpleado, fechaPedido, estado, tipoPedido, total) {
+        function abrirModalModificar(id, idUsuario, idEmpleado, fechaPedido, estado, tipoPedido, total) {
         // Corregir los IDs de los campos
         document.getElementById('id_pedido').value = id;
         document.getElementById('id_usuario_modificar').value = idUsuario;
@@ -276,11 +279,54 @@ $pedidos = $pedidoModelo->obtenerPedidos();
         // Crear y mostrar el modal correctamente
         var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
         modificarModal.show();
-    }
+        }
 
-    function eliminarPedido() {
+        function eliminarPedido() {
         return confirm("¿Estás seguro de que deseas eliminar este pedido?");
-    }
-</script>
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        // Seleccionar el formulario de registro y modificación
+        const formRegistro = document.getElementById('formRegistroPedido');
+        const formModificar = document.getElementById('formModificarPedido');
+
+        // Función para validar el total
+        function validarTotal(event) {
+            const totalInput = event.target;
+            const totalValue = parseFloat(totalInput.value);
+
+            if (totalValue < 0) {
+                alert("El total no puede ser menor que 0.");
+                totalInput.value = 0; // Restablecer el total a 0
+            }
+        }
+
+        // Función para prevenir que el valor baje de 0
+        function prevenirNegativos(event) {
+            const totalInput = event.target;
+            const totalValue = parseFloat(totalInput.value);
+
+            if (totalValue < 0) {
+                totalInput.value = 0; // Restablecer el total a 0 si es menor que 0
+            }
+        }
+
+        // Agregar evento de validación al campo total en el formulario de registro
+        if (formRegistro) {
+            const totalRegistro = document.getElementById('total'); // Asegúrate de que el ID sea correcto
+            totalRegistro.addEventListener('input', validarTotal);
+            totalRegistro.addEventListener('blur', prevenirNegativos); // Para prevenir negativos al perder el foco
+        }
+
+        // Agregar evento de validación al campo total en el formulario de modificación
+        if (formModificar) {
+            const totalModificar = document.getElementById('total_modificar'); // Asegúrate de que el ID sea correcto
+            totalModificar.addEventListener('input', validarTotal);
+            totalModificar.addEventListener('blur', prevenirNegativos); // Para prevenir negativos al perder el foco
+        }
+    });
+        </script>
 </body>
+
 </html>
+

@@ -17,7 +17,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
     <link rel="stylesheet" href="../public/styles/tablas.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
-    <script src="../public/JavaScript/usuario.js"></script>
+    
     <title>Interfaz de Administrador - Usuarios</title>
 </head>
 
@@ -32,6 +32,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
@@ -94,9 +95,14 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                                 <input type="text" class="form-control" id="direccion" name="direccion" required>
                             </div>
                             <div class="mb-3">
-                                <label for="fechaRegistro" class="form-label">Fecha de Registro:</label>
-                                <input type="date" class="form-control" id="fechaRegistro" name="fechaRegistro" required>
+                                <label for="usuario" class="form-label">usuario:</label>
+                                <input type="text" class="form-control" id="usuario" name="usuario" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="contrasena" class="form-label">contraseña:</label>
+                                <input type="password" class="form-control" id="contrasena" name="contrasena" required>
+                            </div>
+                           
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </form>
                     </div>
@@ -116,6 +122,8 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>Dirección</th>
+                        <th>usuario</th>
+                        <th>contrasena</th>
                         <th>Fecha de Registro</th>
                         <th>Acciones</th>
                     </tr>
@@ -130,9 +138,11 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                             <td><?= $usuario->telefono ?></td>
                             <td><?= $usuario->email ?></td>
                             <td><?= $usuario->direccion ?></td>
+                            <td><?= $usuario->usuario ?></td>
+                            <td><?= $usuario->contrasena ?></td>
                             <td><?= $usuario->fecha_registro ?></td>
                             <td>
-                                <a href="#" onclick="abrirModalModificarUsuario('<?= $usuario->id_usuario ?>', '<?= $usuario->nombre ?>', '<?= $usuario->apellido ?>', '<?= $usuario->dni ?>', '<?= $usuario->telefono ?>', '<?= $usuario->email ?>', '<?= $usuario->direccion ?>', '<?= $usuario->fecha_registro ?>')" class="btn btn-small btn-warning">
+                                <a href="#" onclick="abrirModalModificarUsuario('<?= $usuario->id_usuario ?>', '<?= $usuario->nombre ?>', '<?= $usuario->apellido ?>', '<?= $usuario->dni ?>', '<?= $usuario->telefono ?>', '<?= $usuario->email ?>', '<?= $usuario->direccion ?>','<?= $usuario->usuario ?>','<?= $usuario->contrasena ?>')" class="btn btn-small btn-warning">
                                     <i class="fa-solid fa-pen-to-square"></i> 
                                 </a>
                                 <a onclick="return eliminarUsuario()" href="../controlador/CRUDcliente.php?accion=eliminar&id=<?= $usuario->id_usuario ?>" class="btn btn-small btn-danger">
@@ -159,32 +169,37 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                             <input type="hidden" id="id_usuario" name="id_usuario">
                             <div class="mb-3">
                                 <label for="nombreModificar" class="form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
+                                <input type="text" class="form-control" id="nombreModificar" name="nombre" required>
                             </div>
                             <div class="mb-3">
                                 <label for="apellidoModificar" class="form-label">Apellido:</label>
-                                <input type="text" class="form-control" id="apellidoModificar" name="apellidoModificar" required>
+                                <input type="text" class="form-control" id="apellidoModificar" name="apellido" required>
                             </div>
                             <div class="mb-3">
                                 <label for="dniModificar" class="form-label">DNI:</label>
-                                <input type="text" class="form-control" id="dniModificar" name="dniModificar" required>
+                                <input type="text" class="form-control" id="dniModificar" name="dni" required>
                             </div>
                             <div class="mb-3">
                                 <label for="telefonoModificar" class="form-label">Teléfono:</label>
-                                <input type="text" class="form-control" id="telefonoModificar" name="telefonoModificar" required>
+                                <input type="text" class="form-control" id="telefonoModificar" name="telefono" required>
                             </div>
                             <div class="mb-3">
                                 <label for="emailModificar" class="form-label">Email:</label>
-                                <input type="email" class="form-control" id="emailModificar" name="emailModificar" required>
+                                <input type="email" class="form-control" id="emailModificar" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="direccionModificar" class="form-label">Dirección:</label>
-                                <input type="text" class="form-control" id="direccionModificar" name="direccionModificar" required>
+                                <input type="text" class="form-control" id="direccionModificar" name="direccion" required>
                             </div>
                             <div class="mb-3">
-                                <label for="fechaRegistroModificar" class="form-label">Fecha de Registro:</label>
-                                <input type="date" class="form-control" id="fechaRegistroModificar" name="fechaRegistroModificar" required>
+                                <label for="usuarioModificar" class="form-label">usuario:</label>
+                                <input type="text" class="form-control" id="usuarioModificar" name="usuario" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="contrasenaModificar" class="form-label">contraseña:</label>
+                                <input type="password" class="form-control" id="contrasenaModificar" name="contrasena" required>
+                            </div>
+                            
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </form>
                     </div>
@@ -199,15 +214,17 @@ $usuarios = $clienteModelo->obtenerUsuarios();
 
         
         <script>
-            function abrirModalModificarUsuario(id, nombre, apellido, dni, telefono, email, direccion, fechaRegistro) {
-                document.getElementById('id_usuario').value = id;
+            function abrirModalModificarUsuario(id_usuario, nombre, apellido, dni, telefono, email, direccion,usuario, contrasena) {
+                document.getElementById('id_usuario').value = id_usuario;
                 document.getElementById('nombreModificar').value = nombre;
                 document.getElementById('apellidoModificar').value = apellido;
                 document.getElementById('dniModificar').value = dni;
                 document.getElementById('telefonoModificar').value = telefono;
                 document.getElementById('emailModificar').value = email;
                 document.getElementById('direccionModificar').value = direccion;
-                document.getElementById('fechaRegistroModificar').value = fechaRegistro;
+                document.getElementById('usuarioModificar').value = usuario;
+                document.getElementById('contrasenaModificar').value = contrasena;
+                
 
                 var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
                 modificarModal.show();
@@ -219,3 +236,66 @@ $usuarios = $clienteModelo->obtenerUsuarios();
 </body>
 
 </html>
+<script>
+    // Función para formatear texto a mayúsculas y eliminar números
+    function formatearTexto(input) {
+        let valor = input.value;
+
+        // Eliminar números
+        valor = valor.replace(/[0-9]/g, '');
+
+        // Convertir a mayúsculas y separar palabras
+        valor = valor.split(' ').map(function (palabra) {
+            return palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase();
+        }).join(' ');
+
+        // Asignar el valor formateado de nuevo al campo
+        input.value = valor;
+    }
+
+    // Agregar evento al campo de nombre
+    document.getElementById('nombre').addEventListener('input', function (e) {
+        formatearTexto(e.target);
+    });
+
+    // Agregar evento al campo de apellido
+    document.getElementById('apellido').addEventListener('input', function (e) {
+        formatearTexto(e.target);
+    });
+     // Función para validar el DNI
+     function validarDNI(input) {
+        // Eliminar caracteres no válidos (solo permitir números)
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Limitar a 8 dígitos
+        if (input.value.length > 8) {
+            input.value = input.value.slice(0, 8); // Cortar a los primeros 8 dígitos
+        }
+    }
+
+    // Agregar evento al campo de DNI
+    document.getElementById('dni').addEventListener('input', function() {
+        validarDNI(this);
+    });
+
+   // Función para validar el teléfono
+   function validarTelefono(input) {
+        // Eliminar caracteres no válidos (solo permitir números)
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Limitar a 9 dígitos
+        if (input.value.length > 9) {
+            input.value = input.value.slice(0, 9); // Cortar a los primeros 9 dígitos
+        }
+
+        // Asegurarse de que el primer dígito sea 9
+        if (input.value.length === 1 && input.value !== '9') {
+            input.value = ''; // Limpiar el campo si no empieza con 9
+        }
+    }
+
+    // Agregar evento al campo de teléfono
+    document.getElementById('telefono').addEventListener('input', function() {
+        validarTelefono(this);
+    });
+</script>

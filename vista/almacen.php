@@ -34,6 +34,7 @@ $inventario = $almacenModelo->obtenerInventario();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
@@ -217,6 +218,51 @@ $inventario = $almacenModelo->obtenerInventario();
             return confirm("¿Estás seguro que deseas eliminar este producto del almacén?");
         }
     </script>
+<script>
+    function preventNegativeValue(input) {
+        if (input.value < 0) {
+            input.value = 0; // Si el valor es menor a 0, se establece en 0
+        }
+    }
+
+    function validateStock(stockActualInput, stockMinimoInput) {
+        const stockActual = parseInt(stockActualInput.value);
+        const stockMinimo = parseInt(stockMinimoInput.value);
+
+        if (stockActual > stockMinimo) {
+            alert("El stock actual no puede ser mayor que el stock mínimo. Se ajustará al stock mínimo.");
+            stockActualInput.value = stockMinimo; // Ajustar el stock actual al stock mínimo
+        }
+    }
+
+    // Aplicar la función a los campos de registro
+    const stockActual = document.getElementById('stock_actual');
+    const stockMinimo = document.getElementById('stock_minimo');
+
+    stockActual.addEventListener('input', function() {
+        preventNegativeValue(this);
+        validateStock(stockActual, stockMinimo);
+    });
+
+    stockMinimo.addEventListener('input', function() {
+        preventNegativeValue(this);
+        validateStock(stockActual, stockMinimo);
+    });
+
+    // Aplicar la función a los campos de modificación
+    const stockActualModificar = document.getElementById('stock_actual_modificar');
+    const stockMinimoModificar = document.getElementById('stock_minimo_modificar');
+
+    stockActualModificar.addEventListener('input', function() {
+        preventNegativeValue(this);
+        validateStock(stockActualModificar, stockMinimoModificar);
+    });
+
+    stockMinimoModificar.addEventListener('input', function() {
+        preventNegativeValue(this);
+        validateStock(stockActualModificar, stockMinimoModificar);
+    });
+</script>
 
 </body>
 

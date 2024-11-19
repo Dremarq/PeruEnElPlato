@@ -13,18 +13,18 @@ class Producto {
         return $resultado;
     }
 
-    public function registrarProducto($nombre, $descripcion, $precio, $categoria, $imagen) {
-        $sql = "INSERT INTO productos (nombre, descripcion, precio, categoria, imagen) VALUES (?, ?, ?, ?, ?)";
+    public function registrarProducto($nombre, $descripcion, $costo, $id_proveedor) {
+        $sql = "INSERT INTO productos (nombre, descripcion, costo, id_proveedor) VALUES (?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("ssdsb", $nombre, $descripcion, $precio, $categoria, $imagen);
+        $stmt->bind_param("ssdi", $nombre, $descripcion, $costo, $id_proveedor);
         $stmt->execute();
         return $stmt->insert_id;
     }
 
-    public function modificarProducto($id_producto, $nombre, $descripcion, $precio, $categoria, $estado) {
-        $sql = "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, categoria = ?, estado = ? WHERE id_producto = ?";
- $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("ssdsii", $nombre, $descripcion, $precio, $categoria, $estado, $id_producto);
+    public function modificarProducto($id_producto, $nombre, $descripcion, $costo, $estado, $id_proveedor) {
+        $sql = "UPDATE productos SET nombre = ?, descripcion = ?, costo = ?, estado = ?, id_proveedor = ? WHERE id_producto = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("ssdiii", $nombre, $descripcion, $costo, $estado, $id_proveedor, $id_producto);
         $stmt->execute();
         return $stmt->affected_rows;
     }

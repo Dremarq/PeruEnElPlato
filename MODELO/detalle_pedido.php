@@ -8,27 +8,27 @@ class DetallePedido {
     }
 
     public function obtenerDetallesPedido() {
-        $sql = "SELECT d.id_detalle, d.id_pedido, p.nombre AS producto, d.cantidad, 
+        $sql = "SELECT d.id_detalle, d.id_pedido, p.nombre AS plato, d.cantidad, 
                 d.precio_unitario, d.subtotal 
                 FROM detalle_pedido d
-                JOIN productos p ON d.id_producto = p.id_producto";
+                JOIN platos p ON d.id_plato = p.id_plato"; // Se asegura de usar la tabla correcta
         $resultado = $this->conexion->query($sql);
         return $resultado;
     }
 
-    public function obtenerProductos() {
-        $sql = "SELECT id_producto, nombre FROM productos WHERE estado = 1";
+    public function obtenerPlatos() {
+        $sql = "SELECT id_plato, nombre FROM platos WHERE estado = 1"; // Asegurarse de que los platos estén activos
         return $this->conexion->query($sql);
     }
 
-    public function registrarDetallePedido($id_pedido, $id_producto, $cantidad, $precio_unitario) {
+    public function registrarDetallePedido($id_pedido, $id_plato, $cantidad, $precio_unitario) {
         try {
             $subtotal = $cantidad * $precio_unitario;
             
-            $sql = "INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unitario, subtotal) 
+            $sql = "INSERT INTO detalle_pedido (id_pedido, id_plato, cantidad, precio_unitario, subtotal) 
                     VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("iiidd", $id_pedido, $id_producto, $cantidad, $precio_unitario, $subtotal);
+            $stmt->bind_param("iiidd", $id_pedido, $id_plato, $cantidad, $precio_unitario, $subtotal);
             $stmt->execute();
             return $stmt->insert_id;
         } catch (Exception $e) {
@@ -37,15 +37,15 @@ class DetallePedido {
         }
     }
 
-    public function modificarDetallePedido($id_detalle, $id_producto, $cantidad, $precio_unitario) {
+    public function modificarDetallePedido($id_detalle, $id_plato, $cantidad, $precio_unitario) {
         try {
             $subtotal = $cantidad * $precio_unitario;
             
             $sql = "UPDATE detalle_pedido 
-                    SET id_producto = ?, cantidad = ?, precio_unitario = ?, subtotal = ? 
+                    SET id_plato = ?, cantidad = ?, precio_unitario = ?, subtotal = ? 
                     WHERE id_detalle = ?";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("iiddi", $id_producto, $cantidad, $precio_unitario, $subtotal, $id_detalle);
+            $stmt->bind_param("iiddi", $id_plato, $cantidad, $precio_unitario, $subtotal, $id_detalle);
             $stmt->execute();
             return $stmt->affected_rows;
         } catch (Exception $e) {

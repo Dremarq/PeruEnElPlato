@@ -1,5 +1,5 @@
 <?php
-require_once '../modelo/Producto.php';
+require_once '../modelo/producto.php';
 require_once '../config/conexion.php';
 
 class ProductoController {
@@ -28,22 +28,16 @@ class ProductoController {
     }
 
     private function registrar() {
-        if (!empty($_POST['nombre']) && !empty($_POST['descripcion']) && !empty($_POST['precio']) && 
-            !empty($_POST['categoria'])) {
+        if (!empty($_POST['nombre']) && !empty($_POST['descripcion']) && !empty($_POST['costo']) && 
+            !empty($_POST['id_proveedor'])) {
             
-            // Manejar la subida de la imagen
-            $imagen = $_FILES['imagen']['name'];
-            $ruta = "../imagenes/" . $imagen; // Ajusta la ruta según tu estructura de carpetas
-            move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta);
-
             $resultado = $this->modelo->registrarProducto(
                 $_POST['nombre'],
                 $_POST['descripcion'],
-                $_POST['precio'],
-                $_POST['categoria'],
-                $imagen
+                $_POST['costo'],
+                $_POST['id_proveedor'] // Asegúrate de que esto sea el ID del proveedor
             );
-
+    
             if ($resultado) {
                 $_SESSION['mensaje'] = "Producto registrado exitosamente";
                 $_SESSION['tipo_mensaje'] = "success";
@@ -65,9 +59,9 @@ class ProductoController {
                 $_POST['id_producto'],
                 $_POST['nombre'],
                 $_POST['descripcion'],
-                $_POST['precio'],
-                $_POST['categoria'],
-                $_POST['estado']
+                $_POST['costo'],
+                $_POST['estado'],
+                $_POST['id_proveedor']
             );
 
             if ($resultado) {
@@ -77,13 +71,16 @@ class ProductoController {
                 $_SESSION['mensaje'] = "Error al modificar producto";
                 $_SESSION['tipo_mensaje'] = "danger";
             }
+        } else {
+            $_SESSION['mensaje'] = "ID de producto requerido";
+            $_SESSION['tipo_mensaje'] = "warning";
         }
         header("Location: ../vista/productos.php");
         exit();
     }
 
-    private function eliminar($id) {
-        if ($this->modelo->eliminarProducto($id)) {
+    private function eliminar($id_producto) {
+        if ($this->modelo->eliminarProducto($id_producto)) {
             $_SESSION['mensaje'] = "Producto eliminado exitosamente";
             $_SESSION['tipo_mensaje'] = "success";
         } else {

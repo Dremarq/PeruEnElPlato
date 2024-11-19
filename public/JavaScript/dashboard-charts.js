@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Gráfico de Ventas Mensuales
     var ventasCtx = document.getElementById('ventasChart').getContext('2d');
     var ventasChart = new Chart(ventasCtx, {

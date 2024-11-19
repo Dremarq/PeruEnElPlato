@@ -32,6 +32,7 @@ $proveedores = $proveedorModelo->obtenerProveedores();
             <li><a href="../vista/empleados.php">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
@@ -110,7 +111,7 @@ $proveedores = $proveedorModelo->obtenerProveedores();
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
-                </thead>
+                </thead> 
                 <tbody>
                     <?php while ($proveedor = $proveedores->fetch_object()): ?>
                         <tr>
