@@ -1,44 +1,26 @@
 <?php
-// Al inicio del archivo
-if (isset($_GET['mensaje'])) {
-    switch ($_GET['mensaje']) {
-        case 'registrado':
-            echo '<div class="alert alert-success">Empleado registrado correctamente</div>';
-            break;
-        case 'error':
-            $error = isset($_GET['error']) ? $_GET['error'] : 'Error desconocido';
-            echo '<div class="alert alert-danger">Error al registrar empleado: ' . htmlspecialchars($error) . '</div>';
-            break;
-        case 'vacio':
-            echo '<div class="alert alert-warning">Todos los campos son obligatorios</div>';
-            break;
-        case 'acceso_invalido':
-            echo '<div class="alert alert-warning">Acceso inválido al controlador</div>';
-            break;
-    }
-}
+session_start();
+require_once "../config/conexion.php";
+require_once "../modelo/Empleado.php";
+
+$empleadoModelo = new Empleado($conexion);
+$empleados = $empleadoModelo->obtenerEmpleados();
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/admi.css">
     <link rel="stylesheet" href="../public/styles/tablas.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
-    <title>Interfaz de Administrador</title>
+    <title>Interfaz de Administrador - Empleados</title>
 </head>
 
 <body>
-    <script>
-        function eliminarempleados() {
-            var respuesta = confirm("¿Estás seguro que deseas eliminar?");
-            return respuesta;
-        }
-    </script>
-
     <!-- Menú lateral -->
     <nav class="sidebar">
         <h2>Pantalla de Administrador</h2>
@@ -49,207 +31,256 @@ if (isset($_GET['mensaje'])) {
             <li><a href="">Empleados</a></li>
             <li><a href="../vista/pedidos.php">Pedidos</a></li>
             <li><a href="../vista/productos.php">Productos</a></li>
+            <li><a href="../vista/platos.php">Platos</a></li>
             <li><a href="../vista/proveedores.php">Proveedores</a></li>
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
-            <li><a href="../vista/usuarios.php">Usuarios</a></li>
+            <li><a href="../vista/usuario.php">Usuarios</a></li>
         </ul>
     </nav>
 
     <!-- Contenido principal -->
     <div class="main-content">
-        <h2>Registro de empleado</h2>
+        <h2>Registro de Empleados</h2>
 
-        <?php
-        include "../config/conexion.php";
-        include "../controlador/empleados/eliminar_empleado.php";
+        <?php if (isset($_SESSION['mensaje'])): ?>
+            <div class="alert alert-<?= $_SESSION['tipo_mensaje'] ?> alert-dismissible fade show" role="alert">
+                <?= $_SESSION['mensaje'] ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php
+            unset($_SESSION['mensaje']);
+            unset($_SESSION['tipo_mensaje']);
+            ?>
+        <?php endif; ?>
 
-        // Consulta para obtener empleados junto con su rol
-        $query = "SELECT e.*, r.nombre_rol FROM empleados e LEFT JOIN roles r ON e.id_rol = r.id_rol";
-        $sql = $conexion->query($query);
-
-        if (!$sql) {
-            die("Error en la consulta: " . $conexion->error);
-        }
-        ?>
-        <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión -->
+        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Empleado</button>
-        <!-- <a href="../controlador/empleados/registrar_empleado.php" class="btn btn-success">Registrar Empleado</a> Botón de registro -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <!-- Tabla de Empleados -->
+        <table class="table">
+            <thead>
+                <tr>
+                <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Dirección</th>
+            <th>Fecha de Contratación</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($empleado = $empleados->fetch_object()): ?>
+                    <tr>
+                        <td><?= $empleado->id_empleado ?></td>
+                        <td><?= $empleado->nombre ?></td>
+                        <td><?= $empleado->apellido ?></td>
+                        <td><?= $empleado->dni ?></td>
+                        <td><?= $empleado->telefono ?></td>
+                        <td><?= $empleado->email ?></td>
+                        <td><?= $empleado->direccion ?></td>
+                        <td><?= $empleado->fecha_contratacion ?></td>
+                        <td><?= $empleado->nombre_rol ?></td>
+                        <td>
+                            <button class="btn btn-warning" onclick="abrirModalModificarEmpleado(<?= $empleado->id_empleado ?>, '<?= $empleado->nombre ?>', '<?= $empleado->apellido ?>', '<?= $empleado->dni ?>', '<?= $empleado->telefono ?>', '<?= $empleado->email ?>','<?= $empleado->direccion ?>','<?= $empleado->fecha_contratacion ?>', <?= $empleado->id_rol ?>)"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <a href="../controlador/CRUDempleado.php?accion=eliminar&id=<?= $empleado->id_empleado ?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+
+        <!-- Modal de Modificación -->
+        <div class="modal fade" id="modificarModal" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-headb er">
-                        <h5 class="modal-title" id="registroModalLabel">Registrar Empleado</h5>
-
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modificarModalLabel">Modificar Empleado</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                       
-                        <form action="../controlador/empleados/registrar_empleado.php" method="POST">
+                        <form action="../controlador/CRUDempleado.php" method="POST">
+                            <input type="hidden" name="accion" value="modificar">
+                            <input type="hidden" id="id_empleado" name="id_empleado">
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="dni" class="form-label">DNI</label>
-                                <input type="text" class="form-control" id="dni" name="dni" required>
+                                <label for="nombreModificar" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreModificar" name="nombre" required>
                             </div>
                             <div class="mb-3">
-                                <label for="telefono" class="form-label">Teléfono</label>
-                                <input type="text" class="form-control" id="telefono" name="telefono" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="rol" class="form-label">Rol</label>
-                                <select class="form-select" id="rol" name="rol" required>
-                                    <option value="" disabled selected>Seleccione un rol</option>
-                                    <option value="1">Administrador</option>
-                                    <option value="2">Chef</option>
-                                    <option value="3">Mesero</option>
-                                    <option value="4">Encargo de inventario</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="submit" name="btnregistrar" value="ok" class="btn btn-primary">Registrar</button>
-                            </div>
-                        </form>
+                                <label for="apellidoModificar" class="form-label">Apellido:</label>
+                                <input type="text" class="form-control" id="apellidoModificar" name="apellido" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="dniModificar" class="form-label">DNI:</label>
+                        <input type="text" class="form-control" id="dniModificar" name="dni" required pattern="[0-9]{8}"
+                        title="El DNI debe tener 8 dígitos numéricos">
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefonoModificar" class="form-label">Teléfono:</label>
+                        <input type="text" class="form-control" id="telefonoModificar" name="telefono" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailModificar" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="emailModificar" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccionModificar" class="form-label">Dirección:</label>
+                        <input type="text" class="form-control" id="direccionModificar" name="direccion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fecha_contratacionModificar" class="form-label">Fecha de Contratación:</label>
+                        <input type="date" class="form-control" id="fecha_contratacionModificar" name="fecha_contratacion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rolModificar" class="form-label">Rol:</label>
+                        <select class="form-select" id="rolModificar" name="rol" required>
+                            <option value="">Seleccione un rol</option>
+                            <option value="1">Administrador</option>
+                            <option value="2">Empleado</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        // Auto cerrar las alertas después de 3 segundos
-        document.addEventListener('DOMContentLoaded', function() {
-            // Buscar todas las alertas
-            var alerts = document.querySelectorAll('.alert');
-
-            // Para cada alerta, configurar un temporizador para cerrarla
-            alerts.forEach(function(alert) {
-                setTimeout(function() {
-                    alert.classList.remove('show');
-                    setTimeout(function() {
-                        alert.remove();
-                    }, 150);
-                }, 3000);
-            });
-        });
-    </script>
-    <!-- Modal -->
-
-    <div class="container-fluid">
-        <!-- Tabla de empleados -->
-        <table class="table">
-            <thead class="bg-info">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Dni</th>
-                    <th scope="col">Telefono</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Rol</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                while ($datos = $sql->fetch_object()) { ?>
-                    <tr>
-                        <td><?= $datos->id_empleado ?></td>
-                        <td><?= $datos->nombre ?></td>
-                        <td><?= $datos->dni ?></td>
-                        <td><?= $datos->telefono ?></td>
-                        <td><?= $datos->email ?></td>
-                        <td><?= $datos->nombre_rol ?></td> <!-- Muestra el rol -->
-                        <td>
-
-                            <a href="#" onclick="abrirModalModificarEmpleado('<?= $datos->id_empleado ?>', '<?= $datos->nombre ?>', '<?= $datos->dni ?>', '<?= $datos->telefono ?>', '<?= $datos->email ?>', '<?= $datos->id_rol ?>')" class="btn btn-small btn-warning">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                            <!-- Modal para Modificar Empleado -->
-                            <div class="modal fade" id="modificarEmpleadoModal" tabindex="-1" aria-labelledby="modificarEmpleadoModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modificarEmpleadoModalLabel">Modificar Empleado</h5>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="formModificarEmpleado" action="#######" method="POST">
-                                                <input type="hidden" id="id_empleado" name="id_empleado"> <!-- Campo oculto para el ID del empleado -->
-                                                <div class="mb-3">
-                                                    <label for="nombreModificar" class="form-label">Nombre</label>
-                                                    <input type="text" class="form-control" id="nombreModificar" name="nombreModificar" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="dniModificar" class="form-label">DNI</label>
-                                                    <input type="text" class="form-control" id="dniModificar" name="dniModificar" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="telefonoModificar" class="form-label">Teléfono</label>
-                                                    <input type="text" class="form-control" id="telefonoModificar" name="telefonoModificar" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="emailModificar" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="emailModificar" name="emailModificar" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="rolModificar" class="form-label">Rol</label>
-                                                    <select class="form-select" id="rolModificar" name="rolModificar" required>
-                                                        <option value="" disabled selected>Seleccione un rol</option>
-                                                        <option value="1">Administrador</option>
-                                                        <option value="2">Chef</option>
-                                                        <option value="3">Mesero</option>
-                                                        <option value="4">Encargo de inventario</option>
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="btn btn-primary">Modificar</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal para Modificar Empleado -->
-
-
-
-                            <a onclick="return eliminarempleados()" href="empleados.php?id=<?= $datos->id_empleado ?>" class="btn btn-small btn-danger"><i class="fa-solid fa-trash"></i></a>
-                        </td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+    <!-- Modal de Registro -->
+    <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registroModalLabel">Registrar Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="../controlador/CRUDempleado.php" method="POST">
+                        <input type="hidden" name="accion" value="registrar">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellido" class="form-label">Apellido:</label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dni" class="form-label">DNI:</label>
+                            <input type="text" class="form-control" id="dni" name="dni" required pattern="[0-9]{8}"
+                            title="El DNI debe tener 8 dígitos numéricos">
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono:</label>
+                            <input type="text" class="form-control" id="telefono" name="telefono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="direccion" class="form-label">Dirección:</label>
+                            <input type="text" class="form-control" id="direccion" name="direccion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_contratacion" class="form-label">Fecha de Contratación:</label>
+                            <input type="date" class="form-control" id="fecha_contratacion" name="fecha_contratacion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Rol:</label>
+                            <select class="form-select" id="rol" name="rol" required>
+                                <option value="">Seleccione un rol</option>
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function abrirModalModificarEmpleado(id, nombre, dni, telefono, email, rol) {
-            // Asignar los valores a los campos del modal
+        function abrirModalModificarEmpleado(id, nombre, apellido, dni, telefono, email,direccion, fecha_contratacion, id_rol) {
             document.getElementById('id_empleado').value = id;
             document.getElementById('nombreModificar').value = nombre;
+            document.getElementById('apellidoModificar').value = apellido;
             document.getElementById('dniModificar').value = dni;
             document.getElementById('telefonoModificar').value = telefono;
             document.getElementById('emailModificar').value = email;
-            document.getElementById('rolModificar').value = rol;
+            document.getElementById('direccionModificar').value = direccion;
+            document.getElementById('fecha_contratacionModificar').value = fecha_contratacion;
+            document.getElementById('rolModificar').value = id_rol; // Asigna el rol al campo correspondiente
 
             // Mostrar el modal
-            var modificarEmpleadoModal = new bootstrap.Modal(document.getElementById('modificarEmpleadoModal'));
-            modificarEmpleadoModal.show();
+            var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
+            modificarModal.show();
         }
     </script>
-    <!-- Pie de página -->
-    <footer>
-        <p>&copy; Peru al plato</p>
-    </footer>
 </body>
 
 </html>
+<script>
+        function validarNombreApellido(input) {
+            // Eliminar caracteres no válidos (números y caracteres especiales)
+            input.value = input.value.replace(/[^A-Za-z\s]/g, '');
+
+            // Capitalizar la primera letra de cada palabra
+            input.value = input.value.replace(/\b\w/g, char => char.toUpperCase());
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('nombre').addEventListener('input', function() {
+                validarNombreApellido(this);
+            });
+
+            document.getElementById('apellido').addEventListener('input', function() {
+                validarNombreApellido(this);
+            });
+        });
+        function validarDNI(input) {
+            // Eliminar caracteres no válidos (solo permitir números)
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            // Limitar a 8 dígitos
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 8); // Cortar a los primeros 8 dígitos
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('dni').addEventListener('input', function() {
+                validarDNI(this);
+            });
+        });
+        function validarTelefono(input) {
+            // Eliminar caracteres no válidos (solo permitir números)
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            // Verificar que el primer dígito sea 9 y limitar a 9 dígitos
+            if (input.value.length > 9) {
+                input.value = input.value.slice(0, 9); // Cortar a los primeros 9 dígitos
+            }
+
+            // Asegurarse de que el primer dígito sea 9
+            if (input.value.length === 1 && input.value !== '9') {
+                input.value = ''; // Limpiar el campo si no empieza con 9
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('telefono').addEventListener('input', function() {
+                validarTelefono(this);
+            });
+        });
+    </script>
