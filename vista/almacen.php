@@ -56,8 +56,12 @@ $inventario = $almacenModelo->obtenerInventario();
             ?>
         <?php endif; ?>
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/generar_pdf.php'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/generar_excel.php'">Generar Excel</button>
+
+       
 
         <!-- Modal de Registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
@@ -192,13 +196,13 @@ $inventario = $almacenModelo->obtenerInventario();
                 </div>
             </div>
         </div>
-        
-    <!-- Pie de página -->
-    <footer>
-        <p> Peru al plato</p>
-    </footer>
+
+        <!-- Pie de página -->
+        <footer>
+            <p> Peru al plato</p>
+        </footer>
     </div>
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -218,51 +222,51 @@ $inventario = $almacenModelo->obtenerInventario();
             return confirm("¿Estás seguro que deseas eliminar este producto del almacén?");
         }
     </script>
-<script>
-    function preventNegativeValue(input) {
-        if (input.value < 0) {
-            input.value = 0; // Si el valor es menor a 0, se establece en 0
+    <script>
+        function preventNegativeValue(input) {
+            if (input.value < 0) {
+                input.value = 0; // Si el valor es menor a 0, se establece en 0
+            }
         }
-    }
 
-    function validateStock(stockActualInput, stockMinimoInput) {
-        const stockActual = parseInt(stockActualInput.value);
-        const stockMinimo = parseInt(stockMinimoInput.value);
+        function validateStock(stockActualInput, stockMinimoInput) {
+            const stockActual = parseInt(stockActualInput.value);
+            const stockMinimo = parseInt(stockMinimoInput.value);
 
-        if (stockActual > stockMinimo) {
-            alert("El stock actual no puede ser mayor que el stock mínimo. Se ajustará al stock mínimo.");
-            stockActualInput.value = stockMinimo; // Ajustar el stock actual al stock mínimo
+            if (stockActual > stockMinimo) {
+                alert("El stock actual no puede ser mayor que el stock mínimo. Se ajustará al stock mínimo.");
+                stockActualInput.value = stockMinimo; // Ajustar el stock actual al stock mínimo
+            }
         }
-    }
 
-    // Aplicar la función a los campos de registro
-    const stockActual = document.getElementById('stock_actual');
-    const stockMinimo = document.getElementById('stock_minimo');
+        // Aplicar la función a los campos de registro
+        const stockActual = document.getElementById('stock_actual');
+        const stockMinimo = document.getElementById('stock_minimo');
 
-    stockActual.addEventListener('input', function() {
-        preventNegativeValue(this);
-        validateStock(stockActual, stockMinimo);
-    });
+        stockActual.addEventListener('input', function() {
+            preventNegativeValue(this);
+            validateStock(stockActual, stockMinimo);
+        });
 
-    stockMinimo.addEventListener('input', function() {
-        preventNegativeValue(this);
-        validateStock(stockActual, stockMinimo);
-    });
+        stockMinimo.addEventListener('input', function() {
+            preventNegativeValue(this);
+            validateStock(stockActual, stockMinimo);
+        });
 
-    // Aplicar la función a los campos de modificación
-    const stockActualModificar = document.getElementById('stock_actual_modificar');
-    const stockMinimoModificar = document.getElementById('stock_minimo_modificar');
+        // Aplicar la función a los campos de modificación
+        const stockActualModificar = document.getElementById('stock_actual_modificar');
+        const stockMinimoModificar = document.getElementById('stock_minimo_modificar');
 
-    stockActualModificar.addEventListener('input', function() {
-        preventNegativeValue(this);
-        validateStock(stockActualModificar, stockMinimoModificar);
-    });
+        stockActualModificar.addEventListener('input', function() {
+            preventNegativeValue(this);
+            validateStock(stockActualModificar, stockMinimoModificar);
+        });
 
-    stockMinimoModificar.addEventListener('input', function() {
-        preventNegativeValue(this);
-        validateStock(stockActualModificar, stockMinimoModificar);
-    });
-</script>
+        stockMinimoModificar.addEventListener('input', function() {
+            preventNegativeValue(this);
+            validateStock(stockActualModificar, stockMinimoModificar);
+        });
+    </script>
 
 </body>
 

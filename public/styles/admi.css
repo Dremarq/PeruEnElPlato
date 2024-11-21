@@ -310,3 +310,14 @@ form button:hover {
     background-color: #dc3545;
     color: #fff;
 }
+.btn {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    /* Transición suave para sombra y transformación */
+}
+
+.btn:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    /* Sombra al pasar el mouse */
+    transform: translateY(-2px);
+    /* Efecto de elevación al pasar el mouse */
+}

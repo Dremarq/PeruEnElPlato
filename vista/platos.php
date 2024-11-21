@@ -86,9 +86,10 @@ $platos = $platoModelo->obtenerPlatos();
                                 <label for="categoria" class="form-label">Categoría:</label>
                                 <select class="form-select" id="categoria" name="categoria" required>
                                     <option value="">Seleccione una categoría</option>
-                                    <option value="entrada">Entrada</option>
                                     <option value="plato_principal">Plato Principal</option>
+                                    <option value="entrada">Entrada</option>
                                     <option value="postre">Postre</option>
+                                    <option value="bebida">Refresco</option>
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -176,9 +177,11 @@ $platos = $platoModelo->obtenerPlatos();
                                 <label for="categoriaModificar" class="form-label">Categoría:</label>
                                 <select class="form-select" id="categoriaModificar" name="categoria" required>
                                     <option value="">Seleccione una categoría</option>
-                                    <option value="entrada">Entrada</option>
                                     <option value="plato_principal">Plato Principal</option>
+                                    <option value="entrada">Entrada</option>
                                     <option value="postre">Postre</option>
+                                    <option value="bebida">Refresco</option>
+                                </select>
                                 </select>
                             </div>
                             <div class="mb-3">

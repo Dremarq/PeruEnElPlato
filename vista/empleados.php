@@ -140,7 +140,8 @@ $empleados = $empleadoModelo->obtenerEmpleados();
                         <select class="form-select" id="rolModificar" name="rol" required>
                             <option value="">Seleccione un rol</option>
                             <option value="1">Administrador</option>
-                            <option value="2">Empleado</option>
+                                <option value="2">cajero</option>
+                                <option value="3">cocinero</option>
                         </select>
                     </div>
                     <div class="modal-footer">
@@ -197,7 +198,8 @@ $empleados = $empleadoModelo->obtenerEmpleados();
                             <select class="form-select" id="rol" name="rol" required>
                                 <option value="">Seleccione un rol</option>
                                 <option value="1">Administrador</option>
-                                <option value="2">Empleado</option>
+                                <option value="2">cajero</option>
+                                <option value="3">cocinero</option>
                             </select>
                         </div>
                         <div class="modal-footer">

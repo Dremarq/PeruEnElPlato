@@ -31,6 +31,20 @@ class Empleado {
             return false;
         }
     }
+    public function verificarCredenciales($username, $password) {
+        $stmt = $this->conexion->prepare("SELECT * FROM empleados WHERE nombre = ?"); // Cambia esto si usas un campo diferente
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($resultado->num_rows > 0) {
+            $empleado = $resultado->fetch_assoc();
+            if ($empleado['password'] === $password) { // Cambia esto a password_verify en producción
+                return $empleado;
+            }
+        }
+        return false;
+    }
 
     public function modificarEmpleado($id, $nombre, $apellido, $dni, $telefono, $email, $direccion, $fecha_contratacion, $id_rol) {
         try {

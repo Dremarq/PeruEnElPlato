@@ -62,9 +62,11 @@ $proveedores = $proveedorModelo->obtenerProveedores(); // Obtener proveedores
         <?php endif; ?>
 
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Producto</button>
-
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDproductos.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/generar_excel.php'">Generar Excel</button>
+        
         <!-- Modal de registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel">
             <div class="modal-dialog">
