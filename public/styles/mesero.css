@@ -1,103 +1,158 @@
+/* Cuerpo de la página */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center; /* Cambiado a flex-start para que el contenido no esté centrado verticalmente */
+    justify-content: center; /* Centra todo el contenido horizontalmente */
+    align-items: center; /* Centra todo el contenido verticalmente */
     flex-direction: column;
-    background-color: #3d3c3c; /* Fondo plomo elegante */
+    background-color: #3d3c3c; /* Fondo gris oscuro similar al de chef */
+    min-height: 100vh; /* Asegura que la página ocupe toda la altura de la ventana */
+    text-align: center; /* Centra los textos */
 }
+
+/* Cabecera */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #595959; /* Color de la cabecera */
+    background-color: #595959; /* Color gris oscuro de la cabecera (igual a chef) */
     padding: 10px 20px;
     border-radius: 8px;
     width: 100%;
-    max-width: 800px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Limita el ancho de la cabecera */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 30px; /* Espacio debajo de la cabecera */
 }
 
+/* Títulos */
 h1, h2 {
     margin: 20px 0;
     text-align: center;
-    color: white; /* Títulos en blanco */
+    color: white; /* Blanco para los títulos */
 }
 
+/* Tabla */
 table {
     width: 100%;
+    max-width: 800px;
+    margin: 0 auto; /* Centra la tabla */
     border-collapse: collapse;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra en la tabla */
 }
 
+/* Celdas de la tabla */
 th, td {
-    border: 1px solid #ccc; /* Borde de las celdas */
-    padding: 10px;
+    border: 1px solid #ccc; /* Borde gris claro */
+    padding: 8px 10px;
     text-align: left;
+    word-wrap: break-word; /* Ajuste de texto largo */
 }
 
+/* Encabezado de la tabla */
 th {
-    background-color: #A9A9A9; /* Color plomo oscuro para encabezados de tabla */
-    color: white; /* Color del texto en el encabezado de la tabla */
+    background-color: #A9A9A9; /* Color gris oscuro para el encabezado, como en chef */
+    color: white; /* Texto blanco */
 }
 
+/* Celdas de la tabla */
 td {
-    background-color: #fff; /* Color de fondo de las celdas */
+    background-color: #fff;
 }
 
+/* Formulario */
+form {
+    width: 100%;
+    max-width: 800px; /* Limita el ancho del formulario */
+    margin: 0 auto; /* Centra el formulario */
+    padding: 20px;
+    background-color: #595959; /* Fondo gris similar al de chef */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Etiquetas del formulario */
 label {
-    color: white; /* Color blanco para las etiquetas */
+    color: white;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 18px;
+    display: block;
 }
 
+/* Campos de entrada */
 input[type="text"],
 input[type="number"],
-textarea {
-    padding: 10px;
+input[type="date"],
+select {
+    padding: 12px;
+    font-size: 16px;
     border-radius: 5px;
-    border: 1px solid #ccc; /* Borde de los campos de entrada */
-    width: 75%; /* Asegura que los campos ocupen todo el ancho disponible */
-    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+    border: 1px solid #ccc;
+    width: 80%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
 }
 
-textarea {
-    resize: vertical; /* Permite redimensionar verticalmente */
+/* Botones */
+button {
+    padding: 8px 20px; /* Botones más pequeños */
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    width: 100%; /* Ancho completo para los botones */
+    max-width: 400px; /* Limita el ancho máximo de los botones */
+    margin-left: auto; /* Centra los botones */
+    margin-right: auto; /* Centra los botones */
 }
 
+/* Botón Cerrar */
 .btn-cerrar {
-    background-color: #ff0000; /* Color rojo */
+    background-color: #ff0000; /* Rojo, como en chef */
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
+/* Botón Actualizar */
 .btn-actualizar {
-    background-color: #4CAF50; /* Color verde */
+    background-color: #4CAF50; /* Verde, como en chef */
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
-.btn-cerrar:hover {
-    background-color: #d32f2f; /* Rojo oscuro al pasar el cursor */
+/* Botón Editar */
+.btn-editar {
+    background-color: #FFA500; /* Naranja, como en chef */
+    color: white;
+    border: none;
+    padding: 6px 12px; /* Botón más pequeño */
+    font-size: 14px;
 }
 
-.btn-actualizar:hover {
-    background-color: #388E3C; /* Verde oscuro al pasar el cursor */
+/* Botón Eliminar */
+.btn-eliminar {
+    background-color: #dc3545; /* Rojo oscuro, como en chef */
+    color: white;
+    border: none;
+    padding: 6px 12px; /* Botón más pequeño */
+    font-size: 14px;
 }
 
+/* Efecto hover en los botones */
+button:hover {
+    opacity: 0.8; /* Efecto de opacidad al pasar el cursor */
+}
+
+/* Contenedor de los botones */
 .btn-container {
     display: flex;
-    justify-content: center; /* Centra el contenido horizontalmente */
-    margin-top: 20px; /* Espacio superior */
+    justify-content: center; /* Centra los botones */
+    gap: 10px; /* Espacio entre los botones */
+    margin-top: 20px;
+    flex-wrap: wrap; /* Los botones se acomoden si hay muchos */
 }
+
