@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-11-2024 a las 19:20:30
+-- Tiempo de generación: 28-11-2024 a las 18:24:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -122,7 +122,7 @@ CREATE TABLE `empleados` (
 INSERT INTO `empleados` (`id_empleado`, `id_rol`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `fecha_contratacion`) VALUES
 (1, 1, 'Diego Martina', 'Chavarry', '75455622', '993443125', '0da@gmail.com', '15143', '2024-11-17'),
 (7, 1, 'Diego', 'Herbay', '44325556', '596634312', 'diegao1herbay@gmail.com', '15314', '2024-11-21'),
-(8, 3, 'Marco', 'Inta', '44415555', '993144131', 'diegohe1rbay@gmail.com', '15314', '2024-11-21');
+(8, 7, 'Marco', 'Inta', '44415555', '993144131', 'diegohe1rbay@gmail.com', '15314', '2024-11-21');
 
 -- --------------------------------------------------------
 
@@ -184,6 +184,27 @@ INSERT INTO `platos` (`id_plato`, `nombre`, `descripcion`, `precio`, `categoria`
 (18, 'arroz con pollo', 'Arroz sazonado con culantro, acompañado de pollo jugoso, verduras y especias. ¡Un clásico lleno de sabor!', 15.00, 'Plato Principal', '', 1),
 (19, 'picarones', 'Dulces fritos a base de camote y calabaza, bañados en miel de chancaca. ¡Un postre tradicional y delicioso!', 15.00, 'Postre', '', 1),
 (20, 'turron', 'Dulce tradicional de almendras, nueces y miel.', 18.00, 'Postre', '', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `platos_vendidos_hoy`
+--
+
+CREATE TABLE `platos_vendidos_hoy` (
+  `id_plato_vendido_hoy` int(11) NOT NULL,
+  `id_plato` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `cant_vendida` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `platos_vendidos_hoy`
+--
+
+INSERT INTO `platos_vendidos_hoy` (`id_plato_vendido_hoy`, `id_plato`, `fecha`, `cant_vendida`) VALUES
+(1, 14, '2024-11-28', 2),
+(2, 14, '2024-11-28', 2);
 
 -- --------------------------------------------------------
 
@@ -272,7 +293,8 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
 (1, 'Administrador', 'Gestor completo del sistema'),
 (2, 'Cajero', 'Responsable de las transacciones'),
-(3, 'Cocinero', 'Encargado de la preparación de alimentos');
+(3, 'Cocinero', 'Encargado de la preparación de alimentos'),
+(7, 'Mesero', 'Atención a los clientes');
 
 -- --------------------------------------------------------
 
@@ -365,6 +387,13 @@ ALTER TABLE `platos`
   ADD PRIMARY KEY (`id_plato`);
 
 --
+-- Indices de la tabla `platos_vendidos_hoy`
+--
+ALTER TABLE `platos_vendidos_hoy`
+  ADD PRIMARY KEY (`id_plato_vendido_hoy`),
+  ADD KEY `id_plato` (`id_plato`);
+
+--
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
@@ -444,6 +473,12 @@ ALTER TABLE `platos`
   MODIFY `id_plato` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
+-- AUTO_INCREMENT de la tabla `platos_vendidos_hoy`
+--
+ALTER TABLE `platos_vendidos_hoy`
+  MODIFY `id_plato_vendido_hoy` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
@@ -465,7 +500,7 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -514,6 +549,12 @@ ALTER TABLE `empleados`
 ALTER TABLE `pedidos`
   ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   ADD CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`id_empleado`) REFERENCES `empleados` (`id_empleado`);
+
+--
+-- Filtros para la tabla `platos_vendidos_hoy`
+--
+ALTER TABLE `platos_vendidos_hoy`
+  ADD CONSTRAINT `platos_vendidos_hoy_ibfk_1` FOREIGN KEY (`id_plato`) REFERENCES `platos` (`id_plato`);
 
 --
 -- Filtros para la tabla `productos`
