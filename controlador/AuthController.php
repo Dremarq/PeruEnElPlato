@@ -29,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             case 3: // Cocinero
                 header('Location: ../vista/empleados/cocinero.php');
                 break;
+                case 7: // Cocinero
+                    header('Location: ../vista/Mesero_V.php');
+                    break;
             default:
                 header('Location: ../vista/login.php?error=Rol no reconocido.');
                 break;

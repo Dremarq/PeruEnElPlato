@@ -145,6 +145,7 @@ $empleados = $empleadoModelo->obtenerEmpleados();
                             <option value="1">Administrador</option>
                                 <option value="2">cajero</option>
                                 <option value="3">cocinero</option>
+                                <option value="7">Mesero</option>
                         </select>
                     </div>
                     <div class="modal-footer">
@@ -203,6 +204,7 @@ $empleados = $empleadoModelo->obtenerEmpleados();
                                 <option value="1">Administrador</option>
                                 <option value="2">cajero</option>
                                 <option value="3">cocinero</option>
+                                <option value="7">Mesero</option>
                             </select>
                         </div>
                         <div class="modal-footer">
