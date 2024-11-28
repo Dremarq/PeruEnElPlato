@@ -1,6 +1,8 @@
 <?php
 require_once '../modelo/almacen.php';
 require_once '../config/conexion.php';
+require_once '../modelo/producto.php';
+require_once('../public/lib/TCPDF-main/tcpdf.php');
 
 class AlmacenController
 {
@@ -24,15 +26,22 @@ class AlmacenController
                 }
             }
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
-                return $this->eliminar();
+            if (isset($_GET['accion'])) {
+                switch ($_GET['accion']) {
+                    case 'eliminar':
+                        return $this->eliminar($_GET['id']);
+                    case 'generar_pdf':
+                        return $this->generarPDFAlmacen(); // Llamar a la función para generar PDF
+                }
             }
         }
     }
 
+
     private function registrar()
     {
         $id_producto = $_POST['id_producto'];
+        $nombre_producto = $_POST['nombre_producto'];
         $stock_actual = $_POST['stock_actual'];
         $stock_minimo = $_POST['stock_minimo'];
         $id_almacen = $this->modelo->registrarProductoEnAlmacen($id_producto, $stock_actual, $stock_minimo);
@@ -62,6 +71,38 @@ class AlmacenController
         }
         header('Location: ../vista/almacen.php');
         exit;
+    }
+    public function generarPDFAlmacen()
+    {
+        $almacen = $this->modelo->obtenerInventario(); // Obtener todos los registros del almacén
+
+        // Crear instancia de TCPDF
+        $pdf = new TCPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('helvetica', 'B', 16);
+        $pdf->Cell(0, 10, 'Lista de Almacén', 0, 1, 'C'); // Título centrado
+
+        // Encabezados de la tabla
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(10, 10, 'ID', 1, 0, 'C');
+        $pdf->Cell(20, 10, 'id_pro', 1, 0, 'C');
+        $pdf->Cell(80, 10, 'producto', 1, 0, 'C');
+        $pdf->Cell(30, 10, 'stock_actual', 1, 0, 'C');
+        $pdf->Cell(40, 10, 'stock_minimo', 1, 1, 'C');
+
+
+        // Contenido de la tabla
+        $pdf->SetFont('helvetica', '', 12);
+        while ($item = $almacen->fetch_object()) {
+            $pdf->Cell(10, 10, $item->id_almacen, 1, 0, 'C');
+            $pdf->Cell(20, 10, $item->id_producto, 1, 0, 'C');
+            $pdf->Cell(80, 10, $item->nombre_producto, 1, 0, 'C');
+            $pdf->Cell(30, 10, $item->stock_actual, 1, 0, 'C');
+            $pdf->Cell(40, 10, $item->stock_minimo, 1, 1, 'C');
+        }
+
+        // Salida del PDF
+        $pdf->Output('ALMACEN.pdf', 'I');
     }
 
     private function eliminar()

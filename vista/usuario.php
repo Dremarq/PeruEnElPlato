@@ -56,9 +56,10 @@ $usuarios = $clienteModelo->obtenerUsuarios();
         <?php endif; ?>
 
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Usuario</button>
-
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDcliente.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/generar_excel.php'">Generar Excel</button>
         <!-- Modal de registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel">
             <div class="modal-dialog">
@@ -91,7 +92,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="direccion" class="form-label">Dirección:</label>
+                                <label for="direccion" class="form-label">Cod. Postal:</label>
                                 <input type="text" class="form-control" id="direccion" name="direccion" required>
                             </div>
                             <div class="mb-3">
@@ -122,7 +123,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                         <th>DNI</th>
                         <th>Teléfono</th>
                         <th>Email</th>
-                        <th>Dirección</th>
+                        <th>Cod. Postal</th>
                         <th>usuario</th>
                         <th>contrasena</th>
                         <th>Fecha de Registro</th>
@@ -189,7 +190,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                                 <input type="email" class="form-control" id="emailModificar" name="email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="direccionModificar" class="form-label">Dirección:</label>
+                                <label for="direccionModificar" class="form-label">Cod. Postal:</label>
                                 <input type="text" class="form-control" id="direccionModificar" name="direccion" required>
                             </div>
                             <div class="mb-3">

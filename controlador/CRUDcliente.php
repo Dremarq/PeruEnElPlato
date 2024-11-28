@@ -1,6 +1,7 @@
 <?php
 require_once '../modelo/cliente.php';
 require_once '../config/conexion.php';
+require_once('../public/lib/TCPDF-main/tcpdf.php');
 
 class ClienteController
 {
@@ -19,15 +20,18 @@ class ClienteController
                 switch ($_POST['accion']) {
                     case 'registrar':
                         return $this->registrar();
-                    case 'login':
-                        return $this->login();
                     case 'modificar':
                         return $this->modificar();
                 }
             }
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && isset($_GET['id'])) {
-                return $this->eliminar($_GET['id']);
+            if (isset($_GET['accion'])) {
+                switch ($_GET['accion']) {
+                    case 'eliminar':
+                        return $this->eliminar($_GET['id']);
+                    case 'generar_pdf':
+                        return $this->generarPDF(); // Llamar a la función para generar PDF
+                }
             }
         }
     }
@@ -121,6 +125,45 @@ class ClienteController
         }
         header("Location: ../vista/usuario.php");
         exit();
+    }
+    private function generarPDF()
+    {
+        $clientes = $this->modelo->obtenerUsuarios(); // Obtén los clientes de la base de datos
+
+        // Crear una instancia de FPDF
+        $pdf = new TCPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('helvetica', 'B', 16);
+        $pdf->Cell(0, 10, 'Lista de Clientes', 0, 1, 'C');
+
+        // Encabezados de la tabla
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(10, 10, 'ID', 1);
+        $pdf->Cell(40, 10, 'Nombre', 1);
+        $pdf->Cell(40, 10, 'Apellido', 1);
+        $pdf->Cell(30, 10, 'DNI', 1);
+        $pdf->Cell(30, 10, 'Teléfono', 1);
+        $pdf->Cell(25, 10, 'cod. postal', 1);
+        //$pdf->Cell(40, 10, 'Email', 1);
+        $pdf->Ln();
+
+        // Agregar los clientes a la tabla
+        $pdf->SetFont('helvetica', '', 12);
+        while ($cliente = $clientes->fetch_object()) {
+            $pdf->Cell(10, 10, $cliente->id_usuario, 1);
+            $pdf->Cell(40, 10, $cliente->nombre, 1);
+            $pdf->Cell(40, 10, $cliente->apellido, 1);
+            $pdf->Cell(30, 10, $cliente->dni, 1);
+            $pdf->Cell(30, 10, $cliente->telefono, 1);
+            $pdf->Cell(25, 10, $cliente->direccion, 1);
+           // $pdf->Cell(40, 10, $cliente->email, 1);
+            $pdf->Ln();
+        }
+
+        // Salida del PDF
+        //$pdf->Output('D', 'clientes.pdf');
+        $pdf->Output('cliente.pdf', 'I'); // Forzar la descarga del archivo PDF
+        
     }
 
     private function eliminar($id)

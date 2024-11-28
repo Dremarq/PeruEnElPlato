@@ -58,8 +58,9 @@ $inventario = $almacenModelo->obtenerInventario();
         <!-- Opciones de botones -->
         <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
         <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
-        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/generar_pdf.php'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDalmacen.php?accion=generar_pdf'">Generar PDF</button>
         <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/generar_excel.php'">Generar Excel</button>
+        
 
        
 
@@ -91,13 +92,14 @@ $inventario = $almacenModelo->obtenerInventario();
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="stock_actual" class="form-label">Stock Actual</label>
-                                <input type="number" class="form-control" id="stock_actual" name="stock_actual" required>
-                            </div>
-                            <div class="mb-3">
                                 <label for="stock_minimo" class="form-label">Stock Mínimo</label>
                                 <input type="number" class="form-control" id="stock_minimo" name="stock_minimo" required>
                             </div>
+                            <div class="mb-3">
+                                <label for="stock_actual" class="form-label">Stock Actual</label>
+                                <input type="number" class="form-control" id="stock_actual" name="stock_actual" required>
+                            </div>
+                            
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Registrar</button>
@@ -177,17 +179,14 @@ $inventario = $almacenModelo->obtenerInventario();
                         <input type="hidden" name="accion" value="modificar">
                         <input type="hidden" id="id_almacen" name="id_almacen"> <!-- Campo oculto para el ID del almacén -->
                         <div class="mb-3">
-                            <label for="nombreModificar" class="form-label">Nombre del Producto</label>
-                            <input type="text" class="form-control" id="nombreModificar" name="nombre" required>
+                            <label for="stock_minimo_modificar" class="form-label">Stock Mínimo</label>
+                            <input type="number" class="form-control" id="stock_minimo_modificar" name="stock_minimo" required>
                         </div>
                         <div class="mb-3">
                             <label for="stock_actual_modificar" class="form-label">Stock Actual</label>
                             <input type="number" class="form-control" id="stock_actual_modificar" name="stock_actual" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="stock_minimo_modificar" class="form-label">Stock Mínimo</label>
-                            <input type="number" class="form-control" id="stock_minimo_modificar" name="stock_minimo" required>
-                        </div>
+                        
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Modificar</button>
@@ -209,7 +208,7 @@ $inventario = $almacenModelo->obtenerInventario();
         function abrirModalModificar(idAlmacen, idProducto, nombreProducto, stockActual, stockMinimo) {
             // Asignar los valores a los campos del modal
             document.getElementById('id_almacen').value = idAlmacen;
-            document.getElementById('nombreModificar').value = nombreProducto;
+           
             document.getElementById('stock_actual_modificar').value = stockActual;
             document.getElementById('stock_minimo_modificar').value = stockMinimo;
 

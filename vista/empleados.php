@@ -54,8 +54,11 @@ $empleados = $empleadoModelo->obtenerEmpleados();
             ?>
         <?php endif; ?>
 
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Empleado</button>
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDempleado.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDempleado.php?accion=generar_excel'">Generar Excel</button>
+        
 
         <!-- Tabla de Empleados -->
         <table class="table">
