@@ -22,6 +22,8 @@ class ClienteController
                         return $this->registrar();
                     case 'modificar':
                         return $this->modificar();
+                    case 'login': // Agregar este caso
+                        return $this->login(); // Llamar a la función de login
                 }
             }
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
