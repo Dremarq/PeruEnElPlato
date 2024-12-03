@@ -54,16 +54,6 @@ label {
     color: white; /* Color blanco para las etiquetas */
 }
 
-input[type="text"],
-input[type="number"],
-textarea {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc; /* Borde de los campos de entrada */
-    width: 75%; /* Asegura que los campos ocupen todo el ancho disponible */
-    box-sizing: border-box; /* Incluye padding y border en el ancho total */
-}
-
 textarea {
     resize: vertical; /* Permite redimensionar verticalmente */
 }

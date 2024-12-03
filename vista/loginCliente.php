@@ -6,6 +6,20 @@
     <title>Iniciar Sesión - Cliente</title>
     <link rel="stylesheet" href="../public/styles/login.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+            
+        .modal-content { border-radius: 15px; } 
+        .modal-dialog{max-width: 26%;}
+        .modal-content{width: 100%;}
+        .modal-header { background-color: #007bff; color: white; border-top-left-radius: 10px; border-top-right-radius: 10px; } 
+        .modal-title { font-weight: bold; } 
+        .modal-body { padding: 20px; } 
+        .form-label { font-weight: bold; } 
+        .form-control { border-radius: 5px; border: 1px solid #ced4da; } 
+        .btn-primary { background-color: #007bff; border: none; border-radius: 5px; } 
+        .btn-primary:hover { background-color: #0056b3; } 
+        .mb-3 { margin-bottom: 15px; }
+    </style>
 </head>
 <body>
     <div class="container">
