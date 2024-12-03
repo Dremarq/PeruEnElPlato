@@ -32,6 +32,8 @@ class AlmacenController
                         return $this->eliminar($_GET['id']);
                     case 'generar_pdf':
                         return $this->generarPDFAlmacen(); // Llamar a la función para generar PDF
+                        case 'generar_excel':
+                            return $this->generarExcel();
                 }
             }
         }
@@ -103,6 +105,19 @@ class AlmacenController
 
         // Salida del PDF
         $pdf->Output('ALMACEN.pdf', 'I');
+    }
+    function generarExcel() {
+        $almacen = $this->modelo->obtenerInventario();
+    
+        // Configuración para la descarga de Excel
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="ALMACEN.xls"');
+    
+        echo "ID_ALMACEN\tID_PRODUCTO\tPRODUCTI\tSTOCK MINIMO\tSTOCK ATUAL\n";
+    
+        while ($item = $almacen->fetch_object()) {
+            echo "{$item->id_almacen}\t{$item->id_producto}\t{$item->nombre_producto}\t{$item->stock_minimo}\t{$item->stock_actual}\n";
+        }
     }
 
     private function eliminar()

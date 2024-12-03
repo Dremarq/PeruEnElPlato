@@ -15,6 +15,7 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/admi.css">
     <link rel="stylesheet" href="../public/styles/tablas.css">
+    <link rel="stylesheet" href="../public/styles/det_ped.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
     <title>Detalle de Pedidos - Administrador</title>
@@ -53,8 +54,11 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
             ?>
         <?php endif; ?>
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Detalle de Pedido</button>
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDdetalle_pedido.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDdetalle_pedido.php?accion=generar_excel'">Generar Excel</button>
+        <!-- <button id="toggle-dark-mode" onclick="toggleDarkMode()">Modo Oscuro</button> -->       
 
         <!-- Modal de Registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
@@ -75,7 +79,7 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                                     $pedidos = $detallePedidoModelo->obtenerPedidos();
                                     if ($pedidos && $pedidos->num_rows > 0) {
                                         while ($pedido = $pedidos->fetch_object()) {
-                                            echo "<option value='{$pedido->id_pedido}'>Pedido #{$pedido ->id_pedido}</option>";
+                                            echo "<option value='{$pedido->id_pedido}'>Pedido #{$pedido->id_pedido}</option>";
                                         }
                                     } else {
                                         echo "<option value='' disabled>No hay pedidos disponibles</option>";
@@ -116,7 +120,8 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                 </div>
             </div>
         </div>
-
+        <br>   
+        <br>       
         <div class="container-fluid">
             <!-- Tabla de detalles de pedido -->
             <table class="table">
@@ -132,66 +137,33 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($detalle = $detalles->fetch_object()): ?>
+                    <?php if ($detalles && $detalles->num_rows > 0): ?>
+                        <?php while ($detalle = $detalles->fetch_object()): ?>
+                            <tr>
+                                <td><?= $detalle->id_detalle ?></td>
+                                <td><?= $detalle->id_pedido ?></td>
+                                <td><?= isset($detalle->plato) ? $detalle->plato : 'N/A' ?></td>
+                                <td><?= $detalle->cantidad ?></td>
+                                <td><?= number_format($detalle->precio_unitario, 2) ?></td>
+                                <td><?= isset($detalle->subtotal) ? number_format($detalle->subtotal, 2) : '0.00' ?></td>
+                                <td>
+                                    <a href="#" onclick="abrirModalModificarDetalle('<?= $detalle->id_detalle ?>', '<?= $detalle->id_pedido ?>', '<?= isset($detalle->id_plato) ? $detalle->id_plato : 'N/A' ?>', '<?= $detalle->cantidad ?>', '<?= $detalle->precio_unitario ?>')" class="btn btn-small btn-warning">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="../controlador/CRUDdetalle_pedido.php?accion=eliminar&id=<?= $detalle->id_detalle ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este detalle de pedido?');"><i class="fa-solid fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td><?= $detalle->id_detalle ?></td>
-                            <td><?= $detalle->id_pedido ?></td>
-                            <td><?= $detalle->plato ?></td>
-                            <td><?= $detalle->cantidad ?></td>
-                            <td><?= number_format($detalle->precio_unitario, 2) ?></td>
-                            <td><?= number_format($detalle->subtotal, 2) ?></td>
-                            <td>
-                                <button type="button" class="btn btn-small btn-warning" data-bs-toggle="modal" data-bs-target="#modificarModal<?= $detalle->id_detalle ?>"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <a href="../controlador/CRUDdetalle_pedido.php?accion=eliminar&id=<?= $detalle->id_detalle ?>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este detalle de pedido?');"><i class="fa-solid fa-trash"></i></a>
+                            <td colspan="7" class="text-center">
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    No hay detalles de pedido registrados actualmente.
+                                </div>
                             </td>
                         </tr>
-
-                        <!-- Modal de Modificación -->
-                        <div class="modal fade" id="modificarModal<?= $detalle->id_detalle ?>" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modificarModalLabel">Modificar Detalle de Pedido</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="../controlador/CRUDdetalle_pedido.php" method="POST">
-                                            <input type="hidden" name="accion" value="modificar">
-                                            <input type="hidden" name="id_detalle" value="<?= $detalle->id_detalle ?>">
-                                            <div class="mb-3">
-                                                <label for="id_plato" class="form-label">Plato</label>
-                                                <select class="form-select" id="id_plato" name="id_plato" required>
-                                                    <option value="">Seleccione un plato</ ```php
-                                                    <option value="">Seleccione un plato</option>
-                                                    <?php
-                                                    $platos = $detallePedidoModelo->obtenerPlatos();
-                                                    if ($platos && $platos->num_rows > 0) {
-                                                        while ($plato = $platos->fetch_object()) {
-                                                            $selected = ($plato->id_plato == $detalle->id_plato) ? 'selected' : '';
-                                                            echo "<option value='{$plato->id_plato}' $selected>{$plato->nombre}</option>";
-                                                        }
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="cantidad" class="form-label">Cantidad</label>
-                                                <input type="number" class="form-control" id="cantidad" name="cantidad" value="<?= $detalle->cantidad ?>" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="precio_unitario" class="form-label">Precio Unitario</label>
-                                                <input type="number" step="0.01" class="form-control" id="precio_unitario" name="precio_unitario" value="<?= $detalle->precio_unitario ?>" required>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                <button type="submit" class="btn btn-primary">Modificar</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endwhile; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -201,33 +173,73 @@ $detalles = $detallePedidoModelo->obtenerDetallesPedido();
         </footer>
     </div>
 
+    <!-- Modal para Modificar Detalle de Pedido -->
+    <div class="modal fade" id="modificarModalDetalle" tabindex="-1" aria-labelledby="modificarModalDetalleLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modificarModalDetalleLabel">Modificar Detalle de Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formModificarDetallePedido" action="../controlador/CRUDdetalle_pedido.php" method="POST">
+                        <input type="hidden" name="accion" value="modificar">
+                        <input type="hidden" id="id_detalle" name="id_detalle"> <!-- Campo oculto para el ID del detalle -->
+                        <div class="mb-3">
+                            <label for="id_pedido_modificar" class="form-label">Pedido</label>
+                            <select class="form-select" id="id_pedido_modificar" name="id_pedido" required>
+                                <option value="">Seleccione un pedido</option>
+                                <?php
+                                // Aquí debes cargar los pedidos desde la base de datos
+                                $pedidos = $detallePedidoModelo->obtenerPedidos();
+                                while ($pedido = $pedidos->fetch_object()) {
+                                    echo "<option value='{$pedido->id_pedido}'>{$pedido->id_pedido}</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_plato_modificar" class="form-label">Plato</label>
+                            <select class="form-select" id="id_plato_modificar" name="id_plato" required>
+                                <option value="">Seleccione un plato</option>
+                                <?php
+                                // Aquí debes cargar los platos desde la base de datos
+                                $platos = $detallePedidoModelo->obtenerPlatos();
+                                while ($plato = $platos->fetch_object()) {
+                                    echo "<option value='{$plato->id_plato}'>{$plato->nombre}</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidad_modificar" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad_modificar" name="cantidad" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precio_unitario_modificar" class="form-label">Precio Unitario</label>
+                            <input type="number" step="0.01" class="form-control" id="precio_unitario_modificar" name="precio_unitario" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Modificar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Función para confirmar eliminación
-        function eliminarDetallePedido() {
-            return confirm("¿Estás seguro que deseas eliminar este detalle de pedido?");
-        }
-    </script>
+    <script src="../public/JavaScript/detalle_pedido.js"></script>
+        
+    
+
 </body>
 
 </html>
 
-<script>
-    function preventNegativeValue(input) {
-        if (input.value < 0) {
-            input.value = 0; // Si el valor es menor a 0, se establece en 0
-        }
-    }
 
-    // Aplicar la función a los campos de cantidad y precio unitario
-    const cantidad = document.getElementById('cantidad');
-    const precioUnitario = document.getElementById('precio_unitario');
-
-    cantidad.addEventListener('input', function() {
-        preventNegativeValue(this);
-    });
-
-    precioUnitario.addEventListener('input', function() {
-        preventNegativeValue(this);
-    });
-</script>
+    

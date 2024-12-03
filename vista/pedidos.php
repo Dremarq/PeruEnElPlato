@@ -55,8 +55,10 @@ $pedidos = $pedidoModelo->obtenerPedidos();
         <?php endif; ?>
 
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Pedido</button>
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDpedidos.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDpedidos.php?accion=generar_excel'">Generar Excel</button>
 
         <!-- Modal de Registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel">
@@ -127,6 +129,8 @@ $pedidos = $pedidoModelo->obtenerPedidos();
                 </div>
             </div>
         </div>
+        <br>
+        <br>
         <div class="container-fluid">
             <!-- Tabla de pedidos -->
             <table class="table">
@@ -265,68 +269,8 @@ $pedidos = $pedidoModelo->obtenerPedidos();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <<script>
-        function abrirModalModificar(id, idUsuario, idEmpleado, fechaPedido, estado, tipoPedido, total) {
-        // Corregir los IDs de los campos
-        document.getElementById('id_pedido').value = id;
-        document.getElementById('id_usuario_modificar').value = idUsuario;
-        document.getElementById('id_empleado_modificar').value = idEmpleado;
-        document.getElementById('fecha_pedido_modificar').value = fechaPedido;
-        document.getElementById('estado_modificar').value = estado;
-        document.getElementById('tipo_pedido_modificar').value = tipoPedido;
-        document.getElementById('total_modificar').value = total;
-
-        // Crear y mostrar el modal correctamente
-        var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
-        modificarModal.show();
-        }
-
-        function eliminarPedido() {
-        return confirm("¿Estás seguro de que deseas eliminar este pedido?");
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-        // Seleccionar el formulario de registro y modificación
-        const formRegistro = document.getElementById('formRegistroPedido');
-        const formModificar = document.getElementById('formModificarPedido');
-
-        // Función para validar el total
-        function validarTotal(event) {
-            const totalInput = event.target;
-            const totalValue = parseFloat(totalInput.value);
-
-            if (totalValue < 0) {
-                alert("El total no puede ser menor que 0.");
-                totalInput.value = 0; // Restablecer el total a 0
-            }
-        }
-
-        // Función para prevenir que el valor baje de 0
-        function prevenirNegativos(event) {
-            const totalInput = event.target;
-            const totalValue = parseFloat(totalInput.value);
-
-            if (totalValue < 0) {
-                totalInput.value = 0; // Restablecer el total a 0 si es menor que 0
-            }
-        }
-
-        // Agregar evento de validación al campo total en el formulario de registro
-        if (formRegistro) {
-            const totalRegistro = document.getElementById('total'); // Asegúrate de que el ID sea correcto
-            totalRegistro.addEventListener('input', validarTotal);
-            totalRegistro.addEventListener('blur', prevenirNegativos); // Para prevenir negativos al perder el foco
-        }
-
-        // Agregar evento de validación al campo total en el formulario de modificación
-        if (formModificar) {
-            const totalModificar = document.getElementById('total_modificar'); // Asegúrate de que el ID sea correcto
-            totalModificar.addEventListener('input', validarTotal);
-            totalModificar.addEventListener('blur', prevenirNegativos); // Para prevenir negativos al perder el foco
-        }
-    });
-        </script>
+    <script src="../public/JavaScript/pedido.js"></script>
+   
 </body>
 
 </html>
-

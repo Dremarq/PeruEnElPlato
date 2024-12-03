@@ -20,6 +20,7 @@ $inventario = $almacenModelo->obtenerInventario();
     <link rel="stylesheet" href="../public/styles/tablas.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
+    
     <title>Interfaz de Administrador - Almacen</title>
 </head>
 
@@ -59,10 +60,10 @@ $inventario = $almacenModelo->obtenerInventario();
         <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
         <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
         <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDalmacen.php?accion=generar_pdf'">Generar PDF</button>
-        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/generar_excel.php'">Generar Excel</button>
-        
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDalmacen.php?accion=generar_excel'">Generar Excel</button>
 
-       
+
+
 
         <!-- Modal de Registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
@@ -99,7 +100,7 @@ $inventario = $almacenModelo->obtenerInventario();
                                 <label for="stock_actual" class="form-label">Stock Actual</label>
                                 <input type="number" class="form-control" id="stock_actual" name="stock_actual" required>
                             </div>
-                            
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Registrar</button>
@@ -164,6 +165,9 @@ $inventario = $almacenModelo->obtenerInventario();
                 </tbody>
             </table>
         </div>
+        <footer>
+        <p>&copy; Peru al plato</p>
+    </footer>
     </div>
 
     <!-- Modal para Modificar Almacén -->
@@ -186,7 +190,7 @@ $inventario = $almacenModelo->obtenerInventario();
                             <label for="stock_actual_modificar" class="form-label">Stock Actual</label>
                             <input type="number" class="form-control" id="stock_actual_modificar" name="stock_actual" required>
                         </div>
-                        
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Modificar</button>
@@ -204,68 +208,7 @@ $inventario = $almacenModelo->obtenerInventario();
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function abrirModalModificar(idAlmacen, idProducto, nombreProducto, stockActual, stockMinimo) {
-            // Asignar los valores a los campos del modal
-            document.getElementById('id_almacen').value = idAlmacen;
-           
-            document.getElementById('stock_actual_modificar').value = stockActual;
-            document.getElementById('stock_minimo_modificar').value = stockMinimo;
-
-            // Mostrar el modal
-            var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
-            modificarModal.show();
-        }
-
-        function eliminarProductoDeAlmacen() {
-            return confirm("¿Estás seguro que deseas eliminar este producto del almacén?");
-        }
-    </script>
-    <script>
-        function preventNegativeValue(input) {
-            if (input.value < 0) {
-                input.value = 0; // Si el valor es menor a 0, se establece en 0
-            }
-        }
-
-        function validateStock(stockActualInput, stockMinimoInput) {
-            const stockActual = parseInt(stockActualInput.value);
-            const stockMinimo = parseInt(stockMinimoInput.value);
-
-            if (stockActual > stockMinimo) {
-                alert("El stock actual no puede ser mayor que el stock mínimo. Se ajustará al stock mínimo.");
-                stockActualInput.value = stockMinimo; // Ajustar el stock actual al stock mínimo
-            }
-        }
-
-        // Aplicar la función a los campos de registro
-        const stockActual = document.getElementById('stock_actual');
-        const stockMinimo = document.getElementById('stock_minimo');
-
-        stockActual.addEventListener('input', function() {
-            preventNegativeValue(this);
-            validateStock(stockActual, stockMinimo);
-        });
-
-        stockMinimo.addEventListener('input', function() {
-            preventNegativeValue(this);
-            validateStock(stockActual, stockMinimo);
-        });
-
-        // Aplicar la función a los campos de modificación
-        const stockActualModificar = document.getElementById('stock_actual_modificar');
-        const stockMinimoModificar = document.getElementById('stock_minimo_modificar');
-
-        stockActualModificar.addEventListener('input', function() {
-            preventNegativeValue(this);
-            validateStock(stockActualModificar, stockMinimoModificar);
-        });
-
-        stockMinimoModificar.addEventListener('input', function() {
-            preventNegativeValue(this);
-            validateStock(stockActualModificar, stockMinimoModificar);
-        });
-    </script>
+    <script src="../public/JavaScript/almacen.js"></script>
 
 </body>
 

@@ -1,0 +1,32 @@
+/* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #121212; /* Fondo oscuro */
+    color: #ffffff; /* Texto blanco */
+}
+
+header.dark-mode {
+    background-color: #1e1e1e; /* Fondo de cabecera oscuro */
+}
+
+.table-dark {
+    background-color: #1e1e1e; /* Fondo de tabla oscuro */
+    color: #ffffff; /* Texto blanco en la tabla */
+}
+
+.table-dark th {
+    background-color: #333333; /* Fondo de encabezado de tabla oscuro */
+}
+
+.table-dark td {
+    background-color: #2c2c2c; /* Fondo de celdas de tabla oscuro */
+}
+
+/* Botones en modo oscuro */
+.btn-dark {
+    background-color: #444444; /* Fondo de botón oscuro */
+    color: #ffffff; /* Texto blanco en botones */
+}
+
+.btn-dark:hover {
+    background-color: #555555; /* Fondo de botón oscuro al pasar el mouse */
+}

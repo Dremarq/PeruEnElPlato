@@ -36,7 +36,7 @@ $platos = $platoModelo->obtenerPlatos();
             <li><a href="../vista/reservas.php">Reservas</a></li>
             <li><a href="../vista/roles.php">Roles</a></li>
             <li><a href="../vista/usuario.php">Usuarios</a></li>
-            
+
         </ul>
     </nav>
 
@@ -56,8 +56,10 @@ $platos = $platoModelo->obtenerPlatos();
         <?php endif; ?>
 
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Plato</button>
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDplato.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDplato.php?accion=generar_excel'">Generar Excel</button>
 
         <!-- Modal de Registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
@@ -86,10 +88,11 @@ $platos = $platoModelo->obtenerPlatos();
                                 <label for="categoria" class="form-label">Categoría:</label>
                                 <select class="form-select" id="categoria" name="categoria" required>
                                     <option value="">Seleccione una categoría</option>
-                                    <option value="plato_principal">Plato Principal</option>
-                                    <option value="entrada">Entrada</option>
-                                    <option value="postre">Postre</option>
-                                    <option value="bebida">Refresco</option>
+                                    <option value="Principal">Plato Principal</option>
+                                    <option value="Entrada">Entrada</option>
+                                    <option value="Postre">Postre</option>
+                                    <option value="Bebida">Refresco</option>
+                                    
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -100,8 +103,8 @@ $platos = $platoModelo->obtenerPlatos();
                                 <label for="estado" class="form-label">Estado:</label>
                                 <select class="form-select" id="estado" name="estado" required>
                                     <option value="">Seleccione un estado</option>
-                                    <option value="disponible">Disponible</option>
-                                    <option value="no_disponible">No Disponible</option>
+                                    <option value="1">Disponible</option>
+                                    <option value="0">No Disponible</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -135,9 +138,9 @@ $platos = $platoModelo->obtenerPlatos();
                         <td><?= $plato->id_plato ?></td>
                         <td><?= $plato->nombre ?></td>
                         <td><?= $plato->descripcion ?></td>
-                        <td><?= number_format($plato->precio, 2) ?> $</td>
+                        <td><?= number_format($plato->precio, 2) ?> </td>
                         <td><?= $plato->categoria ?></td>
-                        <td><img src="../public/images/<?= $plato->imagen ?>" alt="<?= $plato->nombre ?>" width="100"></td>
+                        <td><img src="../public/img/<?= $plato->imagen ?>" alt="<?= $plato->nombre ?>" width="100"></td>
                         <td><?= $plato->estado ?></td>
                         <td>
                             <button class="btn btn-warning" onclick="abrirModalModificarPlato(<?= $plato->id_plato ?>, '<?= $plato->nombre ?>', '<?= $plato->descripcion ?>', <?= $plato->precio ?>, '<?= $plato->categoria ?>',  '<?= $plato->imagen ?>','<?= $plato->estado ?>')"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -177,10 +180,10 @@ $platos = $platoModelo->obtenerPlatos();
                                 <label for="categoriaModificar" class="form-label">Categoría:</label>
                                 <select class="form-select" id="categoriaModificar" name="categoria" required>
                                     <option value="">Seleccione una categoría</option>
-                                    <option value="plato_principal">Plato Principal</option>
-                                    <option value="entrada">Entrada</option>
-                                    <option value="postre">Postre</option>
-                                    <option value="bebida">Refresco</option>
+                                    <option value="Principal">Plato Principal</option>
+                                    <option value="Entrada">Entrada</option>
+                                    <option value="Postre">Postre</option>
+                                    <option value="Bebida">Refresco</option>
                                 </select>
                                 </select>
                             </div>
@@ -192,8 +195,8 @@ $platos = $platoModelo->obtenerPlatos();
                                 <label for="estadoModificar" class="form-label">Estado:</label>
                                 <select class="form-select" id="estadoModificar" name="estado" required>
                                     <option value="">Seleccione un estado</option>
-                                    <option value="disponible">Disponible</option>
-                                    <option value="no_disponible">No Disponible</option>
+                                    <option value="1">Disponible</option>
+                                    <option value="0">No Disponible</option>
                                 </select>
                             </div>
                             <div class="modal-footer">
@@ -209,19 +212,7 @@ $platos = $platoModelo->obtenerPlatos();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function abrirModalModificarPlato(id, nombre, descripcion, precio, categoria, imagen) {
-            document.getElementById('id_plato').value = id;
-            document.getElementById('nombreModificar').value = nombre;
-            document.getElementById('descripcionModificar').value = descripcion;
-            document.getElementById('precioModificar').value = precio;
-            document.getElementById('categoriaModificar').value = categoria;
-            document.getElementById('estadoModificar').value = estado;
-
-            var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
-            modificarModal.show();
-        }
-    </script>
+    <script src="../public/JavaScript/plato.js"></script>                
 </body>
 
 </html>

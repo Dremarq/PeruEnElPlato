@@ -56,8 +56,10 @@ $proveedores = $proveedorModelo->obtenerProveedores();
         <?php endif; ?>
 
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Proveedor</button>
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDproveedores.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDproveedores.php?accion=generar_excel'">Generar Excel</button>
 
         <!-- Modal de registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel">
@@ -182,24 +184,10 @@ $proveedores = $proveedorModelo->obtenerProveedores();
                 </div>
             </div>
         </div>
-        <script>
-            function abrirModalModificarProveedor(id, nombreEmpresa, ruc, telefono, email, direccion, estado) {
-                // Asignar los valores a los campos del modal
-                document.getElementById('id_proveedor').value = id;
-                document.getElementById('nombre_empresaModificar').value = nombreEmpresa;
-                document.getElementById('rucModificar').value = ruc;
-                document.getElementById('telefonoModificar').value = telefono;
-                document.getElementById('emailModificar').value = email;
-                document.getElementById('direccionModificar').value = direccion;
-                document.getElementById('estadoModificar').value = estado;
-
-                // Mostrar el modal
-                var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
-                modificarModal.show();
-            }
-        </script>
+       
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../public/JavaScript/proveedor.js"></script> 
 
         <!-- Pie de página -->
         <footer>
@@ -209,35 +197,3 @@ $proveedores = $proveedorModelo->obtenerProveedores();
 </body>
 
 </html>
-<script>
-    document.getElementById('formRegistroProveedor').addEventListener('submit', function(event) {
-        var rucInput = document.getElementById('ruc');
-        var telefonoInput = document.getElementById('telefono');
-        var ruc = rucInput.value;
-        var telefono = telefonoInput.value;
-
-        // Validar RUC
-        if (!validarRUC(ruc)) {
-            alert("El RUC ingresado no es válido. Asegúrate de que tenga 11 dígitos y solo contenga números.");
-            event.preventDefault(); // Evita el envío del formulario
-            return;
-        }
-
-        // Validar Teléfono
-        if (!validarTelefono(telefono)) {
-            alert("El teléfono ingresado no es válido. Debe ser un número de 9 dígitos que comience con 9.");
-            event.preventDefault(); // Evita el envío del formulario
-            return;
-        }
-    });
-
-    function validarRUC(ruc) {
-        // Verifica que el RUC tenga exactamente 11 dígitos y solo contenga números
-        return /^\d{11}$/.test(ruc);
-    }
-
-    function validarTelefono(telefono) {
-        // Verifica que el teléfono tenga exactamente 9 dígitos y comience con 9
-        return /^9\d{8}$/.test(telefono);
-    }
-</script>

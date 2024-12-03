@@ -29,8 +29,11 @@ class ProductoController
                 switch ($_GET['accion']) {
                     case 'eliminar':
                         return $this->eliminar($_GET['id']);
+                        case 'generar_excel':
+                            return $this->generarExcel();
                     case 'generar_pdf':
-                        return $this->generarPDF(); // Llamar a la función para generar PDF
+                        return $this->generarPDF();
+                  
                 }
             }
         }
@@ -155,6 +158,19 @@ class ProductoController
     
         // Salida del PDF
         $pdf->Output('PRODUCTOS.pdf', 'I');
+    }
+    function generarExcel()  {
+        $Pedido = $this->modelo->obtenerProductos();
+    
+        // Configuración para la descarga de Excel
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="Productos.xls"');
+    
+        echo "id_producto\tnombre\tcosto\tid_proveedor\testado\n";
+    
+        while ($item = $Pedido->fetch_object()) {
+            echo "{$item->id_producto}\t{$item->nombre}\t{$item->costo}\t{$item->id_proveedor}\t{$item->estado}\n";
+        }
     }
 
 

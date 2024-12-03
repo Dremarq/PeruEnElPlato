@@ -160,7 +160,7 @@ class EmpleadoController
         $pdf->Cell(23, 10, 'DNI', 1, 0, 'C');
         $pdf->Cell(25, 10, 'Teléfono', 1, 0, 'C');
         $pdf->Cell(25, 10, 'cod. postal', 1, 0, 'C');
-        $pdf->Cell(25, 10, 'fech_con', 1, 0, 'C');
+        $pdf->Cell(25, 10, 'contratación', 1, 0, 'C');
         //$pdf->Cell(40, 10, 'Email', 1);
         $pdf->Ln();
 

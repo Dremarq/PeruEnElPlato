@@ -65,8 +65,8 @@ $proveedores = $proveedorModelo->obtenerProveedores(); // Obtener proveedores
         <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
         <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
         <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDproductos.php?accion=generar_pdf'">Generar PDF</button>
-        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/generar_excel.php'">Generar Excel</button>
-        
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDproductos.php?accion=generar_excel'">Generar Excel</button>
+
         <!-- Modal de registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel">
             <div class="modal-dialog">
@@ -145,7 +145,7 @@ $proveedores = $proveedorModelo->obtenerProveedores(); // Obtener proveedores
                             <td><?= $producto->id_proveedor ?></td>
                             <td><?= $producto->estado ? 'Activo' : 'Inactivo' ?></td>
                             <td>
-                                <a href="#" onclick="abrirModalModificarProducto('<?= $producto->id_producto ?>', '<?= $producto->nombre ?>', '<?= $producto->descripcion ?>', '<?= $producto->costo ?>', '<?= $producto->id_proveedor ?>', '<?= $producto->estado ?>')" class="btn btn-small btn-warning">
+                                <a href="#" onclick="abrirModalModificarProducto('<?= $producto->id_producto ?>', '<?= $producto->nombre ?>', '<?=$producto->descripcion ?>', '<?= $producto->costo ?>', '<?= $producto->id_proveedor ?>', '<?= $producto->estado ?>')" class="btn btn-small btn-warning">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <a href="../controlador/CRUDproductos.php?accion=eliminar&id=<?= $producto->id_producto ?>"
@@ -184,8 +184,8 @@ $proveedores = $proveedorModelo->obtenerProveedores(); // Obtener proveedores
                                 <input type="number" class="form-control" id="costoModificar" name="costo" step="0.01" required>
                             </div>
                             <div class="mb-3">
-                                <label for="id_proveedor" class="form-label">Proveedor:</label>
-                                <select class="form-select" id="id_proveedor" name="id_proveedor" required>
+                                <label for="id_proveedorModificar" class="form-label">Proveedor:</label>
+                                <select class="form-select" id="id_proveedorModificar" name="id_proveedor" required>
                                     <option value="">Seleccione un proveedor</option>
                                     <?php
                                     // Cargar proveedores desde la base de datos
@@ -213,27 +213,9 @@ $proveedores = $proveedorModelo->obtenerProveedores(); // Obtener proveedores
             </div>
         </div>
 
-        <script>
-            function abrirModalModificarProducto(id, nombre, descripcion, costo, id_proveedor) {
-                document.getElementById('id_producto').value = id;
-                document.getElementById('nombreModificar').value = nombre;
-                document.getElementById('descripcionModificar').value = descripcion;
-                document.getElementById('costoModificar').value = costo;
-
-                // Asignar el ID del proveedor al campo de selección
-                document.getElementById('id_proveedor').value = id_proveedor;
-
-                // Mostrar el modal
-                var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
-                modificarModal.show();
-            }
-
-            function eliminarProducto() {
-                return confirm("¿Estás seguro que deseas eliminar este producto?");
-            }
-        </script>
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-
+        <script src="../public/JavaScript/productos.js"></script>                           
     </div>
 </body>
 

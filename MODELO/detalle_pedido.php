@@ -8,12 +8,13 @@ class DetallePedido {
     }
 
     public function obtenerDetallesPedido() {
-        $sql = "SELECT d.id_detalle, d.id_pedido, p.nombre AS plato, d.cantidad, 
-                d.precio_unitario, d.subtotal 
-                FROM detalle_pedido d
-                JOIN platos p ON d.id_plato = p.id_plato"; // Se asegura de usar la tabla correcta
-        $resultado = $this->conexion->query($sql);
-        return $resultado;
+        $query = "
+            SELECT dp.id_detalle, dp.id_pedido, dp.id_plato, dp.cantidad, dp.precio_unitario, 
+                   (dp.cantidad * dp.precio_unitario) AS subtotal, 
+                   p.nombre AS plato
+            FROM detalle_pedido dp
+            JOIN platos p ON dp.id_plato = p.id_plato";
+        return $this->conexion->query($query);
     }
 
     public function obtenerPlatos() {

@@ -30,10 +30,18 @@ class Plato {
     }
 
     public function eliminarPlato($id_plato) {
+        // Primero elimina las referencias en platos_vendidos_hoy
+        $sqlEliminarReferencias = "DELETE FROM platos_vendidos_hoy WHERE id_plato = ?";
+        $stmtEliminar = $this->conexion->prepare($sqlEliminarReferencias);
+        $stmtEliminar->bind_param("i", $id_plato);
+        $stmtEliminar->execute();
+    
+        // Ahora elimina el plato
         $sql = "DELETE FROM platos WHERE id_plato = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id_plato);
         $stmt->execute();
-        return $stmt->affected_rows;
+    
+        return $stmt->affected_rows; // Verifica si se está eliminando correctamente
     }
 }

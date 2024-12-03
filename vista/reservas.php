@@ -55,8 +55,10 @@ $reservas = $reservaModelo->obtenerReservas();
         <?php endif; ?>
 
         <!-- Opciones de botones -->
-        <a href="../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a>
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar Reserva</button>
+        <a href="../controlador/logout.php" class="btn" style="background-color: #e74c3c; color: white;">Cerrar Sesión</a>
+        <button type="button" class="btn" style="background-color: #3498db; color: white;" data-bs-toggle="modal" data-bs-target="#registroModal">Registrar</button>
+        <button type="button" class="btn" style="background-color: #e67e22; color: white;" onclick="location.href='../controlador/CRUDreservas.php?accion=generar_pdf'">Generar PDF</button>
+        <button type="button" class="btn" style="background-color: #2ecc71; color: white;" onclick="location.href='../controlador/CRUDreservas.php?accion=generar_excel'">Generar Excel</button>
 
         <!-- Modal de Registro -->
         <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="registroModalLabel" aria-hidden="true">
@@ -242,17 +244,7 @@ $reservas = $reservaModelo->obtenerReservas();
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function abrirModalModificar(id, idUsuario, numeroMesa, fechaReserva, horaReserva, cantidadPersonas, estado) {
-            document.getElementById('modificar_id_reserva').value = id;
-            document.getElementById('modificar_id_usuario').value = idUsuario;
-            document.getElementById('modificar_numero_mesa').value = numeroMesa;
-            document.getElementById('modificar_fecha_reserva').value = fechaReserva;
-            document.getElementById('modificar_hora_reserva').value = horaReserva;
-            document.getElementById('modificar_cantidad_personas').value = cantidadPersonas;
-            document.getElementById('modificar_estado').value = estado;
-        }
-    </script>
+    <script src="../public/JavaScript/reservas.js"></script> 
 </body>
 
 </html>

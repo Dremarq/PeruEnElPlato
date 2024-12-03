@@ -167,7 +167,7 @@ CREATE TABLE `platos` (
   `nombre` varchar(255) NOT NULL,
   `descripcion` text DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `categoria` enum('Plato Principal','Entrada','Postre','Refresco') NOT NULL,
+  `categoria` enum('Plato_Principal','Entrada','Postre','Refresco') NOT NULL,
   `imagen` varchar(255) NOT NULL,
   `estado` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
