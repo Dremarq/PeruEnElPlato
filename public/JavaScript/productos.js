@@ -36,22 +36,3 @@ const costoModal = document.getElementById('costoModificar');
 costoModal.addEventListener('input', function() {
     preventNegativeValue(this);
 });
-// Función para validar el nombre del producto
-function validarNombreProducto(nombre) {
-    // Expresión regular para validar el nombre
-    const regex = /^[a-zA-Z0-9\s]+$/; // Permitir solo letras, números y espacios
-    return regex.test(nombre);
-}
-
-// Evento para validar el formulario de modificación
-document.querySelector('form[action="../controlador/CRUDproductos.php"]').addEventListener('submit', function(event) {
-    const nombre = document.getElementById('nombreModificar').value;
-
-    if (!validarNombreProducto(nombre)) {
-        alert("El nombre del producto es inválido. Solo se permiten letras, números y espacios.");
-        event.preventDefault(); // Evitar que se envíe el formulario
-        return;
-    }
-
-    // Puedes agregar más validaciones aquí si es necesario
-});
