@@ -210,28 +210,26 @@ $ventas_bimestrales = mysqli_fetch_assoc($result)['total'] ?? 0; // Si no hay ve
                     <div class="card-value"><?= $total_clientes ?></div>
                 </div>
             </div>
+<!-- Gráficos -->
+<div class="row mt-4" style="display: flex; justify-content: space-between;">
+    <div class="col-md-6" style="flex: 1;">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Ventas Mensuales</h5>
+                <canvas id="ventasChart"></canvas>
+            </div>
+        </div>
+    </div>
 
-                <!-- Gráficos -->
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Ventas Mensuales</h5>
-                                <canvas id="ventasChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Tipos de Pedidos</h5>
-                                <canvas id="pedidosChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-md-6" style="flex: 1;">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Tipos de Pedidos</h5>
+                <canvas id="pedidosChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
                 
 
                 <!-- Tablas de resumen -->
