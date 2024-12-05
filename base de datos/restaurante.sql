@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-12-2024 a las 06:58:21
+-- Tiempo de generación: 05-12-2024 a las 19:41:57
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id_admin`, `id_empleado`, `username`, `password`, `ultimo_acceso`) VALUES
 (1, 1, 'admin', 'admin123', NULL),
-(2, 8, 'marco123', 'marco123', NULL);
+(2, 8, 'marco123', 'marco123', NULL),
+(3, 9, 'dimar', 'dimar', NULL);
 
 -- --------------------------------------------------------
 
@@ -121,7 +122,8 @@ CREATE TABLE `empleados` (
 
 INSERT INTO `empleados` (`id_empleado`, `id_rol`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `fecha_contratacion`) VALUES
 (1, 1, 'Diego Martina', 'Chavarry', '75455622', '993443125', '0aaada@gmail.com', '15143', '2024-11-17'),
-(8, 7, 'Marco', 'Inta', '44415555', '993144131', 'diegohe1rbay@gmail.com', '15314', '2024-11-21');
+(8, 7, 'Marco', 'Inta', '44415555', '993144131', 'diegohe1rbay@gmail.com', '15314', '2024-11-21'),
+(9, 8, 'Diegal ', 'Herbat', '75455687', '907950690', 'diegohervsacabay@gmail.com', 'SAN MIGUELITO ASENT. H. EL OLIVAR DE PRO MZ.C LT. 4, 15314', '2024-12-06');
 
 -- --------------------------------------------------------
 
@@ -343,7 +345,8 @@ INSERT INTO `roles` (`id_rol`, `nombre_rol`, `descripcion`) VALUES
 (1, 'Administrador', 'Gestor completo del sistema'),
 (2, 'Cajero', 'Responsable de las transacciones'),
 (3, 'Cocinero', 'Encargado de la preparación de alimentos'),
-(7, 'Mesero', 'Atención a los clientes');
+(7, 'Mesero', 'Atención a los clientes'),
+(8, 'Encargado', 'del invetario, control de insumos');
 
 -- --------------------------------------------------------
 
@@ -361,35 +364,38 @@ CREATE TABLE `usuarios` (
   `direccion` varchar(255) DEFAULT NULL,
   `usuario` varchar(30) NOT NULL,
   `contrasena` varchar(255) DEFAULT NULL,
-  `fecha_registro` date DEFAULT NULL
+  `fecha_registro` date DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `token_expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `usuario`, `contrasena`, `fecha_registro`) VALUES
-(15, 'Diego', 'Herbay', '46904442', '993443125', 'diegoherbay@gmail.com', '15314', 'dimar123', '$2y$10$eOy6MUyBcM.5ucF7v91kSOGUe7rRuZgqhNv9KFGQH54y898CD1K7e', '2024-11-20'),
-(16, 'marco', 'gonzalez', '46464646', '992443125', 'diegohekbay@gmail.com', '15314', 'marco', '$2y$10$GKdmU5Kk/gDfVkpct6CG7uvjBuDsnKEhfezb9LVj200WDoOQRb3q.', '2024-11-20'),
-(17, 'Diego', 'Chavarry', '11155566', '907950690', 'dieg11oherbay@gmail.com', '15113', 'diego', '$2y$10$wOWIhwyxpHnj7A8CEvchS.y0In/2AZzZ5ALcQR/4LTjh1uTwYGTLW', '2024-12-03'),
-(19, 'Dieguin', 'Herbay', '75444664', '993443125', 'diegoherbay@gmail.com', '15314', 'dino', '$2y$10$EU.Nahdz5UKRpJNgJPPBBu.OxTaQ.m4/KNzHBNyMG3Hgmf01gVnhC', '2024-12-05'),
-(20, 'Juan', 'Pérez', '12345678', '987654321', 'juan.perez@example.com', '15123', 'juanperez', '$2y$10$VIflbthoLNc8BkbXntOZs.6X8nM4aLzDRrlsZ3Uk0xNdYCNfavQHG', '2024-12-05'),
-(21, 'María', 'Gómez', '23456789', '998877665', 'maria.gomez@example.com', '1513', 'mariagomez', '$2y$10$Hzv7CzC2ujxLbvsB/ouLQecsGW8Q80yxufgyAnFA67WGXESq9u0N6', '2024-12-05'),
-(22, 'Carlos', 'Rodríguez', '34567890', '976543210', 'carlos.rodriguez@example.com', 'Lima', 'carlosr', '$2y$10$A.hP/mTeJEQSU/8hyRI1neQm9vUGFCa6XzH5B3unbzf./eDFoW3Ku', '2024-12-05'),
-(23, 'Laura', 'Torres', '45678901', '912345678', 'laura.torres@example.com', 'Lima', 'lauratorres', '$2y$10$w2r0OcONIkawUOPXfc1RjOQgsBKWFXL34nNW601U5D0To349iNOGG', '2024-12-05'),
-(24, 'Ricardo', 'Sánchez', '56789012', '998877554', 'ricardo.sanchez@example.com', 'Lima', 'ricardosanchez', '$2y$10$4/THqb7GHKJTeEw6bcGrIeO2s7Wu9QCGclHN5JHPfufI3BN4oc.jG', '2024-12-05'),
-(25, 'Patricia', 'Díaz', '67890123', '991234567', 'patricia.diaz@example.com', 'Lima', 'patricia.diaz', '$2y$10$HN8X.GE7rE3GlWKQS6oVkueWu7vy/gVqWu8Co14dMCEsJsqY.ySaC', '2024-12-05'),
-(26, 'Luis', 'Herrera', '78901234', '996789012', 'luis.herrera@example.com', 'Lima', 'luis.herrera', '$2y$10$uFWjDsqu3vajsGf6IwQvJ.Pci0eRXz8QIfTfudT0DmpmIsTkHUMhO', '2024-12-05'),
-(27, 'Antonio', 'Mendoza', '78912345', '987654987', 'antonio.mendoza@example.com', 'Lima', 'antonio.m', '$2y$10$BQ.2NBJ7hqZOK6/CKmoaMepoKx3BTVxnRrdjr7Xk1zCVkBh0ae1A2', '2024-12-05'),
-(28, 'Lucía', 'Fernández', '89023456', '998877998', 'lucia.fernandez@example.com', 'Lima', 'luciaf', '$2y$10$ZUyfnI3ynNlp64fGvoiXAuP9aX1fqT7IIKsnwPkgBm8w.LxRgdZV2', '2024-12-05'),
-(29, 'Gabriel', 'Martínez', '90134567', '976543876', 'gabriel.martinez@example.com', 'Lima', 'gabrielm', '$2y$10$wsOO1A7k2k9Ee8IJT1fWz.D2SjZMeACwijZACbJisLhvyZjQMRXMK', '2024-12-05'),
-(30, 'Eva', 'González', '91245678', '965432123', 'eva.gonzalez@example.com', 'Lima', 'evag', '$2y$10$8YUHq9chUYlsA/X/7aeLCuM9hslv3758aEEW2/f2PTbfBIDKqkycO', '2024-12-05'),
-(31, 'Jorge', 'Vásquez', '92356789', '987654321', 'jorge.vasquez@example.com', 'Lima', 'jorgev', '$2y$10$BydrQ80CHcig5eICCJVvTu6MNXBTK.8BopqoFh0BQq.v0EA8r0gUS', '2024-12-05'),
-(32, 'Ana', 'Ramírez', '93467890', '973456789', 'ana.ramirez@example.com', 'Lima', 'anar', '$2y$10$qWmjH/88mLA/IFgpSMbjAO/LJuodyaj0w5C.tQHQcL3jjwXT3Ehy6', '2024-12-05'),
-(33, 'Pedro', 'Alvarado', '94578901', '982345678', 'pedro.alvarado@example.com', 'Lima', 'pedroa', '$2y$10$t1Rxj27EGFHveJKX9I89/eO./YeX0brIz9aL2AGUzSepzGRWDx8LG', '2024-12-05'),
-(34, 'Isabel', 'Paredes', '95689012', '991234567', 'isabel.paredes@example.com', 'Lima', 'isabelp', '$2y$10$VEeaLmps96eb.ggG4QzlhO4cW6CuL8i94im6W9p8AD2rX5XVaqfIW', '2024-12-05'),
-(35, 'Roberto', 'Castro', '96790123', '996789012', 'roberto.castro@example.com', 'Lima', 'robertoc', '$2y$10$Mj6vwR/MpemfXlu.EWLYTeC2hY0ds4TQ8qz1iGQT3sri1Eb0ixPIa', '2024-12-05'),
-(36, 'Patricia', 'Navarro', '97801234', '988765432', 'patricia.navarro@example.com', 'Lima', 'patrician', '$2y$10$We5C/CgHpBv7xYwSvK8sn.M1oqapwleTLyUIEfjW0GPy2eBZl3rLG', '2024-12-05');
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `usuario`, `contrasena`, `fecha_registro`, `token`, `token_expires`) VALUES
+(15, 'Diego', 'Herbay', '46904442', '993443125', 'diegoherbay@gmail.com', '15314', 'dimar123', '$2y$10$eOy6MUyBcM.5ucF7v91kSOGUe7rRuZgqhNv9KFGQH54y898CD1K7e', '2024-11-20', 'b8c8d556856ed87de4487b9d4b00bc59ccf9b3d1e5c87bbd9eba91e637cbc652ba58af1801342e849f52af775eed137b385d', '2024-12-05 12:15:23'),
+(16, 'marco', 'gonzalez', '46464646', '992443125', 'diegohekbay@gmail.com', '15314', 'marco', '$2y$10$GKdmU5Kk/gDfVkpct6CG7uvjBuDsnKEhfezb9LVj200WDoOQRb3q.', '2024-11-20', NULL, NULL),
+(17, 'Diego', 'Chavarry', '11155566', '907950690', 'dieg11oherbay@gmail.com', '15113', 'diego', '$2y$10$wOWIhwyxpHnj7A8CEvchS.y0In/2AZzZ5ALcQR/4LTjh1uTwYGTLW', '2024-12-03', NULL, NULL),
+(19, 'Dieguin', 'Herbay', '75444664', '993443125', 'die11goherbay@gmail.com', '15314', 'dino', '$2y$10$EU.Nahdz5UKRpJNgJPPBBu.OxTaQ.m4/KNzHBNyMG3Hgmf01gVnhC', '2024-12-05', 'b8c8d556856ed87de4487b9d4b00bc59ccf9b3d1e5c87bbd9eba91e637cbc652ba58af1801342e849f52af775eed137b385d', '2024-12-05 12:15:23'),
+(20, 'Juan', 'Pérez', '12345678', '987654321', 'juan.perez@example.com', '15123', 'juanperez', '$2y$10$VIflbthoLNc8BkbXntOZs.6X8nM4aLzDRrlsZ3Uk0xNdYCNfavQHG', '2024-12-05', NULL, NULL),
+(21, 'María', 'Gómez', '23456789', '998877665', 'maria.gomez@example.com', '1513', 'mariagomez', '$2y$10$Hzv7CzC2ujxLbvsB/ouLQecsGW8Q80yxufgyAnFA67WGXESq9u0N6', '2024-12-05', NULL, NULL),
+(22, 'Carlos', 'Rodríguez', '34567890', '976543210', 'carlos.rodriguez@example.com', 'Lima', 'carlosr', '$2y$10$A.hP/mTeJEQSU/8hyRI1neQm9vUGFCa6XzH5B3unbzf./eDFoW3Ku', '2024-12-05', NULL, NULL),
+(23, 'Laura', 'Torres', '45678901', '912345678', 'laura.torres@example.com', 'Lima', 'lauratorres', '$2y$10$w2r0OcONIkawUOPXfc1RjOQgsBKWFXL34nNW601U5D0To349iNOGG', '2024-12-05', NULL, NULL),
+(24, 'Ricardo', 'Sánchez', '56789012', '998877554', 'ricardo.sanchez@example.com', 'Lima', 'ricardosanchez', '$2y$10$4/THqb7GHKJTeEw6bcGrIeO2s7Wu9QCGclHN5JHPfufI3BN4oc.jG', '2024-12-05', NULL, NULL),
+(25, 'Patricia', 'Díaz', '67890123', '991234567', 'patricia.diaz@example.com', 'Lima', 'patricia.diaz', '$2y$10$HN8X.GE7rE3GlWKQS6oVkueWu7vy/gVqWu8Co14dMCEsJsqY.ySaC', '2024-12-05', NULL, NULL),
+(26, 'Luis', 'Herrera', '78901234', '996789012', 'luis.herrera@example.com', 'Lima', 'luis.herrera', '$2y$10$uFWjDsqu3vajsGf6IwQvJ.Pci0eRXz8QIfTfudT0DmpmIsTkHUMhO', '2024-12-05', NULL, NULL),
+(27, 'Antonio', 'Mendoza', '78912345', '987654987', 'antonio.mendoza@example.com', 'Lima', 'antonio.m', '$2y$10$BQ.2NBJ7hqZOK6/CKmoaMepoKx3BTVxnRrdjr7Xk1zCVkBh0ae1A2', '2024-12-05', NULL, NULL),
+(28, 'Lucía', 'Fernández', '89023456', '998877998', 'lucia.fernandez@example.com', 'Lima', 'luciaf', '$2y$10$ZUyfnI3ynNlp64fGvoiXAuP9aX1fqT7IIKsnwPkgBm8w.LxRgdZV2', '2024-12-05', NULL, NULL),
+(29, 'Gabriel', 'Martínez', '90134567', '976543876', 'gabriel.martinez@example.com', 'Lima', 'gabrielm', '$2y$10$wsOO1A7k2k9Ee8IJT1fWz.D2SjZMeACwijZACbJisLhvyZjQMRXMK', '2024-12-05', NULL, NULL),
+(30, 'Eva', 'González', '91245678', '965432123', 'eva.gonzalez@example.com', 'Lima', 'evag', '$2y$10$8YUHq9chUYlsA/X/7aeLCuM9hslv3758aEEW2/f2PTbfBIDKqkycO', '2024-12-05', NULL, NULL),
+(31, 'Jorge', 'Vásquez', '92356789', '987654321', 'jorge.vasquez@example.com', 'Lima', 'jorgev', '$2y$10$BydrQ80CHcig5eICCJVvTu6MNXBTK.8BopqoFh0BQq.v0EA8r0gUS', '2024-12-05', NULL, NULL),
+(32, 'Ana', 'Ramírez', '93467890', '973456789', 'ana.ramirez@example.com', 'Lima', 'anar', '$2y$10$qWmjH/88mLA/IFgpSMbjAO/LJuodyaj0w5C.tQHQcL3jjwXT3Ehy6', '2024-12-05', NULL, NULL),
+(33, 'Pedro', 'Alvarado', '94578901', '982345678', 'pedro.alvarado@example.com', 'Lima', 'pedroa', '$2y$10$t1Rxj27EGFHveJKX9I89/eO./YeX0brIz9aL2AGUzSepzGRWDx8LG', '2024-12-05', NULL, NULL),
+(34, 'Isabel', 'Paredes', '95689012', '991234567', 'isabel.paredes@example.com', 'Lima', 'isabelp', '$2y$10$VEeaLmps96eb.ggG4QzlhO4cW6CuL8i94im6W9p8AD2rX5XVaqfIW', '2024-12-05', NULL, NULL),
+(35, 'Roberto', 'Castro', '96790123', '996789012', 'roberto.castro@example.com', 'Lima', 'robertoc', '$2y$10$Mj6vwR/MpemfXlu.EWLYTeC2hY0ds4TQ8qz1iGQT3sri1Eb0ixPIa', '2024-12-05', NULL, NULL),
+(36, 'Patricia', 'Navarro', '97801234', '988765432', 'patricia.navarro@example.com', 'Lima', 'patrician', '$2y$10$We5C/CgHpBv7xYwSvK8sn.M1oqapwleTLyUIEfjW0GPy2eBZl3rLG', '2024-12-05', NULL, NULL),
+(38, 'Dimar Martin', 'Quispe', '75455464', '907950690', 'diegomartin1597534@gmail.com', '15314', 'dimar', '$2y$10$iWdIJudI3twwFsGw91XxSe3QRmmhg9MHlKaXu5XByVQ2mSEZvdR0u', '2024-12-05', '9957dcf95622d009822e1d174050d5d2533e48188447a2090f8e3e58ade872ef5738d39ff1fe4b6bd899ec0c08f79eacc9e6', '2024-12-05 12:52:08');
 
 -- --------------------------------------------------------
 
@@ -509,7 +515,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `almacen`
@@ -533,7 +539,7 @@ ALTER TABLE `detalle_pedido`
 -- AUTO_INCREMENT de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
@@ -575,13 +581,13 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Restricciones para tablas volcadas
