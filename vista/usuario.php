@@ -3,8 +3,22 @@ session_start();
 require_once "../config/conexion.php";
 require_once "../modelo/Cliente.php";
 
+
 $clienteModelo = new Cliente($conexion);
 $usuarios = $clienteModelo->obtenerUsuarios();
+
+$registrosPorPagina = 7; // Cambia este número según tus necesidades
+
+// Obtener el número de página actual
+$paginacion = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$inicio = ($paginacion - 1) * $registrosPorPagina;
+
+// Modificar la consulta para obtener solo los registros necesarios
+$usuarios = $clienteModelo->obtenerUsuariosLimit($inicio, $registrosPorPagina);
+
+// Obtener el total de usuarios para calcular la cantidad de páginas
+$totalUsuarios = $clienteModelo->contarUsuarios();
+$totalPaginas = ceil($totalUsuarios / $registrosPorPagina);
 ?>
 
 <!DOCTYPE html>
@@ -15,9 +29,10 @@ $usuarios = $clienteModelo->obtenerUsuarios();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/admi.css">
     <link rel="stylesheet" href="../public/styles/tablas.css">
+    <link rel="stylesheet" href="../public/styles/usuario.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
-    
+
     <title>Interfaz de Administrador - Usuarios</title>
 </head>
 
@@ -103,7 +118,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                                 <label for="contrasena" class="form-label">contraseña:</label>
                                 <input type="password" class="form-control" id="contrasena" name="contrasena" required>
                             </div>
-                           
+
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </form>
                     </div>
@@ -113,7 +128,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
 
         <!-- Tabla de usuarios -->
         <div class="container-fluid">
-     
+
             <table class="table">
                 <thead class="bg-info">
                     <tr>
@@ -145,17 +160,34 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                             <td><?= $usuario->fecha_registro ?></td>
                             <td>
                                 <a href="#" onclick="abrirModalModificarUsuario('<?= $usuario->id_usuario ?>', '<?= $usuario->nombre ?>', '<?= $usuario->apellido ?>', '<?= $usuario->dni ?>', '<?= $usuario->telefono ?>', '<?= $usuario->email ?>', '<?= $usuario->direccion ?>','<?= $usuario->usuario ?>','<?= $usuario->contrasena ?>')" class="btn btn-small btn-warning">
-                                    <i class="fa-solid fa-pen-to-square"></i> 
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <a onclick="return eliminarUsuario()" href="../controlador/CRUDcliente.php?accion=eliminar&id=<?= $usuario->id_usuario ?>" class="btn btn-small btn-danger">
-                                    <i class="fa-solid fa-trash"></i> 
+                                    <i class="fa-solid fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
+            <div class="paginacion">
+    <?php if ($paginacion > 1): ?>
+        <a href="?pagina=1" class="paginacion-link">&laquo; Primero</a>
+        <a href="?pagina=<?php echo $paginacion - 1; ?>" class="paginacion-link">Anterior</a>
+    <?php endif; ?>
+
+    <span class="paginacion-info">Página <?php echo $paginacion; ?> de <?php echo $totalPaginas; ?></span>
+
+    <?php if ($paginacion < $totalPaginas): ?>
+        <a href="?pagina=<?php echo $paginacion + 1; ?>" class="paginacion-link">Siguiente</a>
+        <a href="?pagina=<?php echo $totalPaginas; ?>" class="paginacion-link">Último &raquo;</a>
+    <?php endif; ?>
+</div>
+
+
         </div>
+        <!-- Paginación -->
+
 
         <!-- Modal de modificación -->
         <div class="modal fade" id="modificarModal" tabindex="-1" aria-labelledby="modificarModalLabel">
@@ -201,7 +233,7 @@ $usuarios = $clienteModelo->obtenerUsuarios();
                                 <label for="contrasenaModificar" class="form-label">contraseña:</label>
                                 <input type="password" class="form-control" id="contrasenaModificar" name="contrasena" required>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </form>
                     </div>
@@ -214,90 +246,12 @@ $usuarios = $clienteModelo->obtenerUsuarios();
             <p>&copy; Perú al plato</p>
         </footer>
 
-        
-        <script>
-            function abrirModalModificarUsuario(id_usuario, nombre, apellido, dni, telefono, email, direccion,usuario, contrasena) {
-                document.getElementById('id_usuario').value = id_usuario;
-                document.getElementById('nombreModificar').value = nombre;
-                document.getElementById('apellidoModificar').value = apellido;
-                document.getElementById('dniModificar').value = dni;
-                document.getElementById('telefonoModificar').value = telefono;
-                document.getElementById('emailModificar').value = email;
-                document.getElementById('direccionModificar').value = direccion;
-                document.getElementById('usuarioModificar').value = usuario;
-                document.getElementById('contrasenaModificar').value = contrasena;
-                
 
-                var modificarModal = new bootstrap.Modal(document.getElementById('modificarModal'));
-                modificarModal.show();
-            }
-        </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../public/JavaScript/usuario.js"></script>
     </div>
 </body>
 
 </html>
-<script>
-    // Función para formatear texto a mayúsculas y eliminar números
-    function formatearTexto(input) {
-        let valor = input.value;
-
-        // Eliminar números
-        valor = valor.replace(/[0-9]/g, '');
-
-        // Convertir a mayúsculas y separar palabras
-        valor = valor.split(' ').map(function (palabra) {
-            return palabra.charAt(0).toUpperCase() + palabra.slice(1).toLowerCase();
-        }).join(' ');
-
-        // Asignar el valor formateado de nuevo al campo
-        input.value = valor;
-    }
-
-    // Agregar evento al campo de nombre
-    document.getElementById('nombre').addEventListener('input', function (e) {
-        formatearTexto(e.target);
-    });
-
-    // Agregar evento al campo de apellido
-    document.getElementById('apellido').addEventListener('input', function (e) {
-        formatearTexto(e.target);
-    });
-     // Función para validar el DNI
-     function validarDNI(input) {
-        // Eliminar caracteres no válidos (solo permitir números)
-        input.value = input.value.replace(/[^0-9]/g, '');
-
-        // Limitar a 8 dígitos
-        if (input.value.length > 8) {
-            input.value = input.value.slice(0, 8); // Cortar a los primeros 8 dígitos
-        }
-    }
-
-    // Agregar evento al campo de DNI
-    document.getElementById('dni').addEventListener('input', function() {
-        validarDNI(this);
-    });
-
-   // Función para validar el teléfono
-   function validarTelefono(input) {
-        // Eliminar caracteres no válidos (solo permitir números)
-        input.value = input.value.replace(/[^0-9]/g, '');
-
-        // Limitar a 9 dígitos
-        if (input.value.length > 9) {
-            input.value = input.value.slice(0, 9); // Cortar a los primeros 9 dígitos
-        }
-
-        // Asegurarse de que el primer dígito sea 9
-        if (input.value.length === 1 && input.value !== '9') {
-            input.value = ''; // Limpiar el campo si no empieza con 9
-        }
-    }
-
-    // Agregar evento al campo de teléfono
-    document.getElementById('telefono').addEventListener('input', function() {
-        validarTelefono(this);
-    });
-</script>

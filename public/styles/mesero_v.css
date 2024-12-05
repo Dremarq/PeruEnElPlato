@@ -1,0 +1,99 @@
+
+.contenedor {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los dos apartados */
+    align-items: flex-start; /* Alinear los elementos al principio */
+    margin: 20px; /* Espacio alrededor del contenedor, opcional */
+}
+
+.mantenimiento,
+.registro-venta {
+    width: 48%; /* Ajusta el ancho según sea necesario */
+    box-sizing: border-box; /* Asegúrate de que el padding y el borde no afecten al ancho */
+}
+.mantenimiento {
+    position: relative;
+    padding-right: 100px;
+}
+
+.paginacion {
+    margin-top: 20px; /* Espacio entre la tabla y la paginación */
+    text-align: center; /* Centrar la paginación */
+    color: white;
+}
+.paginacion a{
+    color: white;
+    text-decoration: none;
+}
+.paginacion a:hover{
+    text-decoration: underline;
+}
+.modal {
+    display: none; /* Ocultar por defecto */
+    position: fixed; /* Mantener el modal en su lugar */
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Habilitar desplazamiento si es necesario */
+    background-color: rgba(0,0,0,0.5); /* Fondo negro con opacidad */
+}
+
+.modal-content {
+    background-color: #fefefe; /* Color de fondo del modal */
+    margin: 10% auto; /* 10% desde la parte superior y centrado */
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px; /* Bordes redondeados */
+    width: 400px; /* Ancho del modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+h2 {
+    margin-top: 0; /* Eliminar margen superior del título */
+    font-size: 20px; /* Tamaño del título */
+}
+
+label {
+    font-weight: bold; /* Hacer las etiquetas más visibles */
+}
+
+input[type="number"],
+input[type="date"],
+select
+textarea {
+    width: 75%; /* Ancho completo para inputs y selects */
+    padding: 10px; /* Espaciado interno */
+    margin: 8px 0; /* Margen superior e inferior */
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px;
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+}
+
+button {
+    background-color: #4CAF50; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    padding: 15px 25px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar cursor al pasar el mouse */
+}
+
+button:hover {
+    background-color: #45a049; /* Color del botón al pasar el mouse */
+}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-11-2024 a las 18:24:06
+-- Tiempo de generación: 05-12-2024 a las 06:58:21
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -62,7 +62,7 @@ CREATE TABLE `almacen` (
 --
 
 INSERT INTO `almacen` (`id_almacen`, `id_producto`, `stock_actual`, `stock_minimo`, `fecha_actualizacion`) VALUES
-(9, 7, 30, 30, '2024-11-21 22:02:29');
+(2, 12, 3, 5, '2024-12-05 09:24:08');
 
 -- --------------------------------------------------------
 
@@ -120,8 +120,7 @@ CREATE TABLE `empleados` (
 --
 
 INSERT INTO `empleados` (`id_empleado`, `id_rol`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `fecha_contratacion`) VALUES
-(1, 1, 'Diego Martina', 'Chavarry', '75455622', '993443125', '0da@gmail.com', '15143', '2024-11-17'),
-(7, 1, 'Diego', 'Herbay', '44325556', '596634312', 'diegao1herbay@gmail.com', '15314', '2024-11-21'),
+(1, 1, 'Diego Martina', 'Chavarry', '75455622', '993443125', '0aaada@gmail.com', '15143', '2024-11-17'),
 (8, 7, 'Marco', 'Inta', '44415555', '993144131', 'diegohe1rbay@gmail.com', '15314', '2024-11-21');
 
 -- --------------------------------------------------------
@@ -143,6 +142,27 @@ CREATE TABLE `login_sesion` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `mantenimiento_productos`
+--
+
+CREATE TABLE `mantenimiento_productos` (
+  `id_mant_prod` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `cantidad_pedir` int(11) NOT NULL,
+  `fecha_llegada` date NOT NULL,
+  `precio_total` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `mantenimiento_productos`
+--
+
+INSERT INTO `mantenimiento_productos` (`id_mant_prod`, `id_producto`, `cantidad_pedir`, `fecha_llegada`, `precio_total`) VALUES
+(0, 12, 20, '2024-12-05', 40.00);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `pedidos`
 --
 
@@ -156,6 +176,42 @@ CREATE TABLE `pedidos` (
   `total` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `pedidos`
+--
+
+INSERT INTO `pedidos` (`id_pedido`, `id_usuario`, `id_empleado`, `fecha_pedido`, `estado`, `tipo_pedido`, `total`) VALUES
+(1, 15, 8, '2024-12-05 12:00:00', 'Pendiente', 'Dine-in', 50.00),
+(2, 16, 8, '2024-12-05 12:30:00', 'En Proceso', 'Delivery', 75.00),
+(3, 17, 8, '2024-12-05 13:00:00', 'Completado', 'Para Llevar', 100.00),
+(4, 19, 8, '2024-12-05 13:30:00', 'Pendiente', 'Dine-in', 30.00),
+(5, 20, 8, '2024-12-05 14:00:00', 'Completado', 'Delivery', 60.00),
+(6, 21, 8, '2024-12-05 14:30:00', 'En Proceso', 'Para Llevar', 90.00),
+(7, 15, 8, '2024-12-05 15:00:00', 'Pendiente', 'Dine-in', 45.00),
+(8, 16, 8, '2024-12-05 15:30:00', 'Completado', 'Delivery', 80.00),
+(9, 17, 8, '2024-12-05 16:00:00', 'En Proceso', 'Para Llevar', 55.00),
+(10, 19, 8, '2024-12-05 16:30:00', 'Pendiente', 'Dine-in', 25.00),
+(11, 20, 8, '2024-12-05 17:00:00', 'Completado', 'Delivery', 70.00),
+(12, 21, 8, '2024-12-05 17:30:00', 'En Proceso', 'Para Llevar', 95.00),
+(13, 15, 8, '2024-12-05 18:00:00', 'Pendiente', 'Dine-in', 65.00),
+(14, 16, 8, '2024-12-05 18:30:00', 'Completado', 'Delivery', 85.00),
+(15, 17, 8, '2024-12-05 19:00:00', 'En Proceso', 'Para Llevar', 40.00),
+(16, 15, 8, '2024-01-05 12:00:00', 'Pendiente', 'Dine-in', 50.00),
+(17, 16, 8, '2024-02-10 12:30:00', 'En Proceso', 'Delivery', 75.00),
+(18, 17, 8, '2024-03-15 13:00:00', 'Completado', 'Para Llevar', 100.00),
+(19, 19, 8, '2024-04-20 13:30:00', 'Pendiente', 'Dine-in', 30.00),
+(20, 20, 8, '2024-05-25 14:00:00', 'Completado', 'Delivery', 60.00),
+(21, 21, 8, '2024-06-30 14:30:00', 'En Proceso', 'Para Llevar', 90.00),
+(22, 15, 8, '2024-07-05 15:00:00', 'Pendiente', 'Dine-in', 45.00),
+(23, 16, 8, '2024-08-10 15:30:00', 'Completado', 'Delivery', 80.00),
+(24, 17, 8, '2024-09-15 16:00:00', 'En Proceso', 'Para Llevar', 55.00),
+(25, 19, 8, '2024-10-20 16:30:00', 'Pendiente', 'Dine-in', 25.00),
+(26, 20, 8, '2024-11-25 17:00:00', 'Completado', 'Delivery', 70.00),
+(27, 21, 8, '2024-12-30 17:30:00', 'En Proceso', 'Para Llevar', 95.00),
+(28, 15, 8, '2024-01-15 18:00:00', 'Pendiente', 'Dine-in', 65.00),
+(29, 16, 8, '2024-02-20 18:30:00', 'Completado', 'Delivery', 85.00),
+(30, 17, 8, '2024-03-25 19:00:00', 'En Proceso', 'Para Llevar', 40.00);
+
 -- --------------------------------------------------------
 
 --
@@ -167,7 +223,7 @@ CREATE TABLE `platos` (
   `nombre` varchar(255) NOT NULL,
   `descripcion` text DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `categoria` enum('Plato_Principal','Entrada','Postre','Refresco') NOT NULL,
+  `categoria` enum('Principal','Entrada','Postre','Refresco') NOT NULL,
   `imagen` varchar(255) NOT NULL,
   `estado` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -177,11 +233,6 @@ CREATE TABLE `platos` (
 --
 
 INSERT INTO `platos` (`id_plato`, `nombre`, `descripcion`, `precio`, `categoria`, `imagen`, `estado`) VALUES
-(14, 'papa rellena', 'Papa dorada rellena de carne, cebolla y especias. ¡Crujiente y deliciosa!', 8.00, 'Entrada', '', 1),
-(15, 'causa', 'Papa amarilla con ají y limón, rellena de pollo, atún o mariscos. ¡Tradición y sabor!', 8.00, 'Entrada', '', 1),
-(16, 'lomo saltado', 'Jugosos trozos de carne salteados con cebolla, tomate y especias, servido con arroz y papas fritas. ', 15.00, 'Plato Principal', '', 1),
-(17, 'Maracuyá 1L', 'Jugo natural de maracuyá con agua, azúcar y un toque de limón. ¡Refrescante y tropical!', 6.00, 'Refresco', '', 1),
-(18, 'arroz con pollo', 'Arroz sazonado con culantro, acompañado de pollo jugoso, verduras y especias. ¡Un clásico lleno de sabor!', 15.00, 'Plato Principal', '', 1),
 (19, 'picarones', 'Dulces fritos a base de camote y calabaza, bañados en miel de chancaca. ¡Un postre tradicional y delicioso!', 15.00, 'Postre', '', 1),
 (20, 'turron', 'Dulce tradicional de almendras, nueces y miel.', 18.00, 'Postre', '', 1);
 
@@ -203,8 +254,12 @@ CREATE TABLE `platos_vendidos_hoy` (
 --
 
 INSERT INTO `platos_vendidos_hoy` (`id_plato_vendido_hoy`, `id_plato`, `fecha`, `cant_vendida`) VALUES
-(1, 14, '2024-11-28', 2),
-(2, 14, '2024-11-28', 2);
+(7, 19, '2024-12-03', 3),
+(8, 19, '2024-12-03', 3),
+(9, 19, '2024-12-03', 1),
+(10, 19, '2024-12-03', 1),
+(11, 19, '2024-12-05', 2),
+(12, 19, '2024-12-05', 2);
 
 -- --------------------------------------------------------
 
@@ -215,7 +270,7 @@ INSERT INTO `platos_vendidos_hoy` (`id_plato_vendido_hoy`, `id_plato`, `fecha`, 
 CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `descripcion` text DEFAULT NULL,
+  `descripcion` varchar(300) DEFAULT NULL,
   `costo` decimal(10,2) NOT NULL,
   `estado` tinyint(1) DEFAULT 1,
   `id_proveedor` int(11) DEFAULT NULL
@@ -226,7 +281,7 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id_producto`, `nombre`, `descripcion`, `costo`, `estado`, `id_proveedor`) VALUES
-(7, 'papas', 'para la causa\r\n', 30.00, 1, 5);
+(12, 'huevo', 'huevo para la huancaina', 40.00, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -249,7 +304,8 @@ CREATE TABLE `proveedores` (
 --
 
 INSERT INTO `proveedores` (`id_proveedor`, `nombre_empresa`, `ruc`, `telefono`, `email`, `direccion`, `estado`) VALUES
-(5, 'fdafafafafa', '15616161461', '99a344312', 'diegoffaherbay@gmail.com', '15314', 0);
+(5, 'CAMOTITO S.A.C', '10646562344', '913161616', 'dimaherbay@gmail.com', '1453', 1),
+(6, 'CANMONT SAC', '10262646464', '949494661', 'diegoherbay@gmail.com', '15221', NULL);
 
 -- --------------------------------------------------------
 
@@ -266,13 +322,6 @@ CREATE TABLE `reservas` (
   `cantidad_personas` int(11) DEFAULT NULL,
   `estado` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `reservas`
---
-
-INSERT INTO `reservas` (`id_reserva`, `id_usuario`, `numero_mesa`, `fecha_reserva`, `hora_reserva`, `cantidad_personas`, `estado`) VALUES
-(3, 15, 4, '2024-11-20', '13:55:00', 8, 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -321,7 +370,26 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `dni`, `telefono`, `email`, `direccion`, `usuario`, `contrasena`, `fecha_registro`) VALUES
 (15, 'Diego', 'Herbay', '46904442', '993443125', 'diegoherbay@gmail.com', '15314', 'dimar123', '$2y$10$eOy6MUyBcM.5ucF7v91kSOGUe7rRuZgqhNv9KFGQH54y898CD1K7e', '2024-11-20'),
-(16, 'marco', 'gonzalez', '46464646', '992443125', 'diegohekbay@gmail.com', '15314', 'marco', '$2y$10$GKdmU5Kk/gDfVkpct6CG7uvjBuDsnKEhfezb9LVj200WDoOQRb3q.', '2024-11-20');
+(16, 'marco', 'gonzalez', '46464646', '992443125', 'diegohekbay@gmail.com', '15314', 'marco', '$2y$10$GKdmU5Kk/gDfVkpct6CG7uvjBuDsnKEhfezb9LVj200WDoOQRb3q.', '2024-11-20'),
+(17, 'Diego', 'Chavarry', '11155566', '907950690', 'dieg11oherbay@gmail.com', '15113', 'diego', '$2y$10$wOWIhwyxpHnj7A8CEvchS.y0In/2AZzZ5ALcQR/4LTjh1uTwYGTLW', '2024-12-03'),
+(19, 'Dieguin', 'Herbay', '75444664', '993443125', 'diegoherbay@gmail.com', '15314', 'dino', '$2y$10$EU.Nahdz5UKRpJNgJPPBBu.OxTaQ.m4/KNzHBNyMG3Hgmf01gVnhC', '2024-12-05'),
+(20, 'Juan', 'Pérez', '12345678', '987654321', 'juan.perez@example.com', '15123', 'juanperez', '$2y$10$VIflbthoLNc8BkbXntOZs.6X8nM4aLzDRrlsZ3Uk0xNdYCNfavQHG', '2024-12-05'),
+(21, 'María', 'Gómez', '23456789', '998877665', 'maria.gomez@example.com', '1513', 'mariagomez', '$2y$10$Hzv7CzC2ujxLbvsB/ouLQecsGW8Q80yxufgyAnFA67WGXESq9u0N6', '2024-12-05'),
+(22, 'Carlos', 'Rodríguez', '34567890', '976543210', 'carlos.rodriguez@example.com', 'Lima', 'carlosr', '$2y$10$A.hP/mTeJEQSU/8hyRI1neQm9vUGFCa6XzH5B3unbzf./eDFoW3Ku', '2024-12-05'),
+(23, 'Laura', 'Torres', '45678901', '912345678', 'laura.torres@example.com', 'Lima', 'lauratorres', '$2y$10$w2r0OcONIkawUOPXfc1RjOQgsBKWFXL34nNW601U5D0To349iNOGG', '2024-12-05'),
+(24, 'Ricardo', 'Sánchez', '56789012', '998877554', 'ricardo.sanchez@example.com', 'Lima', 'ricardosanchez', '$2y$10$4/THqb7GHKJTeEw6bcGrIeO2s7Wu9QCGclHN5JHPfufI3BN4oc.jG', '2024-12-05'),
+(25, 'Patricia', 'Díaz', '67890123', '991234567', 'patricia.diaz@example.com', 'Lima', 'patricia.diaz', '$2y$10$HN8X.GE7rE3GlWKQS6oVkueWu7vy/gVqWu8Co14dMCEsJsqY.ySaC', '2024-12-05'),
+(26, 'Luis', 'Herrera', '78901234', '996789012', 'luis.herrera@example.com', 'Lima', 'luis.herrera', '$2y$10$uFWjDsqu3vajsGf6IwQvJ.Pci0eRXz8QIfTfudT0DmpmIsTkHUMhO', '2024-12-05'),
+(27, 'Antonio', 'Mendoza', '78912345', '987654987', 'antonio.mendoza@example.com', 'Lima', 'antonio.m', '$2y$10$BQ.2NBJ7hqZOK6/CKmoaMepoKx3BTVxnRrdjr7Xk1zCVkBh0ae1A2', '2024-12-05'),
+(28, 'Lucía', 'Fernández', '89023456', '998877998', 'lucia.fernandez@example.com', 'Lima', 'luciaf', '$2y$10$ZUyfnI3ynNlp64fGvoiXAuP9aX1fqT7IIKsnwPkgBm8w.LxRgdZV2', '2024-12-05'),
+(29, 'Gabriel', 'Martínez', '90134567', '976543876', 'gabriel.martinez@example.com', 'Lima', 'gabrielm', '$2y$10$wsOO1A7k2k9Ee8IJT1fWz.D2SjZMeACwijZACbJisLhvyZjQMRXMK', '2024-12-05'),
+(30, 'Eva', 'González', '91245678', '965432123', 'eva.gonzalez@example.com', 'Lima', 'evag', '$2y$10$8YUHq9chUYlsA/X/7aeLCuM9hslv3758aEEW2/f2PTbfBIDKqkycO', '2024-12-05'),
+(31, 'Jorge', 'Vásquez', '92356789', '987654321', 'jorge.vasquez@example.com', 'Lima', 'jorgev', '$2y$10$BydrQ80CHcig5eICCJVvTu6MNXBTK.8BopqoFh0BQq.v0EA8r0gUS', '2024-12-05'),
+(32, 'Ana', 'Ramírez', '93467890', '973456789', 'ana.ramirez@example.com', 'Lima', 'anar', '$2y$10$qWmjH/88mLA/IFgpSMbjAO/LJuodyaj0w5C.tQHQcL3jjwXT3Ehy6', '2024-12-05'),
+(33, 'Pedro', 'Alvarado', '94578901', '982345678', 'pedro.alvarado@example.com', 'Lima', 'pedroa', '$2y$10$t1Rxj27EGFHveJKX9I89/eO./YeX0brIz9aL2AGUzSepzGRWDx8LG', '2024-12-05'),
+(34, 'Isabel', 'Paredes', '95689012', '991234567', 'isabel.paredes@example.com', 'Lima', 'isabelp', '$2y$10$VEeaLmps96eb.ggG4QzlhO4cW6CuL8i94im6W9p8AD2rX5XVaqfIW', '2024-12-05'),
+(35, 'Roberto', 'Castro', '96790123', '996789012', 'roberto.castro@example.com', 'Lima', 'robertoc', '$2y$10$Mj6vwR/MpemfXlu.EWLYTeC2hY0ds4TQ8qz1iGQT3sri1Eb0ixPIa', '2024-12-05'),
+(36, 'Patricia', 'Navarro', '97801234', '988765432', 'patricia.navarro@example.com', 'Lima', 'patrician', '$2y$10$We5C/CgHpBv7xYwSvK8sn.M1oqapwleTLyUIEfjW0GPy2eBZl3rLG', '2024-12-05');
 
 -- --------------------------------------------------------
 
@@ -371,6 +439,13 @@ ALTER TABLE `detalle_pedido`
 ALTER TABLE `empleados`
   ADD PRIMARY KEY (`id_empleado`),
   ADD KEY `id_rol` (`id_rol`);
+
+--
+-- Indices de la tabla `mantenimiento_productos`
+--
+ALTER TABLE `mantenimiento_productos`
+  ADD PRIMARY KEY (`id_mant_prod`),
+  ADD KEY `fk_mantenimiento_producto` (`id_producto`);
 
 --
 -- Indices de la tabla `pedidos`
@@ -440,7 +515,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  MODIFY `id_almacen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_almacen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `caja`
@@ -452,7 +527,7 @@ ALTER TABLE `caja`
 -- AUTO_INCREMENT de la tabla `detalle_pedido`
 --
 ALTER TABLE `detalle_pedido`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `empleados`
@@ -464,7 +539,7 @@ ALTER TABLE `empleados`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `platos`
@@ -476,25 +551,25 @@ ALTER TABLE `platos`
 -- AUTO_INCREMENT de la tabla `platos_vendidos_hoy`
 --
 ALTER TABLE `platos_vendidos_hoy`
-  MODIFY `id_plato_vendido_hoy` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_plato_vendido_hoy` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `reservas`
 --
 ALTER TABLE `reservas`
-  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_reserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -506,7 +581,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- Restricciones para tablas volcadas
@@ -542,6 +617,12 @@ ALTER TABLE `detalle_pedido`
 --
 ALTER TABLE `empleados`
   ADD CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
+
+--
+-- Filtros para la tabla `mantenimiento_productos`
+--
+ALTER TABLE `mantenimiento_productos`
+  ADD CONSTRAINT `fk_mantenimiento_producto` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
 
 --
 -- Filtros para la tabla `pedidos`

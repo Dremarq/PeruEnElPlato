@@ -1,0 +1,27 @@
+.paginacion {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin: 20px 0; /* Espaciado arriba y abajo */
+}
+
+.paginacion-link {
+    text-decoration: none; /* Quita el subrayado */
+    color: #007bff; /* Color del texto */
+    padding: 10px 20px; /* Espaciado interno */
+    border: 1px solid #007bff; /* Borde */
+    border-radius: 5px; /* Bordes redondeados */
+    margin: 0 10px; /* Espaciado entre los enlaces */
+    transition: background-color 0.3s, color 0.3s; /* Transición suave */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+.paginacion-link:hover {
+    background-color: #007bff; /* Color de fondo al pasar el mouse */
+    color: white; /* Color del texto al pasar el mouse */
+}
+
+.paginacion-info {
+    margin: 0 15px; /* Espaciado entre el texto y los enlaces */
+    font-weight: bold; /* Texto en negrita */
+}

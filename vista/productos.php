@@ -215,7 +215,7 @@ $proveedores = $proveedorModelo->obtenerProveedores(); // Obtener proveedores
 
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-                                  
+        <script src="../public/JavaScript/productos.js"></script>                         
     </div>
 </body>
 

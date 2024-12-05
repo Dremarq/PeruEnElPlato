@@ -5,6 +5,14 @@ require_once "../modelo/pedidos.php";
 
 $pedidoModelo = new Pedido($conexion);
 $pedidos = $pedidoModelo->obtenerPedidos();
+
+// Obtener el número de página actual
+$totalPedidos = $pedidoModelo->contarPedidos();
+$registrosPorPagina = 12; // Por ejemplo, 10 registros por página
+$paginaActual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$inicio = ($paginaActual - 1) * $registrosPorPagina;
+
+$pedidos = $pedidoModelo->obtenerPedidosLimit($inicio, $registrosPorPagina);
 ?>
 
 <!DOCTYPE html>
@@ -147,6 +155,7 @@ $pedidos = $pedidoModelo->obtenerPedidos();
                     </tr>
                 </thead>
                 <tbody>
+
                     <?php
                     // Verificar si hay pedidos
                     if ($pedidos && $pedidos->num_rows > 0):
@@ -194,83 +203,95 @@ $pedidos = $pedidoModelo->obtenerPedidos();
                     ?>
                 </tbody>
             </table>
-        </div>
-    </div>
+            <div class="paginacion">
+                <?php if ($paginaActual > 1): ?>
+                    <a href="?pagina=1" class="paginacion-link">&laquo; Primero</a>
+                    <a href="?pagina=<?php echo $paginaActual - 1; ?>" class="paginacion-link">Anterior</a>
+                <?php endif; ?>
 
-    <!-- Modal de Modificación -->
-    <div class="modal fade" id="modificarModal" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modificarModalLabel">Modificar Pedido</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="../controlador/CRUDpedidos.php" method="POST">
-                        <input type="hidden" name="accion" value="modificar">
-                        <input type="hidden" id="id_pedido" name="id_pedido">
-                        <div class="mb-3">
-                            <label for="id_usuario" class="form-label">Cliente</label>
-                            <select class="form-select" id="id_usuario_modificar" name="id_usuario" required>
-                                <option value="">Seleccione un cliente</option>
-                                <?php
-                                $clientes = $pedidoModelo->obtenerClientes();
-                                while ($cliente = $clientes->fetch_object()) {
-                                    echo "<option value='{$cliente->id_usuario}'>{$cliente->nombre}</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="id_empleado" class="form-label">Empleado</label>
-                            <select class="form-select" id="id_empleado_modificar" name="id_empleado" required>
-                                <option value="">Seleccione un empleado</option>
-                                <?php
-                                $empleados = $pedidoModelo->obtenerEmpleados();
-                                while ($empleado = $empleados->fetch_object()) {
-                                    echo "<option value='{$empleado->id_empleado}'>{$empleado->nombre}</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fecha_pedido" class="form-label">Fecha del Pedido</label>
-                            <input type="datetime-local" class="form-control" id="fecha_pedido_modificar" name="fecha_pedido" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="estado" class="form-label">Estado</label>
-                            <select class="form-select" id="estado_modificar" name="estado" required>
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="En Proceso">En Proceso</option>
-                                <option value="Completado">Completado</option>
-                                <option value="Cancelado">Cancelado</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tipo_pedido" class="form-label">Tipo de Pedido</label>
-                            <select class="form-select" id="tipo_pedido_modificar" name="tipo_pedido" required>
-                                <option value="Dine-in">Dine-in</option>
-                                <option value="Delivery">Delivery</option>
-                                <option value="Para Llevar">Para Llevar</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="total_modificar" class="form-label">Total</label>
-                            <input type="number" step="0.01" class="form-control" id="total_modificar" name="total" required>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Modificar</button>
-                        </div>
-                    </form>
+                <span class="paginacion-info">Página <?php echo $paginaActual; ?> de <?php echo ceil($totalPedidos / $registrosPorPagina); ?></span>
+
+                <?php if ($paginaActual < ceil($totalPedidos / $registrosPorPagina)): ?>
+                    <a href="?pagina=<?php echo $paginaActual + 1; ?>" class="paginacion-link">Siguiente</a>
+                    <a href="?pagina=<?php echo ceil($totalPedidos / $registrosPorPagina); ?>" class="paginacion-link">Último &raquo;</a>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- Modal de Modificación -->
+        <div class="modal fade" id="modificarModal" tabindex="-1" aria-labelledby="modificarModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modificarModalLabel">Modificar Pedido</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="../controlador/CRUDpedidos.php" method="POST">
+                            <input type="hidden" name="accion" value="modificar">
+                            <input type="hidden" id="id_pedido" name="id_pedido">
+                            <div class="mb-3">
+                                <label for="id_usuario" class="form-label">Cliente</label>
+                                <select class="form-select" id="id_usuario_modificar" name="id_usuario" required>
+                                    <option value="">Seleccione un cliente</option>
+                                    <?php
+                                    $clientes = $pedidoModelo->obtenerClientes();
+                                    while ($cliente = $clientes->fetch_object()) {
+                                        echo "<option value='{$cliente->id_usuario}'>{$cliente->nombre}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_empleado" class="form-label">Empleado</label>
+                                <select class="form-select" id="id_empleado_modificar" name="id_empleado" required>
+                                    <option value="">Seleccione un empleado</option>
+                                    <?php
+                                    $empleados = $pedidoModelo->obtenerEmpleados();
+                                    while ($empleado = $empleados->fetch_object()) {
+                                        echo "<option value='{$empleado->id_empleado}'>{$empleado->nombre}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fecha_pedido" class="form-label">Fecha del Pedido</label>
+                                <input type="datetime-local" class="form-control" id="fecha_pedido_modificar" name="fecha_pedido" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="estado" class="form-label">Estado</label>
+                                <select class="form-select" id="estado_modificar" name="estado" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="En Proceso">En Proceso</option>
+                                    <option value="Completado">Completado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tipo_pedido" class="form-label">Tipo de Pedido</label>
+                                <select class="form-select" id="tipo_pedido_modificar" name="tipo_pedido" required>
+                                    <option value="Dine-in">Dine-in</option>
+                                    <option value="Delivery">Delivery</option>
+                                    <option value="Para Llevar">Para Llevar</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="total_modificar" class="form-label">Total</label>
+                                <input type="number" step="0.01" class="form-control" id="total_modificar" name="total" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Modificar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../public/JavaScript/pedido.js"></script>
-   
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../public/JavaScript/pedido.js"></script>
+
 </body>
 
 </html>

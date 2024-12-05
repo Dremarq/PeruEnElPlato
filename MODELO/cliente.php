@@ -19,6 +19,17 @@ class Cliente
             return false;
         }
     }
+    public function contarUsuarios() {
+        $query = "SELECT COUNT(*) as total FROM usuarios"; // Cambia 'usuarios' por el nombre de tu tabla
+        $resultado = $this->conexion->query($query);
+        $total = $resultado->fetch_assoc();
+        return $total['total'];
+    }
+    
+    public function obtenerUsuariosLimit($inicio, $registrosPorPagina) {
+        $query = "SELECT * FROM usuarios LIMIT $inicio, $registrosPorPagina"; // Cambia 'usuarios' por el nombre de tu tabla
+        return $this->conexion->query($query);
+    }
 
     public function registrarUsuario($nombre, $apellido, $dni, $telefono, $email, $direccion, $usuario, $password) {
         // Verificar si el DNI ya existe
