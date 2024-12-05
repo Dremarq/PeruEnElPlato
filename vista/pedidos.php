@@ -23,6 +23,7 @@ $pedidos = $pedidoModelo->obtenerPedidosLimit($inicio, $registrosPorPagina);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../public/styles/admi.css">
     <link rel="stylesheet" href="../public/styles/tablas.css">
+    <link rel="stylesheet" href="../public/styles/pedido.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/191a90e971.js" crossorigin="anonymous"></script>
     <title>Interfaz de Administrador - Pedidos</title>

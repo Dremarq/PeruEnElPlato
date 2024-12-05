@@ -1,6 +1,6 @@
 <?php
 require_once '../config/conexion.php';
-require_once '../modelo/auth.php'; 
+require_once '../modelo/auth.php';
 
 session_start();
 
@@ -29,9 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             case 3: // Cocinero
                 header('Location: ../vista/empleados/cocinero.php');
                 break;
-                case 7: // Cocinero
-                    header('Location: ../vista/Mesero_V.php');
-                    break;
+            case 7: // Cocinero
+                header('Location: ../vista/Mesero_V.php');
+                break;
+            case 8: // Encargado
+                header('Location: ../vista/vista_almacen.php');
+                break;
             default:
                 header('Location: ../vista/login.php?error=Rol no reconocido.');
                 break;
@@ -43,4 +46,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 }
-?>

@@ -1,3 +1,22 @@
+<?php
+require_once "../../config/conexion.php";
+require_once "../../modelo/plato.php";
+
+$plato = new Plato($conexion);
+
+// Obtener los platos
+$resultado = $plato->obtenerPlatos();
+$platos = [];
+
+// Suponiendo que $resultado es un objeto de tipo mysqli_result
+while ($row = $resultado->fetch_assoc()) {
+    $platos[] = $row;
+}
+
+// Devolver los datos en formato JSON
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,25 +26,15 @@
   <title>Restaurante Perú en el Plato</title>
   <link rel="stylesheet" href="../../public/styles/estilo.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-</head>
- 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-</head>
-
 
 <body>
-  
   <!-- Header Section -->
   <header>
     <nav>
@@ -33,12 +42,126 @@
         <li><a href="#reserva-anchor">Reserva</a></li>
         <li><a href="#menu-anchor">Menu</a></li>
         <li><a href="#contact-anchor">Contáctanos</a></li>
-        <div><a href="../../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a> <!-- Botón de cierre de sesión --></div>
+        <div><a href="../../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a></div>
       </ul>
-
     </nav>
   </header>
 
+  <!-- Menu Section -->
+  <section id="menu-anchor">
+    <div class="menu-container" id="menu-container">
+      <!-- Los platos se cargarán aquí dinámicamente -->
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" tabindex="-1" id="cartModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Carrito de Compras</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul id="cartItems" class="list-group">
+              <!-- Elementos del carrito se agregarán aquí -->
+            </ul>
+            <p id="totalPrice">Total: S/0.00</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" onclick="checkout()">Realizar Pedido</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Cargar los platos desde la base de datos usando AJAX
+    window.onload = function() {
+  fetchPlatos();
+};
+
+function fetchPlatos() {
+  fetch('http://localhost/PeruEnElPlato/modelo/plato.php') // Asegúrate de que esta URL sea correcta
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      return response.json(); // Convertir la respuesta a JSON
+    })
+    .then(data => {
+      mostrarPlatos(data); // Llamar a la función para mostrar los platos
+    })
+    .catch(error => {
+      console.error('Error al obtener los platos:', error);
+    });
+} // Función para mostrar los platos en el frontend
+function mostrarPlatos(platos) {
+  let contenedorPlatos = document.getElementById('menu-container');
+  contenedorPlatos.innerHTML = ''; // Limpiar el contenedor antes de agregar los nuevos platos
+
+  platos.forEach(plato => {
+    let platoElemento = document.createElement('div');
+    platoElemento.classList.add('plato');
+    platoElemento.innerHTML = `
+      <h3>${plato.nombre}</h3>
+      <p>${plato.descripcion}</p>
+      <p>Precio: S/ ${plato.precio}</p>
+      <img src="../../public/img/${plato.imagen}" alt="${plato.nombre}">
+      <button class="btn btn-success" onclick="addToCart(${plato.id_plato}, '${plato.nombre}', ${plato.precio})">Agregar al Carrito</button>
+    `;
+    contenedorPlatos.appendChild(platoElemento);
+  });
+}
+function updateCart() {
+  let cartItems = document.getElementById('cartItems');
+  cartItems.innerHTML = '';
+  cart.forEach(item => {
+    cartItems.innerHTML += `
+      <li class="list-group-item">${item.name} - S/${item.price}</li>
+    `;
+  });
+  document.getElementById('totalPrice').innerText = `Total: S/${total.toFixed(2)}`;
+}
+
+// Función para agregar al carrito y mostrar el modal
+// Carrito de compras
+let cart = [];
+let total = 0;
+
+// Función para agregar al carrito y mostrar el modal
+function addToCart(id, name, price) {
+  cart.push({ id, name, price });
+  total += price;
+  updateCart();
+  
+  // Mostrar el modal
+  const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+  cartModal.show();
+}
+
+function updateCart() {
+  let cartItems = document.getElementById('cartItems');
+  cartItems.innerHTML = '';
+  cart.forEach(item => {
+    cartItems.innerHTML += `
+      <li class="list-group-item">${item.name} - S/${item.price}</li>
+    `;
+  });
+  document.getElementById('totalPrice').innerText = `Total: S/${total.toFixed(2)}`;
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    swal('¡Error!', 'No has agregado productos al carrito.', 'error');
+    return;
+  }
+  // Aquí puedes realizar una llamada a la base de datos para procesar la compra
+  swal('¡Gracias por tu compra!', 'Tu pedido ha sido recibido.', 'success');
+}
+    
+  </script>
   <!-- Hero Section -->
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
     <div class="carousel-indicators">
@@ -92,7 +215,9 @@
   </section>
   <!-- Menu Section -->
   <section id="menu-anchor">
-    <h2 style="text-align: center;">Nuestro Menú</h2>
+    <h2 style="text-align: center;">Nuestro Menú<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cartModal">Ver Carrito</button></h2>
+
+
     <div class="menu-container">
       <div class="menu-column">
         <h3>Entradas</h3>
@@ -259,7 +384,7 @@
     <p>&copy; 2024 Restaurante Perú en el Plato. Todos los derechos reservados.</p>
   </footer>
 
-  <script src="js/index.js"></script>
+  
 </body>
 
 </html>

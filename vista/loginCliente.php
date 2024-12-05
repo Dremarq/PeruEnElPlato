@@ -1,26 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Cliente</title>
     <link rel="stylesheet" href="../public/styles/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-            
-        .modal-content { border-radius: 15px; } 
-        .modal-dialog{max-width: 26%;}
-        .modal-content{width: 100%;}
-        .modal-header { background-color: #007bff; color: white; border-top-left-radius: 10px; border-top-right-radius: 10px; } 
-        .modal-title { font-weight: bold; } 
-        .modal-body { padding: 20px; } 
-        .form-label { font-weight: bold; } 
-        .form-control { border-radius: 5px; border: 1px solid #ced4da; } 
-        .btn-primary { background-color: #007bff; border: none; border-radius: 5px; } 
-        .btn-primary:hover { background-color: #0056b3; } 
-        .mb-3 { margin-bottom: 15px; }
-    </style>
+   
 </head>
+<style>
+        /* Estilo para centrar el formulario */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+    </style>
 <body>
     <div class="container">
         <form action="../controlador/CRUDcliente.php" method="POST">
@@ -34,13 +34,16 @@
             <br>
             <br>
             <div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
-                Registrar Nuevo Usuario
-            </button>
-        </div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
+                    Registrar Nuevo Usuario
+                </button>
+            </div>
+            <div>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">¿Olvidaste tu contraseña?</a>
+            </div>
         </form>
-        
-       
+
+
 
         <?php if (isset($_GET['error'])): ?>
             <p style="color: red;"><?= htmlspecialchars($_GET['error']) ?></p>
@@ -96,7 +99,29 @@
             </div>
         </div>
     </div>
+    <!-- Modal para restablecer la contraseña -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resetPasswordModalLabel">Restablecer Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="../controlador/ControllerCliente.php" method="POST">
+                    <input type="hidden" name="accion" value="enviar_enlace_restablecimiento">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Enlace</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
