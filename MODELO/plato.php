@@ -8,9 +8,14 @@ class Plato {
     }
 
     public function obtenerPlatos() {
-        $sql = "SELECT * FROM platos";
-        $resultado = $this->conexion->query($sql);
-        return $resultado;
+        $query = "SELECT * FROM platos"; // Cambia "platos" al nombre real de tu tabla
+        $resultado = $this->conexion->query($query);
+    
+        if ($resultado && $resultado->num_rows > 0) {
+            return $resultado->fetch_all(MYSQLI_ASSOC);
+        }
+    
+        return []; // Devuelve un array vacío si no hay datos
     }
 
     public function registrarPlato($nombre, $descripcion, $precio, $categoria, $imagen) {

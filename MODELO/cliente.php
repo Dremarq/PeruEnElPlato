@@ -97,8 +97,8 @@ class Cliente
     
         if ($resultado->num_rows > 0) {
             $usuarioDB = $resultado->fetch_assoc();
-            if (password_verify($password, $usuarioDB['contrasena'])) { // Cambiado 'password' a 'contrasena'
-                return $usuarioDB; // Devuelve los datos del usuario si son correctos
+            if (password_verify($password, $usuarioDB['contrasena'])) {
+                return $usuarioDB; // Devuelve todos los datos del usuario
             }
         }
         return false; // Usuario o contraseña incorrectos

@@ -1,19 +1,18 @@
 <?php
 require_once "../../config/conexion.php";
 require_once "../../modelo/plato.php";
+require_once "../../modelo/Cliente.php";
 
 $plato = new Plato($conexion);
 
 // Obtener los platos
-$resultado = $plato->obtenerPlatos();
-$platos = [];
+$platos = $plato->obtenerPlatos();
 
-// Suponiendo que $resultado es un objeto de tipo mysqli_result
-while ($row = $resultado->fetch_assoc()) {
-    $platos[] = $row;
-}
 
-// Devolver los datos en formato JSON
+
+
+
+
 
 ?>
 
@@ -35,6 +34,7 @@ while ($row = $resultado->fetch_assoc()) {
 </head>
 
 <body>
+
   <!-- Header Section -->
   <header>
     <nav>
@@ -42,126 +42,16 @@ while ($row = $resultado->fetch_assoc()) {
         <li><a href="#reserva-anchor">Reserva</a></li>
         <li><a href="#menu-anchor">Menu</a></li>
         <li><a href="#contact-anchor">Contáctanos</a></li>
+        <div class="user-info">
+       
         <div><a href="../../controlador/logout.php" class="btn btn-danger">Cerrar Sesión</a></div>
       </ul>
     </nav>
   </header>
 
-  <!-- Menu Section -->
-  <section id="menu-anchor">
-    <div class="menu-container" id="menu-container">
-      <!-- Los platos se cargarán aquí dinámicamente -->
-    </div>
 
-    <!-- Modal -->
-    <div class="modal" tabindex="-1" id="cartModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Carrito de Compras</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <ul id="cartItems" class="list-group">
-              <!-- Elementos del carrito se agregarán aquí -->
-            </ul>
-            <p id="totalPrice">Total: S/0.00</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" onclick="checkout()">Realizar Pedido</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <script>
-    // Cargar los platos desde la base de datos usando AJAX
-    window.onload = function() {
-  fetchPlatos();
-};
 
-function fetchPlatos() {
-  fetch('http://localhost/PeruEnElPlato/modelo/plato.php') // Asegúrate de que esta URL sea correcta
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
-      }
-      return response.json(); // Convertir la respuesta a JSON
-    })
-    .then(data => {
-      mostrarPlatos(data); // Llamar a la función para mostrar los platos
-    })
-    .catch(error => {
-      console.error('Error al obtener los platos:', error);
-    });
-} // Función para mostrar los platos en el frontend
-function mostrarPlatos(platos) {
-  let contenedorPlatos = document.getElementById('menu-container');
-  contenedorPlatos.innerHTML = ''; // Limpiar el contenedor antes de agregar los nuevos platos
-
-  platos.forEach(plato => {
-    let platoElemento = document.createElement('div');
-    platoElemento.classList.add('plato');
-    platoElemento.innerHTML = `
-      <h3>${plato.nombre}</h3>
-      <p>${plato.descripcion}</p>
-      <p>Precio: S/ ${plato.precio}</p>
-      <img src="../../public/img/${plato.imagen}" alt="${plato.nombre}">
-      <button class="btn btn-success" onclick="addToCart(${plato.id_plato}, '${plato.nombre}', ${plato.precio})">Agregar al Carrito</button>
-    `;
-    contenedorPlatos.appendChild(platoElemento);
-  });
-}
-function updateCart() {
-  let cartItems = document.getElementById('cartItems');
-  cartItems.innerHTML = '';
-  cart.forEach(item => {
-    cartItems.innerHTML += `
-      <li class="list-group-item">${item.name} - S/${item.price}</li>
-    `;
-  });
-  document.getElementById('totalPrice').innerText = `Total: S/${total.toFixed(2)}`;
-}
-
-// Función para agregar al carrito y mostrar el modal
-// Carrito de compras
-let cart = [];
-let total = 0;
-
-// Función para agregar al carrito y mostrar el modal
-function addToCart(id, name, price) {
-  cart.push({ id, name, price });
-  total += price;
-  updateCart();
-  
-  // Mostrar el modal
-  const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
-  cartModal.show();
-}
-
-function updateCart() {
-  let cartItems = document.getElementById('cartItems');
-  cartItems.innerHTML = '';
-  cart.forEach(item => {
-    cartItems.innerHTML += `
-      <li class="list-group-item">${item.name} - S/${item.price}</li>
-    `;
-  });
-  document.getElementById('totalPrice').innerText = `Total: S/${total.toFixed(2)}`;
-}
-
-function checkout() {
-  if (cart.length === 0) {
-    swal('¡Error!', 'No has agregado productos al carrito.', 'error');
-    return;
-  }
-  // Aquí puedes realizar una llamada a la base de datos para procesar la compra
-  swal('¡Gracias por tu compra!', 'Tu pedido ha sido recibido.', 'success');
-}
-    
-  </script>
   <!-- Hero Section -->
   <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
     <div class="carousel-indicators">
@@ -199,6 +89,7 @@ function checkout() {
     <div class="about-container">
       <div class="about-text">
         <h2>Acerca de nosotros</h2>
+        
         <p>En Perú en el Plato, nos enorgullece ofrecer una experiencia gastronómica que rescata lo mejor de la
           tradición culinaria peruana. Nuestro restaurante combina ingredientes frescos y recetas auténticas para llevar
           a tu mesa los sabores más representativos de la cocina criolla. Desde el irresistible aroma del ají de gallina
@@ -215,101 +106,154 @@ function checkout() {
   </section>
   <!-- Menu Section -->
   <section id="menu-anchor">
-    <h2 style="text-align: center;">Nuestro Menú<button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cartModal">Ver Carrito</button></h2>
+    <h2 style="text-align: center;">Nuestro Menú <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#menuModal">Comprar</button></h2>
 
 
-    <div class="menu-container">
-      <div class="menu-column">
-        <h3>Entradas</h3>
-        <ul>
-          <li>
-            <div class="card" style="width: 18rem;">
-              <img src="../../public/img/papa.jpg" class="card-img-top" alt="Papa a la Huancaína">
-              <div class="card-body">
-                <p class="card-text">Papas hervidas servidas con una cremosa salsa de queso, ají amarillo y aceitunas,
-                  ideales como entrada.</p>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="card" style="width: 18rem;">
-              <img src="../../public/img/causa.jpg" class="card-img-top" alt="Causa RellenaS">
-              <div class="card-body">
-                <p class="card-text">Puré de papa amarilla sazonado con limón y ají, relleno de pollo, atún o mariscos,
-                  y servido frío.</p>
-              </div>
-            </div>
-          </li>
-          <div class="card" style="width: 18rem;">
-            <img src="../../public/img/choritos.jpeg" class="card-img-top" alt="Choritos a la Chalaca">
-            <div class="card-body">
-              <p class="card-text">Mejillones al vapor cubiertos con una mezcla de cebolla, tomate, cilantro y jugo de
-                limón, perfectos como aperitivo.</p>
-            </div>
+    <!-- Modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="menuModalLabel">Selecciona tus Platos</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-        </ul>
-      </div>
-      <div class="menu-column">
-        <h3>Platos Principales</h3>
-        <ul>
-          <li>
-            <div class="card" style="width: 18rem;">
-              <img src="../../public/img/lomo.jpg" class="card-img-top" alt="Lomo Saltado">
-              <div class="card-body">
-                <p class="card-text">Jugoso salteado de carne de res con cebolla, tomate y papas fritas, fusionando
-                  sabores peruanos y chinos.</p>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="card" style="width: 18rem;">
-              <img src="../../public/img/ajidegallina.jpg" class="card-img-top" alt="Aji de Gallina">
-              <div class="card-body">
-                <p class="card-text">Guiso cremoso de pollo desmenuzado en una salsa de ají amarillo, nueces y queso,
-                  servido sobre arroz.</p>
-              </div>
-            </div>
-          </li>
-          <div class="card" style="width: 18rem;">
-            <img src="../../public/img/arrozpio.jpg" class="card-img-top" alt="Arroz con Pollo">
-            <div class="card-body">
-              <p class="card-text">Sazón de arroz cocido con pollo, cilantro y especias, acompañado de verduras frescas.
-              </p>
-            </div>
+          <div class="modal-body">
+            <ul class="list-group">
+              <?php foreach ($platos as $plato): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <?php echo htmlspecialchars($plato['nombre']); ?> - s/.<?php echo htmlspecialchars($plato['precio']); ?>
+                  <button class="btn btn-success btn-sm agregar-carrito" data-id="<?php echo $plato['id_plato']; ?>">Agregar</button>
+                </li>
+              <?php endforeach; ?>
+            </ul>
           </div>
-        </ul>
-      </div>
-      <div class="menu-column">
-        <h3>Postres</h3>
-        <ul>
-          <li>
-            <div class="card" style="width: 18rem;">
-              <img src="../../public/img/picarones.jpg" class="card-img-top" alt="picarones">
-              <div class="card-body">
-                <p class="card-text">Deliciosos buñuelos de masa de zapallo y camote, fritos y bañados en miel de
-                  chancaca.</p>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="card" style="width: 18rem;">
-              <img src="../../public/img/suspiro.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <p class="card-text">Postre suave y dulce hecho con leche condensada, yemas de huevo y merengue, con un
-                  toque de oporto.</p>
-              </div>
-            </div>
-          </li>
-          <div class="card" style="width: 18rem;">
-            <img src="../../public/img/turron.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <p class="card-text">Dulce de origen español, elaborado con almendras, miel y clara de huevo, perfecto
-                para ocasiones especiales.</p>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="ver-carrito">Ver Carrito</button>
           </div>
-        </ul>
+        </div>
       </div>
     </div>
+
+    <!-- Carrito Modal -->
+    <div class="modal fade" id="carritoModal" tabindex="-1" aria-labelledby="carritoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="carritoModalLabel">Tu Carrito</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul class="list-group" id="carrito-list">
+              <!-- Aquí se agregarán los platos seleccionados -->
+            </ul>
+            <p id="total" class="mt-3">Total: $0</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="comprar">Comprar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+
+  <div class="menu-container">
+    <div class="menu-column">
+      <h3>Entradas</h3>
+      <ul>
+        <li>
+          <div class="card" style="width: 18rem;">
+            <img src="../../public/img/papa.jpg" class="card-img-top" alt="Papa a la Huancaína">
+            <div class="card-body">
+              <p class="card-text">Papas hervidas servidas con una cremosa salsa de queso, ají amarillo y aceitunas,
+                ideales como entrada.</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="card" style="width: 18rem;">
+            <img src="../../public/img/causa.jpg" class="card-img-top" alt="Causa RellenaS">
+            <div class="card-body">
+              <p class="card-text">Puré de papa amarilla sazonado con limón y ají, relleno de pollo, atún o mariscos,
+                y servido frío.</p>
+            </div>
+          </div>
+        </li>
+        <div class="card" style="width: 18rem;">
+          <img src="../../public/img/choritos.jpeg" class="card-img-top" alt="Choritos a la Chalaca">
+          <div class="card-body">
+            <p class="card-text">Mejillones al vapor cubiertos con una mezcla de cebolla, tomate, cilantro y jugo de
+              limón, perfectos como aperitivo.</p>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="menu-column">
+      <h3>Platos Principales</h3>
+      <ul>
+        <li>
+          <div class="card" style="width: 18rem;">
+            <img src="../../public/img/lomo.jpg" class="card-img-top" alt="Lomo Saltado">
+            <div class="card-body">
+              <p class="card-text">Jugoso salteado de carne de res con cebolla, tomate y papas fritas, fusionando
+                sabores peruanos y chinos.</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="card" style="width: 18rem;">
+            <img src="../../public/img/ajidegallina.jpg" class="card-img-top" alt="Aji de Gallina">
+            <div class="card-body">
+              <p class="card-text">Guiso cremoso de pollo desmenuzado en una salsa de ají amarillo, nueces y queso,
+                servido sobre arroz.</p>
+            </div>
+          </div>
+        </li>
+        <div class="card" style="width: 18rem;">
+          <img src="../../public/img/arrozpio.jpg" class="card-img-top" alt="Arroz con Pollo">
+          <div class="card-body">
+            <p class="card-text">Sazón de arroz cocido con pollo, cilantro y especias, acompañado de verduras frescas.
+            </p>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="menu-column">
+      <h3>Postres</h3>
+      <ul>
+        <li>
+          <div class="card" style="width: 18rem;">
+            <img src="../../public/img/picarones.jpg" class="card-img-top" alt="picarones">
+            <div class="card-body">
+              <p class="card-text">Deliciosos buñuelos de masa de zapallo y camote, fritos y bañados en miel de
+                chancaca.</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="card" style="width: 18rem;">
+            <img src="../../public/img/suspiro.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <p class="card-text">Postre suave y dulce hecho con leche condensada, yemas de huevo y merengue, con un
+                toque de oporto.</p>
+            </div>
+          </div>
+        </li>
+        <div class="card" style="width: 18rem;">
+          <img src="../../public/img/turron.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <p class="card-text">Dulce de origen español, elaborado con almendras, miel y clara de huevo, perfecto
+              para ocasiones especiales.</p>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
   </section>
   <!-- Reserva Section -->
   <section id="reserva-anchor">
@@ -384,7 +328,10 @@ function checkout() {
     <p>&copy; 2024 Restaurante Perú en el Plato. Todos los derechos reservados.</p>
   </footer>
 
-  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../public/JavaScript/carrito.js"></script>
+
+
 </body>
 
 </html>
